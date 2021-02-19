@@ -1,0 +1,13 @@
+from typing import Any
+
+from .extensions import AbstractConcreteBase as AbstractConcreteBase
+from .extensions import ConcreteBase as ConcreteBase
+from .extensions import DeferredReflection as DeferredReflection
+from .extensions import instrument_declarative as instrument_declarative
+from ...orm.decl_api import DeclarativeMeta as DeclarativeMeta
+from ...orm.decl_api import declared_attr as declared_attr
+
+def declarative_base(*arg: Any, **kw: Any): ...
+def as_declarative(*arg: Any, **kw: Any): ...
+def has_inherited_table(*arg: Any, **kw: Any): ...
+def synonym_for(*arg: Any, **kw: Any): ...
