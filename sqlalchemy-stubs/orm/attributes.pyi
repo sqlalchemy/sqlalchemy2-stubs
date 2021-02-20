@@ -1,6 +1,9 @@
 from collections import namedtuple
 from typing import Any
+from typing import Generic
 from typing import Optional
+from typing import Type
+from typing import TypeVar
 
 from . import collections as collections
 from . import interfaces as interfaces
@@ -79,17 +82,16 @@ class QueryableAttribute(
     def __getattr__(self, key: Any): ...
     def property(self): ...
 
+_T = TypeVar("_T")
+_Generic_T = Generic[_T]
 
-class Mapped(QueryableAttribute):
-    def __init__(self, type: _T) -> None: ...
-
+class Mapped(QueryableAttribute, Generic[_T]):
+    def __init__(self, type: Type[_T]) -> None: ...
     @overload
     def __get__(self, instance: None, owner: Any) -> Mapped[_T]: ...
-
     @overload
     def __get__(self, instance: object, owner: Any) -> Union[_T, None]: ...
-
-    def __set__(self, instance: Any, value: Any) -> None: ...
+    def __set__(self, instance: Any, value: _T) -> None: ...
     def __delete__(self, instance: Any) -> None: ...
 
 class InstrumentedAttribute(Mapped):
