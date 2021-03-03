@@ -3,6 +3,7 @@ from typing import Optional
 
 from .attributes import AttributeEvent as AttributeEvent
 from .attributes import InstrumentedAttribute as InstrumentedAttribute
+from .attributes import Mapped as Mapped
 from .attributes import QueryableAttribute as QueryableAttribute
 from .context import QueryContext as QueryContext
 from .decl_api import as_declarative as as_declarative
