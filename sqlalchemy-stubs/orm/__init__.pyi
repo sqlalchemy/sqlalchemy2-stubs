@@ -27,11 +27,13 @@ from .interfaces import EXT_SKIP as EXT_SKIP
 from .interfaces import EXT_STOP as EXT_STOP
 from .interfaces import InspectionAttr as InspectionAttr
 from .interfaces import InspectionAttrInfo as InspectionAttrInfo
+from .interfaces import LoaderOption
 from .interfaces import MANYTOMANY as MANYTOMANY
 from .interfaces import MANYTOONE as MANYTOONE
 from .interfaces import MapperProperty as MapperProperty
 from .interfaces import NOT_EXTENSION as NOT_EXTENSION
 from .interfaces import ONETOMANY as ONETOMANY
+from .interfaces import ORMOption
 from .interfaces import PropComparator as PropComparator
 from .loading import merge_frozen_result as merge_frozen_result
 from .loading import merge_result as merge_result
@@ -73,45 +75,53 @@ from .util import with_parent as with_parent
 from .util import with_polymorphic as with_polymorphic
 from ..util.langhelpers import public_factory as public_factory
 
-def create_session(bind: Optional[Any] = ..., **kwargs: Any): ...
+def create_session(bind: Optional[Any] = ..., **kwargs: Any) -> Session: ...
+def with_loader_criteria(
+    entity_or_base: Any,
+    where_criteria: Any,
+    loader_only: Optional[bool],
+    include_aliases: Optional[bool],
+    propagate_to_loaders: Optional[bool],
+    track_closure_variables: Optional[bool],
+):
+    ORMOption
 
-with_loader_criteria: Any
-relationship: Any
+relationship = RelationshipProperty
 
-def relation(*arg: Any, **kw: Any): ...
-def dynamic_loader(argument: Any, **kw: Any): ...
+def relation(*arg: Any, **kw: Any) -> RelationshipProperty: ...
+def dynamic_loader(argument: Any, **kw: Any) -> RelationshipProperty: ...
 
-column_property: Any
-composite: Any
+column_property = ColumnProperty
+composite = CompositeProperty
 
 def backref(name: Any, **kwargs: Any): ...
 def deferred(*columns: Any, **kw: Any): ...
 def query_expression(default_expr: Any = ...): ...
 
-mapper: Any
-synonym: Any
+mapper = Mapper
+synonym = SynonymProperty
 
 def clear_mappers() -> None: ...
 
-joinedload: Any
-contains_eager: Any
-defer: Any
-undefer: Any
-undefer_group: Any
-with_expression: Any
-load_only: Any
-lazyload: Any
-subqueryload: Any
-selectinload: Any
-immediateload: Any
-noload: Any
-raiseload: Any
-defaultload: Any
-selectin_polymorphic: Any
+joinedload: LoaderOption
+contains_eager: LoaderOption
+defer: LoaderOption
+undefer: LoaderOption
+undefer_group: LoaderOption
+with_expression: LoaderOption
+load_only: LoaderOption
+lazyload: LoaderOption
+subqueryload: LoaderOption
+selectinload: LoaderOption
+immediateload: LoaderOption
+noload: LoaderOption
+raiseload: LoaderOption
+defaultload: LoaderOption
+selectin_polymorphic: LoaderOption
 
-def eagerload(*args: Any, **kwargs: Any): ...
+def eagerload(*args: Any, **kwargs: Any) -> LoaderOption: ...
 
-contains_alias: Any
+contains_alias: LoaderOption
 
 # Names in __all__ with no definition:
 #   AppenderQuery
