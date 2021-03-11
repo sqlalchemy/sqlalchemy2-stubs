@@ -1,5 +1,8 @@
 from typing import Any
+from typing import Generic
 from typing import Optional
+from typing import TypeVar
+from typing import Union
 
 from . import attributes as attributes
 from . import clsregistry as clsregistry
@@ -8,6 +11,7 @@ from . import interfaces as interfaces
 from .mapper import Mapper as Mapper
 from .. import inspection as inspection
 from .. import util as util
+from ..sql import ColumnElement
 from ..sql.schema import MetaData as MetaData
 from ..util import hybridmethod as hybridmethod
 from ..util import hybridproperty as hybridproperty
@@ -25,10 +29,15 @@ class DeclarativeMeta(type):
 
 def synonym_for(name: Any, map_column: bool = ...): ...
 
-class declared_attr(interfaces._MappedAttribute, property):
+_T = TypeVar("_T")
+_Generic_T = Generic[_T]
+
+class declared_attr(interfaces._MappedAttribute, property, Generic[_T]):
     __doc__: Any = ...
     def __init__(self, fget: Any, cascading: bool = ...) -> None: ...
-    def __get__(desc: Any, self: Any, cls: Any): ...
+    def __get__(
+        desc: Any, self: Any, cls: Any
+    ) -> Union[interfaces.MapperProperty, ColumnElement]: ...
     def cascading(cls): ...
 
 class _stateful_declared_attr(declared_attr):

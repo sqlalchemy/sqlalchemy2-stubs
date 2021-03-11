@@ -1,5 +1,7 @@
 from typing import Any
+from typing import Generic
 from typing import Optional
+from typing import TypeVar
 
 from .base import _MappedAttribute
 from .base import EXT_CONTINUE as EXT_CONTINUE
@@ -23,8 +25,14 @@ class ORMColumnsClauseRole(roles.ColumnsClauseRole): ...
 class ORMEntityColumnsClauseRole(ORMColumnsClauseRole): ...
 class ORMFromClauseRole(roles.StrictFromClauseRole): ...
 
+_T = TypeVar("_T")
+
 class MapperProperty(
-    HasCacheKey, _MappedAttribute, InspectionAttr, util.MemoizedSlots
+    HasCacheKey,
+    _MappedAttribute,
+    InspectionAttr,
+    util.MemoizedSlots,
+    Generic[_T],
 ):
     cascade: Any = ...
     is_property: bool = ...
@@ -99,7 +107,7 @@ class PropComparator(operators.ColumnOperators):
     def any(self, criterion: Optional[Any] = ..., **kwargs: Any): ...
     def has(self, criterion: Optional[Any] = ..., **kwargs: Any): ...
 
-class StrategizedProperty(MapperProperty):
+class StrategizedProperty(MapperProperty[_T]):
     inherit_cache: bool = ...
     strategy_wildcard_key: Any = ...
     def setup(

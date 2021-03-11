@@ -1,6 +1,7 @@
 from typing import Any
 from typing import Optional
 from typing import Type
+from typing import TypeVar
 from typing import Union
 
 from . import attributes as attributes
@@ -31,7 +32,9 @@ from ..sql.util import visit_binary_product as visit_binary_product
 def remote(expr: Any): ...
 def foreign(expr: Any): ...
 
-class RelationshipProperty(StrategizedProperty):
+_T = TypeVar("_T")
+
+class RelationshipProperty(StrategizedProperty[_T]):
     strategy_wildcard_key: str = ...
     inherit_cache: bool = ...
     uselist: Any = ...
