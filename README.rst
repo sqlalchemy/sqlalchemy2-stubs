@@ -2,22 +2,21 @@
 SQLAlchemy 2 Stubs
 ===================
 
-These are the PEP-484 typing stubs for SQLAlchemy 1.4 and
-SQLAlchemy 2.0, as well as a mypy extension.
+These are PEP-484 typing stubs for `SQLAlchemy <https://www.sqlalchemy.org>`
+1.4 and 2.0.  They are released concurrently along with
+a `Mypy extension <https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html>`
+which is designed to work with these stubs, which assists primarily in the
+area of ORM mappings.
 
-This package will be integrated within SQLAlchemy 2 itself
-as inline type annotations for SQLAlchemy 2.0's release.
+The stubs replace the use of the "sqlalchemy-stubs" package published by
+Dropbox.  Differences include that these stubs are generated against
+1.4's API as well as some adjustments to the use of generics.
 
+This project should be considered **alpha level** and is not as mature
+as the Dropbox stubs for the initial release.
 
-For SQLAlchemy 1.4, the annotations are published here
-as separate stubs so that users who are relying upon
-the "sqlalchemy-stubs" package published by Dropbox can
-continue to do so.  This package necessarily replaces
-sqlalchemy-stubs entirely, and will be in development
-throughout the 1.4 SQLAlchemy series.
-
-This project is **under consruction** right now and initial
-releases will be in the coming weeks of 2021.
+See the Mypy plugin documentation at https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html
+for an overview of how to use PEP-484 annotations with ORM mapped classes.
 
 
 
