@@ -2,6 +2,7 @@ from collections import namedtuple
 from typing import Any
 from typing import Generic
 from typing import Optional
+from typing import overload
 from typing import Type
 from typing import TypeVar
 
@@ -83,12 +84,11 @@ class QueryableAttribute(
     def property(self): ...
 
 _T = TypeVar("_T")
-_Generic_T = Generic[_T]
 
 class Mapped(QueryableAttribute, Generic[_T]):
     def __init__(self, type: Type[_T]) -> None: ...
     @overload
-    def __get__(self, instance: None, owner: Any) -> Mapped[_T]: ...
+    def __get__(self, instance: None, owner: Any) -> "Mapped"[_T]: ...
     @overload
     def __get__(self, instance: object, owner: Any) -> _T: ...
     def __set__(self, instance: Any, value: _T) -> None: ...
@@ -312,8 +312,8 @@ class CollectionAttributeImpl(AttributeImpl):
         value: Any,
         initiator: Optional[Any] = ...,
         passive: Any = ...,
+        check_old: Optional[Any] = ...,
         pop: bool = ...,
-        _adapt: bool = ...,
     ) -> None: ...
     def set_committed_value(self, state: Any, dict_: Any, value: Any): ...
     def get_collection(

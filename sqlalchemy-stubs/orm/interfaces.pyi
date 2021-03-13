@@ -3,11 +3,12 @@ from typing import Generic
 from typing import Optional
 from typing import TypeVar
 
-from .base import _MappedAttribute
+from .base import _MappedAttribute as _MappedAttribute
 from .base import EXT_CONTINUE as EXT_CONTINUE
 from .base import EXT_SKIP as EXT_SKIP
 from .base import EXT_STOP as EXT_STOP
-from .base import InspectionAttr
+from .base import InspectionAttr as InspectionAttr
+from .base import InspectionAttrInfo as InspectionAttrInfo  # noqa
 from .base import MANYTOMANY as MANYTOMANY
 from .base import MANYTOONE as MANYTOONE
 from .base import NOT_EXTENSION as NOT_EXTENSION
@@ -58,9 +59,10 @@ class MapperProperty(
         self,
         type_: Any,
         state: Any,
-        visited_instances: Optional[Any] = ...,
+        dict_: Any,
+        visited_states: Any,
         halt_on: Optional[Any] = ...,
-    ): ...
+    ) -> None: ...
     parent: Any = ...
     def set_parent(self, parent: Any, init: Any) -> None: ...
     def instrument_class(self, mapper: Any) -> None: ...

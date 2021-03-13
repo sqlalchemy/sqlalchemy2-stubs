@@ -13,6 +13,7 @@ from .interfaces import PropComparator as PropComparator
 from .interfaces import StrategizedProperty as StrategizedProperty
 from .util import AliasedInsp as AliasedInsp
 from .util import CascadeOptions as CascadeOptions
+from .mapper import Mapper
 from .. import log as log
 from .. import schema as schema
 from .. import sql as sql
@@ -152,7 +153,7 @@ class RelationshipProperty(StrategizedProperty[_T]):
         visited_states: Any,
         halt_on: Optional[Any] = ...,
     ) -> None: ...
-    def entity(self) -> Union[AliasedInsp, mapperlib.Mapper]: ...
+    def entity(self) -> Union[AliasedInsp, Mapper]: ...
     def mapper(self): ...
     def do_init(self) -> None: ...
     @property
