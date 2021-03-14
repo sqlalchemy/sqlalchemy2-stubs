@@ -2,9 +2,9 @@
 SQLAlchemy 2 Stubs
 ===================
 
-These are PEP-484 typing stubs for `SQLAlchemy <https://www.sqlalchemy.org>`
+These are PEP-484 typing stubs for `SQLAlchemy <https://www.sqlalchemy.org>`_
 1.4 and 2.0.  They are released concurrently along with
-a `Mypy extension <https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html>`
+a `Mypy extension <https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html>`_
 which is designed to work with these stubs, which assists primarily in the
 area of ORM mappings.
 
