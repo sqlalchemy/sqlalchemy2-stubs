@@ -18,6 +18,17 @@ as the Dropbox stubs for the initial release.
 See the Mypy plugin documentation at https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html
 for an overview of how to use PEP-484 annotations with ORM mapped classes.
 
+Code of Conduct
+---------------
 
+Above all, SQLAlchemy places great emphasis on polite, thoughtful, and
+constructive communication between users and developers.
+Please see our current Code of Conduct at
+`Code of Conduct <http://www.sqlalchemy.org/codeofconduct.html>`_.
 
+License
+-------
+
+SQLAlchemy is distributed under the `MIT license
+<http://www.opensource.org/licenses/mit-license.php>`_.
 
