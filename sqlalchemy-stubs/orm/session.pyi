@@ -1,5 +1,6 @@
 from .. import util
 from typing import Any, Optional
+from ..engine import Result
 
 class _SessionClassMethods:
     @classmethod
@@ -151,7 +152,7 @@ class Session(_SessionClassMethods):
         _parent_execute_state: Optional[Any] = ...,
         _add_event: Optional[Any] = ...,
         **kw: Any,
-    ): ...
+    ) -> Result: ...
     def scalar(
         self,
         statement: Any,
@@ -159,7 +160,7 @@ class Session(_SessionClassMethods):
         execution_options: Any = ...,
         bind_arguments: Optional[Any] = ...,
         **kw: Any,
-    ): ...
+    ) -> Any: ...
     def close(self) -> None: ...
     def invalidate(self) -> None: ...
     def expunge_all(self) -> None: ...
