@@ -1,5 +1,7 @@
 from typing import Any
+from typing import Mapping
 from typing import Optional
+from typing import Tuple
 
 from .attributes import AttributeEvent as AttributeEvent
 from .attributes import InstrumentedAttribute as InstrumentedAttribute
@@ -94,7 +96,9 @@ def dynamic_loader(argument: Any, **kw: Any) -> RelationshipProperty: ...
 column_property = ColumnProperty
 composite = CompositeProperty
 
-def backref(name: Any, **kwargs: Any): ...
+_BackrefResult = Tuple[str, Mapping[str, Any]]
+
+def backref(name: str, **kwargs: Any) -> _BackrefResult: ...
 def deferred(*columns: Any, **kw: Any) -> ColumnProperty: ...
 def query_expression(default_expr: Any = ...) -> ColumnProperty: ...
 

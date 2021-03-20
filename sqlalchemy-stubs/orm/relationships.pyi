@@ -1,9 +1,17 @@
+from typing import AbstractSet
 from typing import Any
+from typing import Callable
+from typing import Mapping
 from typing import Optional
+from typing import Sequence
+from typing import Tuple
 from typing import Type
 from typing import TypeVar
 from typing import Union
 
+from typing_extensions import Literal
+
+from . import _BackrefResult
 from . import attributes as attributes
 from .base import state_str as state_str
 from .interfaces import MANYTOMANY as MANYTOMANY
@@ -19,6 +27,7 @@ from .. import schema as schema
 from .. import sql as sql
 from .. import util as util
 from ..inspection import inspect as inspect
+from ..schema import Column
 from ..sql import coercions as coercions
 from ..sql import expression as expression
 from ..sql import operators as operators
@@ -35,43 +44,45 @@ def foreign(expr: Any): ...
 
 _T = TypeVar("_T")
 
+_InfoDict = Mapping[Any, Any]
+
 class RelationshipProperty(StrategizedProperty[_T]):
-    strategy_wildcard_key: str = ...
-    inherit_cache: bool = ...
-    uselist: Any = ...
-    argument: Any = ...
-    secondary: Any = ...
-    primaryjoin: Any = ...
-    secondaryjoin: Any = ...
-    post_update: Any = ...
-    direction: Any = ...
-    viewonly: Any = ...
-    sync_backref: Any = ...
-    lazy: Any = ...
-    single_parent: Any = ...
-    collection_class: Optional[Type] = ...
-    passive_deletes: Any = ...
-    cascade_backrefs: Any = ...
-    passive_updates: Any = ...
-    remote_side: Any = ...
-    enable_typechecks: Any = ...
-    query_class: Any = ...
-    innerjoin: Any = ...
-    distinct_target_key: Any = ...
-    doc: Any = ...
-    active_history: Any = ...
-    join_depth: Any = ...
-    omit_join: Any = ...
-    local_remote_pairs: Any = ...
-    bake_queries: Any = ...
-    load_on_pending: Any = ...
-    comparator_factory: Any = ...
-    comparator: Any = ...
-    info: Any = ...
-    strategy_key: Any = ...
-    order_by: Any = ...
-    back_populates: Any = ...
-    backref: Any = ...
+    strategy_wildcard_key: str
+    inherit_cache: bool
+    uselist: Optional[bool]
+    argument: Any
+    secondary: Any
+    primaryjoin: Any
+    secondaryjoin: Any
+    post_update: bool
+    direction: Any
+    viewonly: Any
+    sync_backref: Any
+    lazy: str
+    single_parent: Any
+    collection_class: Optional[Type]
+    passive_deletes: Union[bool, Literal["all"]]
+    cascade_backrefs: bool
+    passive_updates: bool
+    remote_side: Any
+    enable_typechecks: bool  # NOTE: not documented
+    query_class: Any
+    innerjoin: Union[bool, str]
+    distinct_target_key: Optional[bool]
+    doc: Optional[str]
+    active_history: bool
+    join_depth: Optional[int]
+    omit_join: Optional[Literal[False]]
+    local_remote_pairs: Any  # NOTE: not documented
+    bake_queries: bool
+    load_on_pending: bool
+    comparator_factory: Any
+    comparator: Any
+    info: _InfoDict  # NOTE: not set if constructor argument is ``None``
+    strategy_key: Tuple[Tuple[str, str]]  # NOTE: not documented
+    order_by: Any
+    back_populates: Union[None, str]
+    backref: Union[None, str, _BackrefResult]
     def __init__(
         self,
         argument: Any,
@@ -79,34 +90,36 @@ class RelationshipProperty(StrategizedProperty[_T]):
         primaryjoin: Optional[Any] = ...,
         secondaryjoin: Optional[Any] = ...,
         foreign_keys: Optional[Any] = ...,
-        uselist: Optional[Any] = ...,
-        order_by: bool = ...,
-        backref: Optional[Any] = ...,
-        back_populates: Optional[Any] = ...,
-        overlaps: Optional[Any] = ...,
+        uselist: Optional[bool] = ...,
+        order_by: Union[
+            Literal[False], str, Column, Callable[[], Column]
+        ] = ...,
+        backref: Union[str, _BackrefResult] = ...,
+        back_populates: str = ...,
+        overlaps: Union[AbstractSet[str], str] = ...,
         post_update: bool = ...,
-        cascade: bool = ...,
+        cascade: Union[Literal[False], Sequence[str]] = ...,
         viewonly: bool = ...,
         lazy: str = ...,
         collection_class: Optional[Any] = ...,
-        passive_deletes: Any = ...,
-        passive_updates: Any = ...,
+        passive_deletes: Union[bool, Literal["all"]] = ...,
+        passive_updates: bool = ...,
         remote_side: Optional[Any] = ...,
-        enable_typechecks: Any = ...,
-        join_depth: Optional[Any] = ...,
+        enable_typechecks: bool = ...,  # NOTE: not documented
+        join_depth: Optional[int] = ...,
         comparator_factory: Optional[Any] = ...,
         single_parent: bool = ...,
-        innerjoin: bool = ...,
-        distinct_target_key: Optional[Any] = ...,
-        doc: Optional[Any] = ...,
-        active_history: Any = ...,
-        cascade_backrefs: Any = ...,
+        innerjoin: Union[bool, str] = ...,
+        distinct_target_key: Optional[bool] = ...,
+        doc: Optional[str] = ...,
+        active_history: bool = ...,
+        cascade_backrefs: bool = ...,
         load_on_pending: bool = ...,
         bake_queries: bool = ...,
         _local_remote_pairs: Optional[Any] = ...,
         query_class: Optional[Any] = ...,
-        info: Optional[Any] = ...,
-        omit_join: Optional[Any] = ...,
+        info: Optional[_InfoDict] = ...,
+        omit_join: Optional[Literal[False]] = ...,
         sync_backref: Optional[Any] = ...,
     ) -> None: ...
     def instrument_class(self, mapper: Any) -> None: ...
@@ -154,12 +167,12 @@ class RelationshipProperty(StrategizedProperty[_T]):
         halt_on: Optional[Any] = ...,
     ) -> None: ...
     def entity(self) -> Union[AliasedInsp, Mapper]: ...
-    def mapper(self): ...
+    def mapper(self) -> Mapper: ...
     def do_init(self) -> None: ...
     @property
-    def cascade(self): ...
+    def cascade(self) -> CascadeOptions: ...
     @cascade.setter
-    def cascade(self, cascade: Any) -> None: ...
+    def cascade(self, cascade: Sequence[str]) -> None: ...
 
 class JoinCondition:
     parent_persist_selectable: Any = ...
