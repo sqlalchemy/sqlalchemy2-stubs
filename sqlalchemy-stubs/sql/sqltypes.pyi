@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Any
 from typing import List
 from typing import Mapping
+from typing import NoReturn
 from typing import Optional
 from typing import Type
 from typing import TypeVar
@@ -328,7 +329,7 @@ class ARRAY(SchemaEventTarget, Indexable, Concatenable, TypeEngine[List]):
 class TupleType(TypeEngine[TupleType]):
     types: Any = ...
     def __init__(self, *types: Any) -> None: ...
-    def result_processor(self, dialect: Any, coltype: Any) -> None: ...
+    def result_processor(self, dialect: Any, coltype: Any) -> NoReturn: ...
 
 class REAL(Float):
     __visit_name__: str = ...
