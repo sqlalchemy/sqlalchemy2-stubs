@@ -40,6 +40,7 @@ from ._collections import WeakPopulateDict as WeakPopulateDict
 from ._collections import WeakSequence as WeakSequence
 from ._preloaded import preload_module as preload_module
 from ._preloaded import preloaded as preloaded
+from .compat import _SortKeyFunction as _SortKeyFunction
 from .compat import ABC as ABC
 from .compat import arm as arm
 from .compat import b as b

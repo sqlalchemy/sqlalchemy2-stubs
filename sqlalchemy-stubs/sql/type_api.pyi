@@ -1,6 +1,4 @@
-import sys
 from typing import Any
-from typing import Callable
 from typing import Generic
 from typing import Mapping
 from typing import Optional
@@ -17,6 +15,7 @@ from .visitors import Traversible as Traversible
 from .visitors import TraversibleType as TraversibleType
 from .. import exc as exc
 from .. import util as util
+from ..util import compat
 
 BOOLEANTYPE: Any
 INTEGERTYPE: Any
@@ -35,13 +34,6 @@ _TE = TypeVar("_TE", bound=TypeEngine[Any])
 _NFE = TypeVar("_NFE", bound=NativeForEmulated)
 _TD = TypeVar("_TD", bound=TypeDecorator[Any])
 _VT = TypeVar("_VT", bound=Variant[Any])
-
-if sys.version_info[0] < 3:
-    from _typeshed import SupportsLessThan
-
-    _SortKeyFunction = Callable[[Any], SupportsLessThan]
-else:
-    _SortKeyFunction = Callable[[Any], Any]
 
 class _LiteralProcessor(Protocol[_T_contra]):
     def __call__(self, __value: Optional[_T_contra]) -> str: ...
@@ -64,7 +56,7 @@ class TypeEngine(Traversible, Generic[_T]):
         def __reduce__(self): ...
     hashable: bool = ...
     comparator_factory: Type[Any] = ...
-    sort_key_function: Optional[_SortKeyFunction] = ...
+    sort_key_function: Optional[compat._SortKeyFunction] = ...
     should_evaluate_none: bool = ...
     def evaluates_none(self: _TE) -> _TE: ...
     def copy(self: _TE, **kw: Any) -> _TE: ...
@@ -145,7 +137,7 @@ class TypeDecorator(SchemaEventTarget, TypeEngine[_T]):
     def get_dbapi_type(self, dbapi: Any) -> Any: ...
     def compare_values(self, x: Any, y: Any) -> bool: ...
     @property
-    def sort_key_function(self) -> Optional[_SortKeyFunction]: ...  # type: ignore[override]
+    def sort_key_function(self) -> Optional[compat._SortKeyFunction]: ...  # type: ignore[override]
 
 class Variant(TypeDecorator[_T]):
     impl: TypeEngine[Any] = ...
