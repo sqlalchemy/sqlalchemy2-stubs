@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -32,6 +33,7 @@ from ..sql import util as sql_util
 from ..sql import visitors as visitors
 from ..sql.annotation import SupportsCloneAnnotations as SupportsCloneAnnotations
 from ..sql.base import ColumnCollection as ColumnCollection
+# fmt: on
 
 all_cascades: Any
 

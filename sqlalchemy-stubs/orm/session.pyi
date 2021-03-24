@@ -1,5 +1,7 @@
+from typing import Any
+from typing import Optional
+
 from .. import util
-from typing import Any, Optional
 from ..engine import Result
 
 class _SessionClassMethods:

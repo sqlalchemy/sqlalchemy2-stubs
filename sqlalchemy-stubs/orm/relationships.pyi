@@ -19,9 +19,9 @@ from .interfaces import MANYTOONE as MANYTOONE
 from .interfaces import ONETOMANY as ONETOMANY
 from .interfaces import PropComparator as PropComparator
 from .interfaces import StrategizedProperty as StrategizedProperty
+from .mapper import Mapper
 from .util import AliasedInsp as AliasedInsp
 from .util import CascadeOptions as CascadeOptions
-from .mapper import Mapper
 from .. import log as log
 from .. import schema as schema
 from .. import sql as sql

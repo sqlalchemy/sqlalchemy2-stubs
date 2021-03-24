@@ -1,6 +1,6 @@
 from typing import Any
-from typing import Optional
 from typing import List
+from typing import Optional
 
 from . import interfaces
 from .context import QueryContext as QueryContext

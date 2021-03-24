@@ -1,3 +1,4 @@
+# fmt: off
 from sqlalchemy import inspect as inspect
 from sqlalchemy import Integer as Integer
 from ... import create_engine as create_engine

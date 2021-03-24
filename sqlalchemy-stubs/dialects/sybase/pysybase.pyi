@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -6,6 +7,7 @@ from sqlalchemy import types as sqltypes
 from sqlalchemy.dialects.sybase.base import SybaseDialect as SybaseDialect
 from sqlalchemy.dialects.sybase.base import SybaseExecutionContext as SybaseExecutionContext
 from sqlalchemy.dialects.sybase.base import SybaseSQLCompiler as SybaseSQLCompiler
+# fmt: on
 
 class _SybNumeric(sqltypes.Numeric):
     def result_processor(self, dialect: Any, type_: Any): ...

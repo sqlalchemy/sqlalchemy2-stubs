@@ -84,8 +84,8 @@ class ABC:
     __metaclass__: Any = ...
 
 binary_type = str
-text_type = unicode
-long_type = long
+text_type = unicode  # noqa: F821
+long_type = long  # noqa: F821
 callable = callable
 cmp = cmp
 reduce = reduce

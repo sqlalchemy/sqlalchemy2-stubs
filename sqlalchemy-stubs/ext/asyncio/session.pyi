@@ -13,7 +13,7 @@ from ...orm import Session as Session
 from ...sql import Executable as Executable
 from ...util.concurrency import greenlet_spawn as greenlet_spawn
 
-T = TypeVar("T")
+_T = TypeVar("_T")
 
 class AsyncSession:
     dispatch: Any = ...
@@ -33,8 +33,8 @@ class AsyncSession:
         with_for_update: Optional[Any] = ...,
     ): ...
     async def run_sync(
-        self, fn: Callable[..., T], *arg: Any, **kw: Any
-    ) -> T: ...
+        self, fn: Callable[..., _T], *arg: Any, **kw: Any
+    ) -> _T: ...
     async def execute(
         self,
         statement: Executable,

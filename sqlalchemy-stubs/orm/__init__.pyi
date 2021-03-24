@@ -35,7 +35,6 @@ from .interfaces import MANYTOONE as MANYTOONE
 from .interfaces import MapperProperty as MapperProperty
 from .interfaces import NOT_EXTENSION as NOT_EXTENSION
 from .interfaces import ONETOMANY as ONETOMANY
-from .interfaces import ORMOption
 from .interfaces import PropComparator as PropComparator
 from .loading import merge_frozen_result as merge_frozen_result
 from .loading import merge_result as merge_result
@@ -78,16 +77,8 @@ from .util import with_polymorphic as with_polymorphic
 from ..util.langhelpers import public_factory as public_factory
 
 def create_session(bind: Optional[Any] = ..., **kwargs: Any) -> Session: ...
-def with_loader_criteria(
-    entity_or_base: Any,
-    where_criteria: Any,
-    loader_only: Optional[bool],
-    include_aliases: Optional[bool],
-    propagate_to_loaders: Optional[bool],
-    track_closure_variables: Optional[bool],
-):
-    ORMOption
 
+with_loader_criteria = LoaderCriteriaOption
 relationship = RelationshipProperty
 
 def relation(*arg: Any, **kw: Any) -> RelationshipProperty: ...

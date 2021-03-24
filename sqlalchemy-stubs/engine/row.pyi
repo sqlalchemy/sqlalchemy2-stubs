@@ -1,3 +1,4 @@
+# fmt: off
 import abc
 from typing import Any
 
@@ -5,6 +6,7 @@ from sqlalchemy.cresultproxy import BaseRow as BaseRow
 from sqlalchemy.cresultproxy import safe_rowproxy_reconstructor as safe_rowproxy_reconstructor
 from .. import util as util
 from ..util.compat import collections_abc as collections_abc
+# fmt: on
 
 MD_INDEX: int
 

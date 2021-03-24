@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 
 from sqlalchemy import processors as processors
@@ -5,6 +6,7 @@ from sqlalchemy import types as sqltypes
 from sqlalchemy.connectors.pyodbc import PyODBCConnector as PyODBCConnector
 from sqlalchemy.dialects.sybase.base import SybaseDialect as SybaseDialect
 from sqlalchemy.dialects.sybase.base import SybaseExecutionContext as SybaseExecutionContext
+# fmt: on
 
 class _SybNumeric_pyodbc(sqltypes.Numeric):
     def bind_processor(self, dialect: Any): ...

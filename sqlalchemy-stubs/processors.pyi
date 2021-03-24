@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -10,6 +11,7 @@ from sqlalchemy.cprocessors import to_float as to_float
 from sqlalchemy.cprocessors import to_str as to_str
 from sqlalchemy.cprocessors import UnicodeResultProcessor as UnicodeResultProcessor
 from . import util as util
+# fmt: on
 
 def str_to_datetime_processor_factory(regexp: Any, type_: Any): ...
 def py_fallback(): ...

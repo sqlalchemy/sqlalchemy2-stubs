@@ -2,6 +2,7 @@ from typing import Any
 from typing import Optional
 from typing import overload
 from typing import Type
+from typing import TypeVar
 
 from . import coercions as coercions
 from . import ddl as ddl
