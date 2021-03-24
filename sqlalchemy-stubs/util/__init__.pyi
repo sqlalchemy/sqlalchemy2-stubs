@@ -1,3 +1,4 @@
+# fmt: off
 from collections import defaultdict as defaultdict
 from contextlib import contextmanager as contextmanager
 from functools import partial as partial

@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -27,6 +28,7 @@ from ..sql import roles as roles
 from ..sql import visitors as visitors
 from ..sql.selectable import LABEL_STYLE_TABLENAME_PLUS_COL as LABEL_STYLE_TABLENAME_PLUS_COL
 from ..util import HasMemoized as HasMemoized
+# fmt: on
 
 NO_ATTRIBUTE: Any
 

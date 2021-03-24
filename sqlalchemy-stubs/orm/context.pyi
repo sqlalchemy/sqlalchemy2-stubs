@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -26,6 +27,7 @@ from ..sql.selectable import LABEL_STYLE_TABLENAME_PLUS_COL as LABEL_STYLE_TABLE
 from ..sql.selectable import SelectState as SelectState
 from ..sql.visitors import ExtendedInternalTraversal as ExtendedInternalTraversal
 from ..sql.visitors import InternalTraversal as InternalTraversal
+# fmt: on
 
 LABEL_STYLE_LEGACY_ORM: Any
 

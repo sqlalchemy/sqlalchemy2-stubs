@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -6,6 +7,7 @@ from ..orm import attributes as attributes
 from ..orm import collections as collections
 from ..orm.instrumentation import ClassManager as ClassManager
 from ..orm.instrumentation import InstrumentationFactory as InstrumentationFactory
+# fmt: on
 
 INSTRUMENTATION_MANAGER: str
 

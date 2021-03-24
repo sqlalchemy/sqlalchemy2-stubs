@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -10,6 +11,7 @@ from ...sql import functions as functions
 from ...sql import roles as roles
 from ...sql import schema as schema
 from ...sql.schema import ColumnCollectionConstraint as ColumnCollectionConstraint
+# fmt: on
 
 class aggregate_order_by(expression.ColumnElement):
     __visit_name__: str = ...

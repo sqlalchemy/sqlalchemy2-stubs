@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 
 from . import attributes as attributes
@@ -19,6 +20,7 @@ from ..sql.dml import DeleteDMLState as DeleteDMLState
 from ..sql.dml import UpdateDMLState as UpdateDMLState
 from ..sql.elements import BooleanClauseList as BooleanClauseList
 from ..sql.selectable import LABEL_STYLE_TABLENAME_PLUS_COL as LABEL_STYLE_TABLENAME_PLUS_COL
+# fmt: on
 
 def save_obj(
     base_mapper: Any, states: Any, uowtransaction: Any, single: bool = ...

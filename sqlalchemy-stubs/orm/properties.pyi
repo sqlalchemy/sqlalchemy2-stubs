@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 
 from .descriptor_props import CompositeProperty as CompositeProperty
@@ -7,6 +8,7 @@ from .interfaces import PropComparator
 from .interfaces import StrategizedProperty
 from .relationships import RelationshipProperty as RelationshipProperty
 from .. import util
+# fmt: on
 
 class ColumnProperty(StrategizedProperty):
     strategy_wildcard_key: str = ...

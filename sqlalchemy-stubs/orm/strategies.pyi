@@ -1,3 +1,4 @@
+# fmt: off
 from collections import namedtuple
 from typing import Any
 from typing import Optional
@@ -22,6 +23,7 @@ from .. import sql as sql
 from .. import util as util
 from ..sql import visitors as visitors
 from ..sql.selectable import LABEL_STYLE_TABLENAME_PLUS_COL as LABEL_STYLE_TABLENAME_PLUS_COL
+# fmt: on
 
 class UninstrumentedColumnLoader(LoaderStrategy):
     columns: Any = ...

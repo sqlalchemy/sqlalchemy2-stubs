@@ -1,3 +1,4 @@
+# fmt: off
 from typing import Any
 from typing import Optional
 
@@ -12,6 +13,7 @@ from ..engine.result import ChunkedIteratorResult as ChunkedIteratorResult
 from ..engine.result import FrozenResult as FrozenResult
 from ..engine.result import SimpleResultMetaData as SimpleResultMetaData
 from ..sql.selectable import LABEL_STYLE_TABLENAME_PLUS_COL as LABEL_STYLE_TABLENAME_PLUS_COL
+# fmt: on
 
 def instances(cursor: Any, context: Any): ...
 def merge_frozen_result(
