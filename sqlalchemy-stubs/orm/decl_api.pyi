@@ -1,6 +1,11 @@
 from typing import Any
+from typing import Callable
+from typing import FrozenSet
 from typing import Generic
+from typing import MutableMapping
 from typing import Optional
+from typing import Tuple
+from typing import Type
 from typing import TypeVar
 from typing import Union
 
@@ -12,11 +17,15 @@ from .mapper import Mapper as Mapper
 from .. import inspection as inspection
 from .. import util as util
 from ..sql import ColumnElement
+from ..sql import FromClause
 from ..sql.schema import MetaData as MetaData
+from ..sql.schema import Table
 from ..util import hybridmethod as hybridmethod
 from ..util import hybridproperty as hybridproperty
 
-def has_inherited_table(cls): ...
+_T = TypeVar("_T")
+
+def has_inherited_table(cls: type) -> bool: ...
 
 class DeclarativeMeta(type):
     def __init__(
@@ -25,12 +34,9 @@ class DeclarativeMeta(type):
     def __setattr__(cls, key: Any, value: Any) -> None: ...
     def __delattr__(cls, key: Any) -> None: ...
     metadata: MetaData
-    registry: "registry"
+    registry: _registry  # Avoid circural reference
 
 def synonym_for(name: Any, map_column: bool = ...): ...
-
-_T = TypeVar("_T")
-_Generic_T = Generic[_T]
 
 class declared_attr(interfaces._MappedAttribute, property, Generic[_T]):
     __doc__: Any = ...
@@ -46,42 +52,51 @@ class _stateful_declared_attr(declared_attr):
     def __call__(self, fn: Any): ...
 
 def declarative_base(
-    bind: Optional[Any] = ...,
-    metadata: Optional[Any] = ...,
-    mapper: Optional[Any] = ...,
-    cls: Any = ...,
+    bind: Optional[
+        Any
+    ] = ...,  # NOTE: Deprecated in 1.4, to be removed in 2.0.
+    metadata: Optional[MetaData] = ...,
+    mapper: Optional[Mapper] = ...,
+    cls: Union[type, Tuple[type, ...]] = ...,
     name: str = ...,
-    constructor: Any = ...,
-    class_registry: Optional[Any] = ...,
-    metaclass: Any = ...,
-): ...
+    constructor: Callable[..., None] = ...,
+    class_registry: Optional[MutableMapping[Any, Any]] = ...,
+    metaclass: type = ...,
+) -> type: ...
 
 class registry:
-    metadata: Any = ...
-    constructor: Any = ...
+    metadata: MetaData
+    constructor: Callable[..., None]
     def __init__(
         self,
-        metadata: Optional[Any] = ...,
-        class_registry: Optional[Any] = ...,
-        constructor: Any = ...,
+        metadata: Optional[MetaData] = ...,
+        class_registry: Optional[MutableMapping[Any, Any]] = ...,
+        constructor: Callable[..., None] = ...,
         _bind: Optional[Any] = ...,
     ) -> None: ...
     @property
-    def mappers(self): ...
+    def mappers(self) -> FrozenSet[Mapper]: ...
     def configure(self, cascade: bool = ...) -> None: ...
     def dispose(self, cascade: bool = ...) -> None: ...
     def generate_base(
         self,
-        mapper: Optional[Any] = ...,
-        cls: Any = ...,
+        mapper: Optional[Mapper] = ...,
+        cls: Union[type, Tuple[type, ...]] = ...,
         name: str = ...,
-        metaclass: Any = ...,
-    ): ...
-    def mapped(self, cls: Any): ...
-    def as_declarative_base(self, **kw: Any): ...
+        metaclass: type = ...,
+    ) -> type: ...
+    def mapped(self, cls: Type[_T]) -> Type[_T]: ...
+    def as_declarative_base(
+        self, **kw: Any
+    ) -> Callable[[Type[_T]], Type[_T]]: ...
     def map_declaratively(self, cls: type) -> Mapper: ...
     def map_imperatively(
-        self, class_: Any, local_table: Optional[Any] = ..., **kw: Any
-    ): ...
+        self,
+        class_: type,
+        local_table: Optional[Union[FromClause, Table]] = ...,
+        **kw: Any,
+    ) -> Mapper: ...
 
-def as_declarative(**kw: Any): ...
+_registry = registry
+
+def as_declarative(**kw: Any) -> Callable[[Type[_T]], Type[_T]]: ...
