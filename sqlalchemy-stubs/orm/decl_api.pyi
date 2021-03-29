@@ -19,7 +19,6 @@ from .. import util as util
 from ..sql import ColumnElement
 from ..sql import FromClause
 from ..sql.schema import MetaData as MetaData
-from ..sql.schema import Table
 from ..util import hybridmethod as hybridmethod
 from ..util import hybridproperty as hybridproperty
 
@@ -56,7 +55,7 @@ def declarative_base(
         Any
     ] = ...,  # NOTE: Deprecated in 1.4, to be removed in 2.0.
     metadata: Optional[MetaData] = ...,
-    mapper: Optional[Mapper] = ...,
+    mapper: Optional[Callable[..., Mapper]] = ...,
     cls: Union[type, Tuple[type, ...]] = ...,
     name: str = ...,
     constructor: Callable[..., None] = ...,
@@ -80,7 +79,7 @@ class registry:
     def dispose(self, cascade: bool = ...) -> None: ...
     def generate_base(
         self,
-        mapper: Optional[Mapper] = ...,
+        mapper: Optional[Callable[..., Mapper]] = ...,
         cls: Union[type, Tuple[type, ...]] = ...,
         name: str = ...,
         metaclass: type = ...,
@@ -93,7 +92,7 @@ class registry:
     def map_imperatively(
         self,
         class_: type,
-        local_table: Optional[Union[FromClause, Table]] = ...,
+        local_table: Optional[FromClause] = ...,
         **kw: Any,
     ) -> Mapper: ...
 
