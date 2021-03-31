@@ -9,6 +9,8 @@ from .. import log as log
 from .. import util as util
 from ..sql import compiler as compiler
 
+_ExecutionOptions = Any
+
 class Connection(Connectable):
     engine: Any = ...
     dialect: Any = ...
