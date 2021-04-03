@@ -10,6 +10,7 @@ from .attributes import QueryableAttribute as QueryableAttribute
 from .context import QueryContext as QueryContext
 from .decl_api import as_declarative as as_declarative
 from .decl_api import declarative_base as declarative_base
+from .decl_api import declarative_mixin as declarative_mixin
 from .decl_api import declared_attr as declared_attr
 from .decl_api import has_inherited_table as has_inherited_table
 from .decl_api import registry as registry
