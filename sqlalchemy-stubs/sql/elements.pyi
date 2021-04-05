@@ -32,6 +32,7 @@ from .traversals import MemoizedHasCacheKey
 from .visitors import Traversible
 from .. import util
 from ..engine import Connection
+from ..engine import Dialect
 from ..engine import Engine
 from ..util import HasMemoized
 from ..util import langhelpers
@@ -107,7 +108,7 @@ class ClauseElement(
     def compile(
         self,
         bind: Optional[Any] = ...,
-        dialect: Optional[Any] = ...,
+        dialect: Optional[Dialect] = ...,
         **kw: Any,
     ) -> SQLCompiler: ...
     def __invert__(self) -> Any: ...
