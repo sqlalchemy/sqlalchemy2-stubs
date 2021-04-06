@@ -1,7 +1,6 @@
 from typing import Any
 
-from .base import SchemaEventTarget as SchemaEventTarget
-from .. import event as event
+from .. import event
 
 class DDLEvents(event.Events):
     def before_create(
