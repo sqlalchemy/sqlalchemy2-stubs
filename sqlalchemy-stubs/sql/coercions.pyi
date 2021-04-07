@@ -4,11 +4,8 @@ from typing import Iterable
 from typing import Iterator
 from typing import Optional
 from typing import Tuple
-from typing import TypeVar
 
 from . import roles
-
-_T = TypeVar("_T")
 
 elements: ModuleType
 lambdas: ModuleType
@@ -18,16 +15,16 @@ sqltypes: ModuleType
 traversals: ModuleType
 
 def expect(
-    role: _T,
+    role: Any,
     element: Any,
     apply_propagate_attrs: Optional[Any] = ...,
     argname: Optional[Any] = ...,
     **kw: Any,
-) -> _T: ...
-def expect_as_key(role: _T, element: Any, **kw: Any) -> _T: ...
+) -> Any: ...
+def expect_as_key(role: Any, element: Any, **kw: Any) -> Any: ...
 def expect_col_expression_collection(
-    role: _T, expressions: Iterable[Any]
-) -> Iterator[Tuple[_T, Any, str, Any]]: ...
+    role: Any, expressions: Iterable[Any]
+) -> Iterator[Tuple[Any, Any, str, Any]]: ...
 
 class RoleImpl:
     name: str = ...
