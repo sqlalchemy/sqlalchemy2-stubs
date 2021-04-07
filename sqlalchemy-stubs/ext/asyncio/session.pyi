@@ -14,8 +14,6 @@ from .engine import AsyncConnection
 from .engine import AsyncEngine
 from .result import AsyncResult
 from ... import util
-from ...engine import Connection
-from ...engine import Engine
 from ...engine import Result
 from ...engine.base import _ExecutionOptions
 from ...orm import Session
@@ -36,8 +34,10 @@ class AsyncSession:
     sync_session: Session = ...
     def __init__(
         self,
-        bind: Optional[AsyncEngine] = ...,
-        binds: Optional[Mapping[object, AsyncEngine]] = ...,
+        bind: Optional[Union[AsyncConnection, AsyncEngine]] = ...,
+        binds: Optional[
+            Mapping[object, Union[AsyncConnection, AsyncEngine]]
+        ] = ...,
         **kw: Any,
     ) -> None: ...
     async def refresh(
@@ -118,10 +118,10 @@ class AsyncSession:
         self,
         mapper: Optional[Any] = ...,
         clause: Optional[ClauseElement] = ...,
-        bind: Optional[Union[Connection, Engine]] = ...,
+        bind: Optional[Union[AsyncConnection, AsyncEngine]] = ...,
         _sa_skip_events: Optional[Any] = ...,
         _sa_skip_for_implicit_returning: bool = ...,
-    ) -> Union[Connection, Engine]: ...
+    ) -> Union[AsyncConnection, AsyncEngine]: ...
     def is_modified(
         self, instance: Any, include_collections: bool = ...
     ) -> bool: ...
