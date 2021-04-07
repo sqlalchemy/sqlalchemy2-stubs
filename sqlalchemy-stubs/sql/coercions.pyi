@@ -1,17 +1,11 @@
 from types import ModuleType
 from typing import Any
+from typing import Iterable
+from typing import Iterator
 from typing import Optional
+from typing import Tuple
 
-from . import operators as operators
-from . import roles as roles
-from . import visitors as visitors
-from .base import Options as Options
-from .traversals import HasCacheKey as HasCacheKey
-from .visitors import Visitable as Visitable
-from .. import exc as exc
-from .. import inspection as inspection
-from .. import util as util
-from ..util import collections_abc as collections_abc
+from . import roles
 
 elements: ModuleType
 lambdas: ModuleType
@@ -26,12 +20,14 @@ def expect(
     apply_propagate_attrs: Optional[Any] = ...,
     argname: Optional[Any] = ...,
     **kw: Any,
-): ...
-def expect_as_key(role: Any, element: Any, **kw: Any): ...
-def expect_col_expression_collection(role: Any, expressions: Any) -> None: ...
+) -> Any: ...
+def expect_as_key(role: Any, element: Any, **kw: Any) -> Any: ...
+def expect_col_expression_collection(
+    role: Any, expressions: Iterable[Any]
+) -> Iterator[Tuple[Any, Any, str, Any]]: ...
 
 class RoleImpl:
-    name: Any = ...
+    name: str = ...
     def __init__(self, role_class: Any) -> None: ...
 
 class _Deannotate: ...
@@ -78,7 +74,3 @@ class AnonymizedFromClauseImpl(StrictFromClauseImpl): ...
 class DMLTableImpl(_SelectIsNotFrom, _NoTextCoercion, RoleImpl): ...
 class DMLSelectImpl(_NoTextCoercion, RoleImpl): ...
 class CompoundElementImpl(_NoTextCoercion, RoleImpl): ...
-
-cls: Any
-name: Any
-impl: Any
