@@ -53,7 +53,7 @@ class _IdentityMap:
     @overload
     def __get__(self, instance: object, owner: Any) -> WeakInstanceDict: ...
 
-class _SharedSessionProtocol(Protocol):
+class _SharedSessionProtocol(Protocol[_T]):
     identity_map: _IdentityMap
     autoflush: bool
     @property
@@ -84,16 +84,18 @@ class _SharedSessionProtocol(Protocol):
         self,
         mapper: Optional[Any] = ...,
         clause: Optional[ClauseElement] = ...,
-        bind: Optional[Union[Connection, Engine]] = ...,
+        bind: Optional[_T] = ...,
         _sa_skip_events: Optional[Any] = ...,
         _sa_skip_for_implicit_returning: bool = ...,
-    ) -> Union[Connection, Engine]: ...
+    ) -> _T: ...
     def is_modified(
         self, instance: Any, include_collections: bool = ...
     ) -> bool: ...
     def in_transaction(self) -> bool: ...
 
-class _SessionProtocol(_SharedSessionProtocol, Protocol):
+class _SessionProtocol(
+    _SharedSessionProtocol[Union[Connection, Engine]], Protocol
+):
     def __enter__(self: _TSessionProtocol) -> _TSessionProtocol: ...
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
     def begin(
@@ -176,6 +178,7 @@ class _SessionTransactionProtocol(Protocol):
 
 if sys.version_info >= (3, 0):
     from typing import Generator
+    from ..ext.asyncio import AsyncEngine, AsyncConnection
 
     _TSessionMakerType = TypeVar(
         "_TSessionMakerType",
@@ -209,7 +212,9 @@ if sys.version_info >= (3, 0):
         async def __aexit__(
             self, type_: Any, value: Any, traceback: Any
         ) -> None: ...
-    class _AsyncSessionProtocol(_SharedSessionProtocol, Protocol):
+    class _AsyncSessionProtocol(
+        _SharedSessionProtocol[Union[AsyncConnection, AsyncEngine]], Protocol
+    ):
         async def __aenter__(
             self: _TAsyncSessionProtocol,
         ) -> _TAsyncSessionProtocol: ...
@@ -271,6 +276,7 @@ if sys.version_info >= (3, 0):
             bind_arguments: Optional[_BindArguments] = ...,
             **kw: Any,
         ) -> Any: ...
+        async def delete(self, instance: Any) -> None: ...
         async def merge(self, instance: _T, load: bool = ...) -> _T: ...
         async def flush(
             self, objects: Optional[Sequence[Any]] = ...
@@ -533,39 +539,78 @@ class Session(_SessionClassMethods):
 class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
     kw: Mapping[str, Any]
     class_: Type[_TSessionMakerType]
-    @overload
-    def __init__(
-        self: sessionmaker[Session],
-        bind: Optional[Union[Connection, Engine]] = ...,
-        class_: None = ...,
-        autoflush: bool = ...,
-        autocommit: bool = ...,  # NOTE: Deprecated.
-        expire_on_commit: bool = ...,
-        info: Optional[Mapping[Any, Any]] = ...,
-    ) -> None: ...
-    @overload
-    def __init__(
-        self,
-        bind: Optional[Union[Connection, Engine]],
-        class_: Type[_TSessionMakerType],
-        autoflush: bool = ...,
-        autocommit: bool = ...,  # NOTE: Deprecated.
-        expire_on_commit: bool = ...,
-        info: Optional[Mapping[Any, Any]] = ...,
-        **kw: Any,
-    ) -> None: ...
-    @overload
-    def __init__(
-        self,
-        *,
-        bind: Optional[Union[Connection, Engine]] = ...,
-        class_: Type[_TSessionMakerType],
-        autoflush: bool = ...,
-        autocommit: bool = ...,  # NOTE: Deprecated.
-        expire_on_commit: bool = ...,
-        info: Optional[Mapping[Any, Any]] = ...,
-        **kw: Any,
-    ) -> None: ...
+    if sys.version_info >= (3, 0):
+        @overload
+        def __init__(
+            self: sessionmaker[Session],
+            bind: Optional[Union[Connection, Engine]] = ...,
+            class_: None = ...,
+            autoflush: bool = ...,
+            autocommit: bool = ...,  # NOTE: Deprecated.
+            expire_on_commit: bool = ...,
+            info: Optional[Mapping[Any, Any]] = ...,
+        ) -> None: ...
+        @overload
+        def __init__(
+            self,
+            bind: Optional[
+                Union[Connection, Engine, AsyncConnection, AsyncEngine]
+            ],
+            class_: Type[_TSessionMakerType],
+            autoflush: bool = ...,
+            autocommit: bool = ...,  # NOTE: Deprecated.
+            expire_on_commit: bool = ...,
+            info: Optional[Mapping[Any, Any]] = ...,
+            **kw: Any,
+        ) -> None: ...
+        @overload
+        def __init__(
+            self,
+            *,
+            bind: Optional[
+                Union[Connection, Engine, AsyncConnection, AsyncEngine]
+            ] = ...,
+            class_: Type[_TSessionMakerType],
+            autoflush: bool = ...,
+            autocommit: bool = ...,  # NOTE: Deprecated.
+            expire_on_commit: bool = ...,
+            info: Optional[Mapping[Any, Any]] = ...,
+            **kw: Any,
+        ) -> None: ...
+    else:
+        @overload
+        def __init__(
+            self: sessionmaker[Session],
+            bind: Optional[Union[Connection, Engine]] = ...,
+            class_: None = ...,
+            autoflush: bool = ...,
+            autocommit: bool = ...,  # NOTE: Deprecated.
+            expire_on_commit: bool = ...,
+            info: Optional[Mapping[Any, Any]] = ...,
+        ) -> None: ...
+        @overload
+        def __init__(
+            self,
+            bind: Optional[Union[Connection, Engine]],
+            class_: Type[_TSessionMakerType],
+            autoflush: bool = ...,
+            autocommit: bool = ...,  # NOTE: Deprecated.
+            expire_on_commit: bool = ...,
+            info: Optional[Mapping[Any, Any]] = ...,
+            **kw: Any,
+        ) -> None: ...
+        @overload
+        def __init__(
+            self,
+            *,
+            bind: Optional[Union[Connection, Engine]] = ...,
+            class_: Type[_TSessionMakerType],
+            autoflush: bool = ...,
+            autocommit: bool = ...,  # NOTE: Deprecated.
+            expire_on_commit: bool = ...,
+            info: Optional[Mapping[Any, Any]] = ...,
+            **kw: Any,
+        ) -> None: ...
     # NOTE: The return type of `begin()` isn't technically correct, but since
     # `Session.__enter__` and `AsyncSession.__aenter__` both return self,
     # returning `_TSessionMakerType` from `begin()` works out mostly
