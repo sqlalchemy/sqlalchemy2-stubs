@@ -10,6 +10,8 @@ from typing import Tuple
 from typing import TypeVar
 from typing import Union
 
+from typing_extensions import Protocol
+
 from . import roles
 from .base import Executable
 from .base import SchemaVisitor
@@ -25,18 +27,31 @@ from ..engine import Engine
 
 _DDLE = TypeVar("_DDLE", bound=DDLElement)
 
+_Bind = Union[Engine, Connection]
+
+class _DDLElementCallback(Protocol):
+    def __call__(
+        self,
+        __ddl: DDLElement,
+        __target: Optional[SchemaItem],
+        __bind: _Bind,
+        *,
+        state: Optional[Any],
+        **kw: Any,
+    ) -> bool: ...
+
 class _DDLCompiles(ClauseElement): ...
 
 class DDLElement(roles.DDLRole, Executable, _DDLCompiles):
     target: Optional[SchemaItem] = ...
     on: Any = ...
-    dialect: Union[str, Tuple[str, ...], List[str], Set[str]] = ...
-    callable_: Any = ...
-    state: Any = ...
-    bind: Optional[Union[Engine, Connection]] = ...
+    dialect: Union[str, Tuple[str, ...], List[str], Set[str], None] = ...
+    callable_: Optional[_DDLElementCallback] = ...
+    state: Optional[Any] = ...
+    bind: Optional[_Bind] = ...
     def execute(  # type: ignore[override]
         self,
-        bind: Optional[Union[Engine, Connection]] = ...,
+        bind: Optional[_Bind] = ...,
         target: Optional[SchemaItem] = ...,
     ) -> Any: ...
     def against(self: _DDLE, target: Optional[SchemaItem]) -> _DDLE: ...
@@ -45,12 +60,12 @@ class DDLElement(roles.DDLRole, Executable, _DDLCompiles):
         dialect: Optional[
             Union[str, Tuple[str, ...], List[str], Set[str]]
         ] = ...,
-        callable_: Optional[Any] = ...,
+        callable_: Optional[_DDLElementCallback] = ...,
         state: Optional[Any] = ...,
     ) -> _DDLE: ...
     def __call__(
-        self, target: SchemaItem, bind: Union[Engine, Connection], **kw: Any
-    ) -> Any: ...
+        self, target: SchemaItem, bind: _Bind, **kw: Any
+    ) -> Optional[Any]: ...
 
 class DDL(DDLElement):
     __visit_name__: str = ...
@@ -60,7 +75,7 @@ class DDL(DDLElement):
         self,
         statement: str,
         context: Optional[Dict[str, Any]] = ...,
-        bind: Optional[Union[Engine, Connection]] = ...,
+        bind: Optional[_Bind] = ...,
     ) -> None: ...
 
 class _CreateDropBase(DDLElement):
@@ -70,7 +85,7 @@ class _CreateDropBase(DDLElement):
     def __init__(
         self,
         element: Any,
-        bind: Optional[Union[Engine, Connection]] = ...,
+        bind: Optional[_Bind] = ...,
         if_exists: bool = ...,
         if_not_exists: bool = ...,
         _legacy_bind: Optional[Any] = ...,
@@ -104,7 +119,7 @@ class CreateTable(_CreateDropBase):
     def __init__(
         self,
         element: Table,
-        bind: Optional[Union[Engine, Connection]] = ...,
+        bind: Optional[_Bind] = ...,
         include_foreign_key_constraints: Optional[
             Sequence[ForeignKeyConstraint]
         ] = ...,
@@ -124,7 +139,7 @@ class DropTable(_CreateDropBase):
     def __init__(
         self,
         element: Table,
-        bind: Optional[Union[Engine, Connection]] = ...,
+        bind: Optional[_Bind] = ...,
         if_exists: bool = ...,
     ) -> None: ...
 
@@ -139,7 +154,7 @@ class CreateIndex(_CreateDropBase):
     def __init__(
         self,
         element: Index,
-        bind: Optional[Union[Engine, Connection]] = ...,
+        bind: Optional[_Bind] = ...,
         if_not_exists: bool = ...,
     ) -> None: ...
 
@@ -148,7 +163,7 @@ class DropIndex(_CreateDropBase):
     def __init__(
         self,
         element: Index,
-        bind: Optional[Union[Engine, Connection]] = ...,
+        bind: Optional[_Bind] = ...,
         if_exists: bool = ...,
     ) -> None: ...
 
@@ -233,11 +248,13 @@ class SchemaDropper(DDLBase):
 def sort_tables(
     tables: Iterable[Table],
     skip_fn: Optional[Callable[[ForeignKey], bool]] = ...,
-    extra_dependencies: Optional[Any] = ...,
+    extra_dependencies: Optional[Iterable[Tuple[Table, Table]]] = ...,
 ) -> List[Table]: ...
 def sort_tables_and_constraints(
-    tables: Any,
-    filter_fn: Optional[Any] = ...,
+    tables: Iterable[Table],
+    filter_fn: Optional[
+        Callable[[ForeignKeyConstraint], Optional[bool]]
+    ] = ...,
     extra_dependencies: Optional[Iterable[Tuple[Table, Table]]] = ...,
     _warn_for_cycles: bool = ...,
 ) -> List[Tuple[Optional[Table], List[ForeignKeyConstraint]]]: ...
