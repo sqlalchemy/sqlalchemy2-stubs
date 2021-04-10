@@ -40,6 +40,7 @@ _U = TypeVar("_U")
 
 _TE = TypeVar("_TE", bound=TypeEngine[Any])
 _NFE = TypeVar("_NFE", bound=NativeForEmulated)
+_UDT = TypeVar("_UDT", bound=UserDefinedType[Any])
 _TD = TypeVar("_TD", bound=TypeDecorator[Any])
 _VT = TypeVar("_VT", bound=Variant[Any])
 
@@ -104,10 +105,10 @@ class TypeEngine(Traversible, Generic[_T]):
 
 class VisitableCheckKWArg(util.EnsureKWArgType, TraversibleType): ...
 
-class UserDefinedType:
+class UserDefinedType(TypeEngine[_T], metaclass=VisitableCheckKWArg):
     __visit_name__: str = ...
     ensure_kwarg: str = ...
-    def coerce_compared_value(self, op: Any, value: Any) -> Any: ...
+    def coerce_compared_value(self: _UDT, op: Any, value: Any) -> _UDT: ...
 
 class Emulated:
     def adapt_to_emulated(self, impltype: Any, **kw: Any) -> Any: ...
