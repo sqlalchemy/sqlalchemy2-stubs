@@ -1,68 +1,103 @@
 from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import Iterable
+from typing import List
 from typing import Optional
+from typing import Sequence
+from typing import Set
+from typing import Tuple
+from typing import TypeVar
+from typing import Union
 
-from . import roles as roles
-from .base import Executable as Executable
-from .base import SchemaVisitor as SchemaVisitor
-from .elements import ClauseElement as ClauseElement
-from .. import exc as exc
-from .. import util as util
-from ..util import topological as topological
+from typing_extensions import Protocol
+
+from . import roles
+from .base import Executable
+from .base import SchemaVisitor
+from .elements import ClauseElement
+from .schema import ForeignKey
+from .schema import ForeignKeyConstraint
+from .schema import Index
+from .schema import SchemaItem
+from .schema import Table
+from ..engine import Connection
+from ..engine import Dialect
+from ..engine import Engine
+
+_DDLE = TypeVar("_DDLE", bound=DDLElement)
+
+_Bind = Union[Engine, Connection]
+
+class _DDLElementCallback(Protocol):
+    def __call__(
+        self,
+        __ddl: DDLElement,
+        __target: Optional[SchemaItem],
+        __bind: _Bind,
+        *,
+        state: Optional[Any],
+        **kw: Any,
+    ) -> bool: ...
 
 class _DDLCompiles(ClauseElement): ...
 
 class DDLElement(roles.DDLRole, Executable, _DDLCompiles):
-    target: Any = ...
+    target: Optional[SchemaItem] = ...
     on: Any = ...
-    dialect: Any = ...
-    callable_: Any = ...
-    def execute(
-        self, bind: Optional[Any] = ..., target: Optional[Any] = ...
-    ): ...
-    def against(self, target: Any) -> None: ...
-    state: Any = ...
-    def execute_if(
+    dialect: Union[str, Tuple[str, ...], List[str], Set[str], None] = ...
+    callable_: Optional[_DDLElementCallback] = ...
+    state: Optional[Any] = ...
+    bind: Optional[_Bind] = ...
+    def execute(  # type: ignore[override]
         self,
-        dialect: Optional[Any] = ...,
-        callable_: Optional[Any] = ...,
+        bind: Optional[_Bind] = ...,
+        target: Optional[SchemaItem] = ...,
+    ) -> Any: ...
+    def against(self: _DDLE, target: Optional[SchemaItem]) -> _DDLE: ...
+    def execute_if(
+        self: _DDLE,
+        dialect: Optional[
+            Union[str, Tuple[str, ...], List[str], Set[str]]
+        ] = ...,
+        callable_: Optional[_DDLElementCallback] = ...,
         state: Optional[Any] = ...,
-    ) -> None: ...
-    def __call__(self, target: Any, bind: Any, **kw: Any): ...
-    def bind(self): ...
-    bind: Any = ...
+    ) -> _DDLE: ...
+    def __call__(
+        self, target: SchemaItem, bind: _Bind, **kw: Any
+    ) -> Optional[Any]: ...
 
 class DDL(DDLElement):
     __visit_name__: str = ...
-    statement: Any = ...
+    statement: str = ...
     context: Any = ...
     def __init__(
         self,
-        statement: Any,
-        context: Optional[Any] = ...,
-        bind: Optional[Any] = ...,
+        statement: str,
+        context: Optional[Dict[str, Any]] = ...,
+        bind: Optional[_Bind] = ...,
     ) -> None: ...
 
 class _CreateDropBase(DDLElement):
     element: Any = ...
-    bind: Any = ...
-    if_exists: Any = ...
-    if_not_exists: Any = ...
+    if_exists: bool = ...
+    if_not_exists: bool = ...
     def __init__(
         self,
         element: Any,
-        bind: Optional[Any] = ...,
+        bind: Optional[_Bind] = ...,
         if_exists: bool = ...,
         if_not_exists: bool = ...,
         _legacy_bind: Optional[Any] = ...,
     ) -> None: ...
     @property
-    def stringify_dialect(self): ...
+    def stringify_dialect(self) -> str: ...  # type: ignore[override]
 
 class CreateSchema(_CreateDropBase):
     __visit_name__: str = ...
     quote: Any = ...
     def __init__(
-        self, name: Any, quote: Optional[Any] = ..., **kw: Any
+        self, name: str, quote: Optional[Any] = ..., **kw: Any
     ) -> None: ...
 
 class DropSchema(_CreateDropBase):
@@ -71,7 +106,7 @@ class DropSchema(_CreateDropBase):
     cascade: Any = ...
     def __init__(
         self,
-        name: Any,
+        name: str,
         quote: Optional[Any] = ...,
         cascade: bool = ...,
         **kw: Any,
@@ -83,9 +118,11 @@ class CreateTable(_CreateDropBase):
     include_foreign_key_constraints: Any = ...
     def __init__(
         self,
-        element: Any,
-        bind: Optional[Any] = ...,
-        include_foreign_key_constraints: Optional[Any] = ...,
+        element: Table,
+        bind: Optional[_Bind] = ...,
+        include_foreign_key_constraints: Optional[
+            Sequence[ForeignKeyConstraint]
+        ] = ...,
         if_not_exists: bool = ...,
     ) -> None: ...
 
@@ -100,7 +137,10 @@ class CreateColumn(_DDLCompiles):
 class DropTable(_CreateDropBase):
     __visit_name__: str = ...
     def __init__(
-        self, element: Any, bind: Optional[Any] = ..., if_exists: bool = ...
+        self,
+        element: Table,
+        bind: Optional[_Bind] = ...,
+        if_exists: bool = ...,
     ) -> None: ...
 
 class CreateSequence(_CreateDropBase):
@@ -113,15 +153,18 @@ class CreateIndex(_CreateDropBase):
     __visit_name__: str = ...
     def __init__(
         self,
-        element: Any,
-        bind: Optional[Any] = ...,
+        element: Index,
+        bind: Optional[_Bind] = ...,
         if_not_exists: bool = ...,
     ) -> None: ...
 
 class DropIndex(_CreateDropBase):
     __visit_name__: str = ...
     def __init__(
-        self, element: Any, bind: Optional[Any] = ..., if_exists: bool = ...
+        self,
+        element: Index,
+        bind: Optional[_Bind] = ...,
+        if_exists: bool = ...,
     ) -> None: ...
 
 class AddConstraint(_CreateDropBase):
@@ -155,11 +198,11 @@ class SchemaGenerator(DDLBase):
     checkfirst: Any = ...
     tables: Any = ...
     preparer: Any = ...
-    dialect: Any = ...
+    dialect: Dialect = ...
     memo: Any = ...
     def __init__(
         self,
-        dialect: Any,
+        dialect: Dialect,
         connection: Any,
         checkfirst: bool = ...,
         tables: Optional[Any] = ...,
@@ -181,17 +224,17 @@ class SchemaDropper(DDLBase):
     checkfirst: Any = ...
     tables: Any = ...
     preparer: Any = ...
-    dialect: Any = ...
+    dialect: Dialect = ...
     memo: Any = ...
     def __init__(
         self,
-        dialect: Any,
+        dialect: Dialect,
         connection: Any,
         checkfirst: bool = ...,
         tables: Optional[Any] = ...,
         **kwargs: Any,
     ) -> None: ...
-    def visit_metadata(self, metadata: Any): ...
+    def visit_metadata(self, metadata: Any) -> None: ...
     def visit_index(self, index: Any, drop_ok: bool = ...) -> None: ...
     def visit_table(
         self,
@@ -203,13 +246,15 @@ class SchemaDropper(DDLBase):
     def visit_sequence(self, sequence: Any, drop_ok: bool = ...) -> None: ...
 
 def sort_tables(
-    tables: Any,
-    skip_fn: Optional[Any] = ...,
-    extra_dependencies: Optional[Any] = ...,
-): ...
+    tables: Iterable[Table],
+    skip_fn: Optional[Callable[[ForeignKey], bool]] = ...,
+    extra_dependencies: Optional[Iterable[Tuple[Table, Table]]] = ...,
+) -> List[Table]: ...
 def sort_tables_and_constraints(
-    tables: Any,
-    filter_fn: Optional[Any] = ...,
-    extra_dependencies: Optional[Any] = ...,
+    tables: Iterable[Table],
+    filter_fn: Optional[
+        Callable[[ForeignKeyConstraint], Optional[bool]]
+    ] = ...,
+    extra_dependencies: Optional[Iterable[Tuple[Table, Table]]] = ...,
     _warn_for_cycles: bool = ...,
-): ...
+) -> List[Tuple[Optional[Table], List[ForeignKeyConstraint]]]: ...
