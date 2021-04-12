@@ -60,7 +60,7 @@ class RelationshipProperty(StrategizedProperty[_T]):
     sync_backref: Any
     lazy: str
     single_parent: Any
-    collection_class: Optional[Type]
+    collection_class: Optional[Union[Type[Any], Callable[[], Any]]]
     passive_deletes: Union[bool, Literal["all"]]
     cascade_backrefs: bool
     passive_updates: bool
@@ -101,7 +101,7 @@ class RelationshipProperty(StrategizedProperty[_T]):
         cascade: Union[Literal[False], Sequence[str]] = ...,
         viewonly: bool = ...,
         lazy: str = ...,
-        collection_class: Optional[Any] = ...,
+        collection_class: Optional[Union[Type[Any], Callable[[], Any]]] = ...,
         passive_deletes: Union[bool, Literal["all"]] = ...,
         passive_updates: bool = ...,
         remote_side: Optional[Any] = ...,
