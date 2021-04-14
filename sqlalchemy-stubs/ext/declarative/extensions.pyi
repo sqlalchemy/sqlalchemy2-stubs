@@ -1,14 +1,9 @@
 from typing import Any
+from typing import Type
 
-from ... import inspection as inspection
-from ... import util as util
-from ...orm import registry as registry
-from ...orm import relationships as relationships
-from ...orm.util import polymorphic_union as polymorphic_union
-from ...schema import Table as Table
-from ...util import OrderedDict as OrderedDict
-
-def instrument_declarative(cls, cls_registry: Any, metadata: Any): ...
+def instrument_declarative(
+    cls: Type[Any], cls_registry: Any, metadata: Any
+) -> Any: ...
 
 class ConcreteBase:
     @classmethod
