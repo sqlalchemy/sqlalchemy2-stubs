@@ -226,8 +226,8 @@ class IdentityOptions:
     increment: Optional[int] = ...
     minvalue: Optional[int] = ...
     maxvalue: Optional[int] = ...
-    nominvalue: Optional[int] = ...
-    nomaxvalue: Optional[int] = ...
+    nominvalue: Optional[bool] = ...
+    nomaxvalue: Optional[bool] = ...
     cycle: Optional[bool] = ...
     cache: Optional[int] = ...
     order: Optional[bool] = ...
@@ -237,8 +237,8 @@ class IdentityOptions:
         increment: Optional[int] = ...,
         minvalue: Optional[int] = ...,
         maxvalue: Optional[int] = ...,
-        nominvalue: Optional[int] = ...,
-        nomaxvalue: Optional[int] = ...,
+        nominvalue: Optional[bool] = ...,
+        nomaxvalue: Optional[bool] = ...,
         cycle: Optional[bool] = ...,
         cache: Optional[int] = ...,
         order: Optional[bool] = ...,
@@ -265,8 +265,8 @@ class Sequence(
         increment: Optional[int] = ...,
         minvalue: Optional[int] = ...,
         maxvalue: Optional[int] = ...,
-        nominvalue: Optional[int] = ...,
-        nomaxvalue: Optional[int] = ...,
+        nominvalue: Optional[bool] = ...,
+        nomaxvalue: Optional[bool] = ...,
         cycle: Optional[bool] = ...,
         schema: Optional[str] = ...,
         cache: Optional[int] = ...,
@@ -286,8 +286,8 @@ class Sequence(
         increment: Optional[int],
         minvalue: Optional[int],
         maxvalue: Optional[int],
-        nominvalue: Optional[int],
-        nomaxvalue: Optional[int],
+        nominvalue: Optional[bool],
+        nomaxvalue: Optional[bool],
         cycle: Optional[bool],
         schema: Optional[str],
         cache: Optional[int],
@@ -308,8 +308,8 @@ class Sequence(
         increment: Optional[int] = ...,
         minvalue: Optional[int] = ...,
         maxvalue: Optional[int] = ...,
-        nominvalue: Optional[int] = ...,
-        nomaxvalue: Optional[int] = ...,
+        nominvalue: Optional[bool] = ...,
+        nomaxvalue: Optional[bool] = ...,
         cycle: Optional[bool] = ...,
         schema: Optional[str] = ...,
         cache: Optional[int] = ...,
@@ -566,8 +566,8 @@ class Identity(IdentityOptions, FetchedValue, SchemaItem):
         increment: Optional[int] = ...,
         minvalue: Optional[int] = ...,
         maxvalue: Optional[int] = ...,
-        nominvalue: Optional[int] = ...,
-        nomaxvalue: Optional[int] = ...,
+        nominvalue: Optional[bool] = ...,
+        nomaxvalue: Optional[bool] = ...,
         cycle: Optional[bool] = ...,
         cache: Optional[int] = ...,
         order: Optional[bool] = ...,
