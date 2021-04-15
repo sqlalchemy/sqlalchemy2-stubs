@@ -3,6 +3,7 @@ from typing import Mapping
 from typing import Optional
 from typing import Tuple
 
+from . import strategy_options
 from .attributes import AttributeEvent as AttributeEvent
 from .attributes import InstrumentedAttribute as InstrumentedAttribute
 from .attributes import Mapped as Mapped
@@ -11,18 +12,14 @@ from .context import QueryContext as QueryContext
 from .decl_api import as_declarative as as_declarative
 from .decl_api import declarative_base as declarative_base
 from .decl_api import declarative_mixin as declarative_mixin
+from .decl_api import DeclarativeMeta as DeclarativeMeta
 from .decl_api import declared_attr as declared_attr
 from .decl_api import has_inherited_table as has_inherited_table
 from .decl_api import registry as registry
 from .decl_api import synonym_for as synonym_for
 from .descriptor_props import CompositeProperty as CompositeProperty
 from .descriptor_props import SynonymProperty as SynonymProperty
-from .events import AttributeEvents as AttributeEvents
-from .events import InstanceEvents as InstanceEvents
-from .events import InstrumentationEvents as InstrumentationEvents
-from .events import MapperEvents as MapperEvents
-from .events import QueryEvents as QueryEvents
-from .events import SessionEvents as SessionEvents
+from .dynamic import AppenderQuery as AppenderQuery
 from .identity import IdentityMap as IdentityMap
 from .instrumentation import ClassManager as ClassManager
 from .interfaces import EXT_CONTINUE as EXT_CONTINUE
@@ -30,7 +27,6 @@ from .interfaces import EXT_SKIP as EXT_SKIP
 from .interfaces import EXT_STOP as EXT_STOP
 from .interfaces import InspectionAttr as InspectionAttr
 from .interfaces import InspectionAttrInfo as InspectionAttrInfo
-from .interfaces import LoaderOption
 from .interfaces import MANYTOMANY as MANYTOMANY
 from .interfaces import MANYTOONE as MANYTOONE
 from .interfaces import MapperProperty as MapperProperty
@@ -75,15 +71,14 @@ from .util import polymorphic_union as polymorphic_union
 from .util import was_deleted as was_deleted
 from .util import with_parent as with_parent
 from .util import with_polymorphic as with_polymorphic
-from ..util.langhelpers import public_factory as public_factory
 
 def create_session(bind: Optional[Any] = ..., **kwargs: Any) -> Session: ...
 
 with_loader_criteria = LoaderCriteriaOption
 relationship = RelationshipProperty
 
-def relation(*arg: Any, **kw: Any) -> RelationshipProperty: ...
-def dynamic_loader(argument: Any, **kw: Any) -> RelationshipProperty: ...
+def relation(*arg: Any, **kw: Any) -> RelationshipProperty[Any]: ...
+def dynamic_loader(argument: Any, **kw: Any) -> RelationshipProperty[Any]: ...
 
 column_property = ColumnProperty
 composite = CompositeProperty
@@ -99,25 +94,22 @@ synonym = SynonymProperty
 
 def clear_mappers() -> None: ...
 
-joinedload: LoaderOption
-contains_eager: LoaderOption
-defer: LoaderOption
-undefer: LoaderOption
-undefer_group: LoaderOption
-with_expression: LoaderOption
-load_only: LoaderOption
-lazyload: LoaderOption
-subqueryload: LoaderOption
-selectinload: LoaderOption
-immediateload: LoaderOption
-noload: LoaderOption
-raiseload: LoaderOption
-defaultload: LoaderOption
-selectin_polymorphic: LoaderOption
+joinedload = strategy_options.joinedload._unbound_fn
+contains_eager = strategy_options.contains_eager._unbound_fn
+defer = strategy_options.defer._unbound_fn
+undefer = strategy_options.undefer._unbound_fn
+undefer_group = strategy_options.undefer_group._unbound_fn
+with_expression = strategy_options.with_expression._unbound_fn
+load_only = strategy_options.load_only._unbound_fn
+lazyload = strategy_options.lazyload._unbound_fn
+subqueryload = strategy_options.subqueryload._unbound_fn
+selectinload = strategy_options.selectinload._unbound_fn
+immediateload = strategy_options.immediateload._unbound_fn
+noload = strategy_options.noload._unbound_fn
+raiseload = strategy_options.raiseload._unbound_fn
+defaultload = strategy_options.defaultload._unbound_fn
+selectin_polymorphic = strategy_options.selectin_polymorphic._unbound_fn
 
-def eagerload(*args: Any, **kwargs: Any) -> LoaderOption: ...
+eagerload = joinedload
 
-contains_alias: LoaderOption
-
-# Names in __all__ with no definition:
-#   AppenderQuery
+contains_alias = AliasOption
