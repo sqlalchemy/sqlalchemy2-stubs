@@ -1,8 +1,11 @@
 from typing import Any
+from typing import Dict
 from typing import Type
 
+from ... import MetaData
+
 def instrument_declarative(
-    cls: Type[Any], cls_registry: Any, metadata: Any
+    cls: Type[Any], cls_registry: Dict[str, Type[Any]], metadata: MetaData
 ) -> Any: ...
 
 class ConcreteBase:
