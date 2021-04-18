@@ -40,7 +40,7 @@ _ST = TypeVar("_ST", bound=SchemaType)
 _EN = TypeVar("_EN", bound=Enum)
 
 _NumericType = Union[float, Decimal]
-_JSONType = Union[str, Mapping[Any, Any], List[Any]]
+_JSONType = Union[str, float, bool, Mapping[Any, Any], List[Any], None]
 
 class _LookupExpressionAdapter(Generic[_T]):
     class Comparator(TypeEngine.Comparator[_TE]): ...
