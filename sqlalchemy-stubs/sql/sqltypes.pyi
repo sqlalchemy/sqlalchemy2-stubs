@@ -87,6 +87,18 @@ class String(Concatenable[str], TypeEngine[str]):  # type: ignore[misc]
         self,
         length: Optional[int],
         *,
+        collation: Optional[str] = ...,
+        convert_unicode: Literal["force"],
+        unicode_error: str,
+        _warn_on_bytestring: bool = ...,
+        _expect_unicode: bool = ...,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        *,
+        length: Optional[int] = ...,
+        collation: Optional[str] = ...,
         convert_unicode: Literal["force"],
         unicode_error: str,
         _warn_on_bytestring: bool = ...,
