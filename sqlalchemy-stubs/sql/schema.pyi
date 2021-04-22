@@ -50,7 +50,7 @@ class SchemaItem(SchemaEventTarget, visitors.Visitable):
     __visit_name__: str = ...
     create_drop_stringify_dialect: str = ...
     @util.memoized_property
-    def info(self) -> Dict[str, Any]: ...
+    def info(self) -> Dict[Any, Any]: ...
 
 class Table(DialectKWArgs, SchemaItem, TableClause):
     __visit_name__: str = ...
@@ -103,7 +103,7 @@ class Table(DialectKWArgs, SchemaItem, TableClause):
     ) -> Table: ...
     def to_metadata(
         self,
-        metadata: Any,
+        metadata: MetaData,
         schema: Optional[Union[langhelpers._symbol, util.text_type]] = ...,
         referred_schema_fn: Optional[
             Callable[
@@ -132,9 +132,8 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     constraints: Set[Constraint] = ...
     foreign_keys: Set[ForeignKey] = ...
     comment: Optional[str] = ...
-    computed: Any = ...
-    identity: Any = ...
-    info: Optional[Dict[str, Any]] = ...  # type: ignore[assignment]
+    computed: Optional[Computed] = ...
+    identity: Optional[Identity] = ...
     @overload
     def __init__(
         self, name: str, typ: Union[_TE, Type[_TE]], *args: Any, **kwargs: Any
@@ -174,7 +173,6 @@ class ForeignKey(DialectKWArgs, SchemaItem):
     initially: Optional[str] = ...
     link_to_name: bool = ...
     match: Optional[str] = ...
-    info: Optional[Dict[str, Any]] = ...  # type: ignore[assignment]
     def __init__(
         self,
         column: Union[Column[Any], str],
@@ -187,7 +185,7 @@ class ForeignKey(DialectKWArgs, SchemaItem):
         initially: Optional[str] = ...,
         link_to_name: bool = ...,
         match: Optional[str] = ...,
-        info: Optional[Dict[str, Any]] = ...,
+        info: Optional[Dict[Any, Any]] = ...,
         **dialect_kw: Any,
     ) -> None: ...
     def copy(self: _FK, schema: Optional[str] = ...) -> _FK: ...
@@ -256,7 +254,7 @@ class Sequence(
     optional: bool = ...
     schema: Optional[Union[str, langhelpers._symbol]] = ...
     metadata: Optional[MetaData] = ...
-    data_type: Optional[type_api.TypeEngine[Any]] = ...
+    data_type: Optional[_TE] = ...
     @overload
     def __init__(
         self: Sequence[sqltypes.Integer],
@@ -292,7 +290,7 @@ class Sequence(
         schema: Optional[str],
         cache: Optional[int],
         order: Optional[bool],
-        data_type: _TE,
+        data_type: Union[_TE, Type[_TE]],
         optional: bool = ...,
         quote: Optional[bool] = ...,
         metadata: Optional[MetaData] = ...,
@@ -314,7 +312,7 @@ class Sequence(
         schema: Optional[str] = ...,
         cache: Optional[int] = ...,
         order: Optional[bool] = ...,
-        data_type: _TE,
+        data_type: Union[_TE, Type[_TE]],
         optional: bool = ...,
         quote: Optional[bool] = ...,
         metadata: Optional[MetaData] = ...,
@@ -360,14 +358,13 @@ class Constraint(DialectKWArgs, SchemaItem):
     name: Optional[str] = ...
     deferrable: Optional[bool] = ...
     initially: Optional[str] = ...
-    info: Optional[Dict[str, Any]] = ...  # type: ignore[assignment]
     def __init__(
         self,
         name: Optional[str] = ...,
         deferrable: Optional[bool] = ...,
         initially: Optional[str] = ...,
         _create_rule: Optional[Any] = ...,
-        info: Optional[Dict[str, Any]] = ...,
+        info: Optional[Dict[Any, Any]] = ...,
         _type_bound: bool = ...,
         **dialect_kw: Any,
     ) -> None: ...
@@ -395,15 +392,15 @@ class ColumnCollectionConstraint(ColumnCollectionMixin, Constraint):
 
 class CheckConstraint(ColumnCollectionConstraint):
     __visit_name__: str = ...
-    sqltext: str = ...
+    sqltext: ClauseElement = ...
     def __init__(
         self,
-        sqltext: str,
+        sqltext: Union[str, ClauseElement],
         name: Optional[str] = ...,
         deferrable: Optional[bool] = ...,
         initially: Optional[str] = ...,
         table: Optional[Table] = ...,
-        info: Optional[Dict[str, Any]] = ...,
+        info: Optional[Dict[Any, Any]] = ...,
         _create_rule: Optional[Any] = ...,
         _autoattach: bool = ...,
         _type_bound: bool = ...,
@@ -436,7 +433,7 @@ class ForeignKeyConstraint(ColumnCollectionConstraint):
         link_to_name: bool = ...,
         match: Optional[str] = ...,
         table: Optional[Table] = ...,
-        info: Optional[Dict[str, Any]] = ...,
+        info: Optional[Dict[Any, Any]] = ...,
         **dialect_kw: Any,
     ) -> None: ...
     @property
@@ -466,7 +463,6 @@ class Index(DialectKWArgs, ColumnCollectionMixin, SchemaItem):
     table: Optional[Table] = ...
     name: str = ...
     unique: bool = ...
-    info: Optional[Dict[str, Any]] = ...  # type: ignore[assignment]
     expressions: List[Column[Any]] = ...
     def __init__(
         self, name: str, *expressions: ColumnClause[Any], **kw: Any
@@ -491,7 +487,6 @@ class MetaData(SchemaItem):
     tables: util.FacadeDict[str, Table] = ...
     schema: Optional[str] = ...
     naming_convention: Dict[Any, Any] = ...
-    info: Optional[Dict[str, Any]] = ...  # type: ignore[assignment]
     bind: Optional[Union[Engine, Connection]] = ...
     def __init__(
         self,
@@ -499,7 +494,7 @@ class MetaData(SchemaItem):
         schema: Optional[str] = ...,
         quote_schema: Optional[bool] = ...,
         naming_convention: Optional[Dict[str, str]] = ...,
-        info: Optional[Dict[str, Any]] = ...,
+        info: Optional[Dict[Any, Any]] = ...,
     ) -> None: ...
     def __contains__(self, table_or_key: Any) -> bool: ...
     def is_bound(self) -> bool: ...
