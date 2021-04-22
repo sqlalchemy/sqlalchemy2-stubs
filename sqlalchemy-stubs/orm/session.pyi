@@ -39,7 +39,7 @@ _TSessionTransaction = TypeVar(
 )
 
 _TSharedSessionProtocol = TypeVar(
-    "_TSharedSessionProtocol", bound=_SharedSessionProtocol
+    "_TSharedSessionProtocol", bound=_SharedSessionProtocol[Any]
 )
 _TSessionTransactionProtocol = TypeVar(
     "_TSessionTransactionProtocol", bound=_SessionTransactionProtocol
@@ -406,7 +406,9 @@ class Session(_SessionClassMethods):
         binds: Optional[Mapping[Any, Union[Connection, Engine]]] = ...,
         enable_baked_queries: bool = ...,
         info: Optional[Mapping[Any, Any]] = ...,
-        query_cls: Optional[Union[Query, Callable[..., Query]]] = ...,
+        query_cls: Optional[
+            Union[Query[Any], Callable[..., Query[Any]]]
+        ] = ...,
     ) -> None: ...
     connection_callable: Any = ...
     def __enter__(self: _TSession) -> _TSession: ...
@@ -473,7 +475,7 @@ class Session(_SessionClassMethods):
         _sa_skip_events: Optional[Any] = ...,
         _sa_skip_for_implicit_returning: bool = ...,
     ) -> Union[Connection, Engine]: ...
-    def query(self, *entities: Any, **kwargs: Any) -> Query: ...
+    def query(self, *entities: Any, **kwargs: Any) -> Query[Any]: ...
     @property
     def no_autoflush(self: _TSession) -> ContextManager[_TSession]: ...
     def refresh(
