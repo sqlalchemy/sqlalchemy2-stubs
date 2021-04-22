@@ -407,7 +407,7 @@ class Session(_SessionClassMethods):
         enable_baked_queries: bool = ...,
         info: Optional[Mapping[Any, Any]] = ...,
         query_cls: Optional[
-            Union[Query[Any], Callable[..., Query[Any]]]
+            Union[Type[Query[Any]], Callable[..., Query[Any]]]
         ] = ...,
     ) -> None: ...
     connection_callable: Any = ...
