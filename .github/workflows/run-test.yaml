@@ -40,8 +40,10 @@ jobs:
           pip install --upgrade tox setuptools
           pip list
 
+      - name: Set env
+        run: |
+          echo "SQLA_REF=$(python .github/workflows/scripts/find_version.py ${{ matrix.sqlalchemy }})" >> $GITHUB_ENV
+
       - name: Run tests
         run: |
-          SQLA_REF=`python .github/workflows/scripts/find_version.py`
-          printenv
           tox
