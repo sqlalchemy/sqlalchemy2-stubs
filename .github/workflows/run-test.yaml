@@ -13,7 +13,6 @@ jobs:
     name: ${{ matrix.python-version }}-${{ matrix.sqlalchemy }}
     runs-on: "ubuntu-latest"
     strategy:
-      # run this job using this matrix, excluding some combinations below.
       matrix:
         python-version:
           - "3.9"
