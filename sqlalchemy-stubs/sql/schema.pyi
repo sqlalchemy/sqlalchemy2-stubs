@@ -136,25 +136,45 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     identity: Optional[Identity] = ...
     @overload
     def __init__(
-        self, name: str, typ: Union[_TE, Type[_TE]], *args: Any, **kwargs: Any
+        self,
+        name: str,
+        typ: Union[_TE, Type[_TE]],
+        *args: SchemaEventTarget,
+        **kwargs: Any,
     ) -> None: ...
     @overload
     def __init__(
-        self, typ: Union[_TE, Type[_TE]], *args: Any, **kwargs: Any
+        self,
+        typ: Union[_TE, Type[_TE]],
+        *args: SchemaEventTarget,
+        **kwargs: Any,
     ) -> None: ...
     @overload
     def __init__(
         self: Column[sqltypes.NullType],
         name: str,
         typ: None = ...,
-        *args: Any,
+        *args: SchemaEventTarget,
         **kwargs: Any,
     ) -> None: ...
     @overload
     def __init__(
         self: Column[sqltypes.NullType],
         typ: None = ...,
-        *args: Any,
+        *args: SchemaEventTarget,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: Column[sqltypes.NullType],
+        name: str,
+        *args: SchemaEventTarget,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: Column[sqltypes.NullType],
+        *args: SchemaEventTarget,
         **kwargs: Any,
     ) -> None: ...
     def references(self, column: Column[Any]) -> bool: ...
