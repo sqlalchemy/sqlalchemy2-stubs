@@ -425,6 +425,7 @@ class ColumnClause(
     roles.StrAsPlainColumnRole,
     Immutable,
     NamedColumn,
+    Generic[_TE],
 ):
     table: Any = ...
     is_literal: bool = ...
