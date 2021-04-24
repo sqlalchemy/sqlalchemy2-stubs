@@ -1,0 +1,48 @@
+name: Run tests
+
+on:
+  push:
+  pull_request:
+
+env:
+  # global env to all steps
+  TOX_WORKERS: -n2
+
+jobs:
+  run-test:
+    name: ${{ matrix.python-version }}-${{ matrix.sqlalchemy }}
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version:
+          - "3.9"
+        sqlalchemy:
+          - sqla_release
+          - sqla_master
+
+      fail-fast: false
+
+    # steps to run in each job. Some are github actions, others run shell commands
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade tox setuptools
+          pip list
+
+      - name: Set env
+        run: |
+          echo "SQLA_REF=$(python .github/workflows/scripts/find_version.py ${{ matrix.sqlalchemy }})" >> $GITHUB_ENV
+
+      - name: Run tests
+        run: |
+          tox
