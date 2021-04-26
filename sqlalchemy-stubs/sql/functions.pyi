@@ -6,6 +6,8 @@ from typing import Type
 from typing import TypeVar
 from typing import Union
 
+from typing_extensions import Protocol
+
 from . import sqltypes
 from . import type_api
 from .base import ColumnCollection
@@ -29,6 +31,7 @@ from .selectable import Select
 from .selectable import TableValuedAlias
 from .visitors import TraversibleType
 
+_T_co = TypeVar("_T_co", covariant=True)
 _TE = TypeVar("_TE", bound=type_api.TypeEngine[Any])
 _FE = TypeVar("_FE", bound=FunctionElement[Any])
 
@@ -74,7 +77,7 @@ class FunctionElement(  # type: ignore[misc]
     ) -> FunctionFilter[_TE]: ...
     def as_comparison(
         self, left_index: int, right_index: int
-    ) -> FunctionAsBinary[_TE]: ...
+    ) -> FunctionAsBinary: ...
     def within_group_type(
         self, within_group: Any
     ) -> Optional[type_api.TypeEngine[Any]]: ...
@@ -86,18 +89,18 @@ class FunctionElement(  # type: ignore[misc]
         self: _FE, against: Optional[Any] = ...
     ) -> Union[_FE, Grouping[_TE], AsBoolean[_FE]]: ...
 
-class FunctionAsBinary(BinaryExpression[_TE]):
-    sql_function: FunctionElement[_TE] = ...
+class FunctionAsBinary(BinaryExpression[sqltypes.Boolean]):
+    sql_function: FunctionElement[Any] = ...
     left_index: int = ...
     right_index: int = ...
     operator: Any = ...
-    type: Any = ...
+    type: sqltypes.Boolean = ...
     negate: Any = ...
     modifiers: Any = ...
     left: ClauseElement = ...
     right: ClauseElement = ...
     def __init__(
-        self, fn: FunctionElement[_TE], left_index: int, right_index: int
+        self, fn: FunctionElement[Any], left_index: int, right_index: int
     ) -> None: ...
 
 class ScalarFunctionColumn(NamedColumn[_TE]):
@@ -135,9 +138,15 @@ class _FunctionGenerator:
 func: _FunctionGenerator
 modifier: _FunctionGenerator
 
+class _TypeDescriptor(Protocol[_T_co]):
+    @overload
+    def __get__(self, instance: None, owner: Any) -> _T_co: ...
+    @overload
+    def __get__(self, instance: GenericFunction[_TE], owner: Any) -> _TE: ...
+
 class Function(FunctionElement[_TE]):
     __visit_name__: str = ...
-    type: Any = ...
+    type: _TypeDescriptor[sqltypes.NullType] = ...  # type: ignore[assignment]
     packagenames: Any = ...
     name: Any = ...
     @overload
@@ -161,7 +170,7 @@ class GenericFunction(Function[_TE], metaclass=_GenericMeta):
     inherit_cache: bool = ...
     packagenames: Any = ...
     clause_expr: Any = ...
-    type: _TE = ...
+    type: _TypeDescriptor[sqltypes.NullType] = ...
     @overload
     def __init__(
         self: GenericFunction[sqltypes.NullType],
@@ -175,7 +184,7 @@ class GenericFunction(Function[_TE], metaclass=_GenericMeta):
     ) -> None: ...
 
 class next_value(GenericFunction[_TE]):
-    type: _TE = ...
+    type: _TypeDescriptor[sqltypes.Integer] = ...  # type: ignore[assignment]
     name: str = ...
     sequence: Sequence[_TE] = ...
     def __init__(self, seq: Sequence[_TE], **kw: Any) -> None: ...
@@ -201,68 +210,222 @@ class sum(ReturnTypeFromArgs[_TE]):
     inherit_cache: bool = ...
 
 class now(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.DateTime]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: now[sqltypes.DateTime],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class concat(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.String]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: concat[sqltypes.String],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class char_length(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.Integer]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
-    def __init__(self, arg: Any, **kwargs: Any) -> None: ...
+    @overload
+    def __init__(
+        self: char_length[sqltypes.Integer],
+        arg: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, arg: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class random(GenericFunction[_TE]):
     inherit_cache: bool = ...
 
 class count(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.Integer]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
     def __init__(
-        self, expression: Optional[Any] = ..., **kwargs: Any
+        self: count[sqltypes.Integer],
+        expression: Optional[Any] = ...,
+        *,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        expression: Optional[Any] = ...,
+        *,
+        type_: Union[_TE, Type[_TE]],
+        **kwargs: Any,
     ) -> None: ...
 
 class current_date(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.Date]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: current_date[sqltypes.Date],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class current_time(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.Time]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: current_time[sqltypes.Time],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class current_timestamp(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.DateTime]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: current_timestamp[sqltypes.DateTime],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class current_user(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.String]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: current_user[sqltypes.String],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class localtime(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.DateTime]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: localtime[sqltypes.DateTime],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class localtimestamp(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.DateTime]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: localtimestamp[sqltypes.DateTime],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class session_user(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.String]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: session_user[sqltypes.String],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class sysdate(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.DateTime]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: sysdate[sqltypes.DateTime],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class user(AnsiFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.String]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: user[sqltypes.String],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class array_agg(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[Type[sqltypes.ARRAY[Any]]] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
-    def __init__(self, *args: Any, **kwargs: Any) -> None: ...
+    @overload
+    def __init__(
+        self: array_agg[sqltypes.ARRAY[Any]],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class OrderedSetAgg(GenericFunction[_TE]):
     array_for_multi_clause: bool = ...
@@ -283,20 +446,64 @@ class percentile_disc(OrderedSetAgg[_TE]):
     inherit_cache: bool = ...
 
 class rank(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[sqltypes.Integer] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: rank[sqltypes.Integer],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class dense_rank(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[sqltypes.Integer] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: dense_rank[sqltypes.Integer],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class percent_rank(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[sqltypes.Numeric] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: percent_rank[sqltypes.Numeric],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class cume_dist(GenericFunction[_TE]):
-    type: Any = ...
+    type: _TypeDescriptor[sqltypes.Numeric] = ...  # type: ignore[assignment]
     inherit_cache: bool = ...
+    @overload
+    def __init__(
+        self: cume_dist[sqltypes.Numeric],
+        *args: Any,
+        type_: None = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self, *args: Any, type_: Union[_TE, Type[_TE]], **kwargs: Any
+    ) -> None: ...
 
 class cube(GenericFunction[_TE]):
     inherit_cache: bool = ...
