@@ -11,7 +11,7 @@ on:
 
 env:
   # comment TWINE_REPOSITORY_URL to use the real pypi. NOTE: change also the secret used in TWINE_PASSWORD
-  TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
+  # TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
 
 jobs:
   release:
@@ -28,25 +28,30 @@ jobs:
           python-version: "3.9"
 
       - name: Set version
+        # A specific version was set in the action trigger.
+        # Change the version in setup.cfg to that version
         if: ${{ github.event.inputs.version != '~~version~~' }}
         run: |
           python .github/workflows/scripts/update_version.py --set-version ${{ github.event.inputs.version }}
 
-      - name: Get version
-        id: get-version
-        run: |
-          version=`grep 'version =' setup.cfg | awk '{print $NF}'`
-          echo $version
-          echo "::set-output name=version::$version"
-
       - name: Commit version change
+        # If the setup.cfg version was changed commit it.
         if: ${{ github.event.inputs.version != '~~version~~' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Version ${{ github.event.inputs.version }}
           file_pattern: setup.cfg
 
+      - name: Get version
+        # Get current version
+        id: get-version
+        run: |
+          version=`grep 'version =' setup.cfg | awk '{print $NF}'`
+          echo $version
+          echo "::set-output name=version::$version"
+
       - name: Create distribution
+        # Create wheel and sdist
         run: |
           python -m pip install --upgrade pip
           pip --version
@@ -55,6 +60,7 @@ jobs:
           python -m build --sdist --wheel .
 
       - name: Create release
+        # Create github tag and release and upload the distribution wheels and sdist
         uses: softprops/action-gh-release@v1
         with:
           body: Release ${{ steps.get-version.outputs.version }}
@@ -65,10 +71,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Next version
+        # Update the version to the next version
         run: |
           python .github/workflows/scripts/update_version.py --update-version
 
       - name: Get version
+        # Get new current version
         id: get-new-version
         run: |
           version=`grep 'version =' setup.cfg | awk '{print $NF}'`
@@ -76,17 +84,19 @@ jobs:
           echo "::set-output name=version::$version"
 
       - name: Commit next version update
+        # Commit new current version
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Start work on ${{ steps.get-new-version.outputs.version }}
           file_pattern: setup.cfg
 
-      # - name: Publish distribution
-      #   env:
-      #     TWINE_USERNAME: __token__
-      #     # replace TWINE_PASSWORD with token for real pypi
-      #     TWINE_PASSWORD: ${{ secrets.test_pypi_token }}
-      #     # TWINE_PASSWORD: ${{ secrets.pypi_token }}
-      #   run: |
-      #     pip install -U twine
-      #     twine upload --skip-existing dist/*
+      - name: Publish distribution
+        # Publish to pypi
+        env:
+          TWINE_USERNAME: __token__
+          # replace TWINE_PASSWORD with token for real pypi
+          # TWINE_PASSWORD: ${{ secrets.test_pypi_token }}
+          TWINE_PASSWORD: ${{ secrets.pypi_token }}
+        run: |
+          pip install -U twine
+          twine upload --skip-existing dist/*
