@@ -5,12 +5,15 @@ from typing import Generic
 from typing import Iterable
 from typing import Iterator
 from typing import List
+from typing import Mapping
 from typing import Optional
 from typing import overload
 from typing import Set
 from typing import Type
 from typing import TypeVar
 from typing import Union
+
+from typing_extensions import Literal
 
 from . import functions
 from . import roles
@@ -22,6 +25,7 @@ from .base import DialectKWArgs
 from .base import SchemaEventTarget
 from .elements import ClauseElement
 from .elements import ColumnClause
+from .elements import TextClause
 from .selectable import TableClause
 from .. import util
 from ..engine import Connection
@@ -121,14 +125,14 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     primary_key: bool = ...
     nullable: bool = ...
     default: Optional[Any] = ...
-    server_default: Optional[Any] = ...
+    server_default: Optional[Union[FetchedValue, str, TextClause]] = ...
     server_onupdate: Optional[FetchedValue] = ...
     index: Optional[bool] = ...
     unique: Optional[bool] = ...
     system: bool = ...
     doc: Optional[str] = ...
     onupdate: Optional[Any] = ...
-    autoincrement: Union[bool, str] = ...
+    autoincrement: Union[bool, Literal["auto", "ignore_fk"]] = ...
     constraints: Set[Constraint] = ...
     foreign_keys: Set[ForeignKey] = ...
     comment: Optional[str] = ...
@@ -136,25 +140,90 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     identity: Optional[Identity] = ...
     @overload
     def __init__(
-        self, name: str, typ: Union[_TE, Type[_TE]], *args: Any, **kwargs: Any
-    ) -> None: ...
-    @overload
-    def __init__(
-        self, typ: Union[_TE, Type[_TE]], *args: Any, **kwargs: Any
-    ) -> None: ...
-    @overload
-    def __init__(
         self: Column[sqltypes.NullType],
-        name: str,
-        typ: None = ...,
-        *args: Any,
+        __name: str,
+        *args: SchemaEventTarget,
+        autoincrement: Union[bool, Literal["auto", "ignore_fk"]] = ...,
+        default: Optional[Any] = ...,
+        doc: Optional[str] = ...,
+        key: Optional[str] = ...,
+        index: Optional[bool] = ...,
+        info: Mapping[Any, Any] = ...,
+        nullable: bool = ...,
+        onupdate: Optional[Any] = ...,
+        primary_key: bool = ...,
+        server_default: Optional[Union[FetchedValue, str, TextClause]] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
+        quote: Optional[bool] = ...,
+        unique: Optional[bool] = ...,
+        system: bool = ...,
+        comment: Optional[str] = ...,
         **kwargs: Any,
     ) -> None: ...
     @overload
     def __init__(
         self: Column[sqltypes.NullType],
-        typ: None = ...,
-        *args: Any,
+        *args: SchemaEventTarget,
+        autoincrement: Union[bool, Literal["auto", "ignore_fk"]] = ...,
+        default: Optional[Any] = ...,
+        doc: Optional[str] = ...,
+        key: Optional[str] = ...,
+        index: Optional[bool] = ...,
+        info: Mapping[Any, Any] = ...,
+        nullable: bool = ...,
+        onupdate: Optional[Any] = ...,
+        primary_key: bool = ...,
+        server_default: Optional[Union[FetchedValue, str, TextClause]] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
+        quote: Optional[bool] = ...,
+        unique: Optional[bool] = ...,
+        system: bool = ...,
+        comment: Optional[str] = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        __name: str,
+        __type: Union[_TE, Type[_TE]],
+        *args: SchemaEventTarget,
+        autoincrement: Union[bool, Literal["auto", "ignore_fk"]] = ...,
+        default: Optional[Any] = ...,
+        doc: Optional[str] = ...,
+        key: Optional[str] = ...,
+        index: Optional[bool] = ...,
+        info: Mapping[Any, Any] = ...,
+        nullable: bool = ...,
+        onupdate: Optional[Any] = ...,
+        primary_key: bool = ...,
+        server_default: Optional[Union[FetchedValue, str, TextClause]] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
+        quote: Optional[bool] = ...,
+        unique: Optional[bool] = ...,
+        system: bool = ...,
+        comment: Optional[str] = ...,
+        **kwargs: Any,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        __type: Union[_TE, Type[_TE]],
+        *args: SchemaEventTarget,
+        autoincrement: Union[bool, Literal["auto", "ignore_fk"]] = ...,
+        default: Optional[Any] = ...,
+        doc: Optional[str] = ...,
+        key: Optional[str] = ...,
+        index: Optional[bool] = ...,
+        info: Mapping[Any, Any] = ...,
+        nullable: bool = ...,
+        onupdate: Optional[Any] = ...,
+        primary_key: bool = ...,
+        server_default: Optional[Union[FetchedValue, str, TextClause]] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
+        quote: Optional[bool] = ...,
+        unique: Optional[bool] = ...,
+        system: bool = ...,
+        comment: Optional[str] = ...,
         **kwargs: Any,
     ) -> None: ...
     def references(self, column: Column[Any]) -> bool: ...
