@@ -5,6 +5,6 @@
 .vscode/
 dist/
 *.egg-info
-
+build/
 
 sqla
