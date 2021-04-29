@@ -16,6 +16,7 @@ env:
 jobs:
   release:
     name: Release
+    if: github.actor == 'CaselIT' || github.actor == 'zzzeek'
     runs-on: "ubuntu-latest"
 
     steps:
