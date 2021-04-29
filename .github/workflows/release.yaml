@@ -80,3 +80,13 @@ jobs:
         with:
           commit_message: Start work on ${{ steps.get-new-version.outputs.version }}
           file_pattern: setup.cfg
+
+      # - name: Publish distribution
+      #   env:
+      #     TWINE_USERNAME: __token__
+      #     # replace TWINE_PASSWORD with token for real pypi
+      #     TWINE_PASSWORD: ${{ secrets.test_pypi_token }}
+      #     # TWINE_PASSWORD: ${{ secrets.pypi_token }}
+      #   run: |
+      #     pip install -U twine
+      #     twine upload --skip-existing dist/*
