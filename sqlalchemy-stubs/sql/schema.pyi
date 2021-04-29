@@ -183,7 +183,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     ) -> None: ...
     @overload
     def __init__(
-        self: Column[_TE],
+        self,
         __name: str,
         __type: Union[_TE, Type[_TE]],
         *args: SchemaEventTarget,
@@ -206,7 +206,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     ) -> None: ...
     @overload
     def __init__(
-        self: Column[_TE],
+        self,
         __type: Union[_TE, Type[_TE]],
         *args: SchemaEventTarget,
         autoincrement: Union[bool, Literal["auto", "ignore_fk"]] = ...,
