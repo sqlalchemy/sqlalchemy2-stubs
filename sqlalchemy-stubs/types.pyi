@@ -1,3 +1,4 @@
+from .sql.sqltypes import _Binary as _Binary
 from .sql.sqltypes import ARRAY as ARRAY
 from .sql.sqltypes import BIGINT as BIGINT
 from .sql.sqltypes import BigInteger as BigInteger
@@ -23,15 +24,20 @@ from .sql.sqltypes import Integer as Integer
 from .sql.sqltypes import Interval as Interval
 from .sql.sqltypes import JSON as JSON
 from .sql.sqltypes import LargeBinary as LargeBinary
+from .sql.sqltypes import MatchType as MatchType
 from .sql.sqltypes import NCHAR as NCHAR
+from .sql.sqltypes import NULLTYPE as NULLTYPE
+from .sql.sqltypes import NullType as NullType
 from .sql.sqltypes import NUMERIC as NUMERIC
 from .sql.sqltypes import Numeric as Numeric
 from .sql.sqltypes import NVARCHAR as NVARCHAR
 from .sql.sqltypes import PickleType as PickleType
 from .sql.sqltypes import REAL as REAL
+from .sql.sqltypes import SchemaType as SchemaType
 from .sql.sqltypes import SMALLINT as SMALLINT
 from .sql.sqltypes import SmallInteger as SmallInteger
 from .sql.sqltypes import String as String
+from .sql.sqltypes import STRINGTYPE as STRINGTYPE
 from .sql.sqltypes import TEXT as TEXT
 from .sql.sqltypes import Text as Text
 from .sql.sqltypes import TIME as TIME
@@ -41,6 +47,9 @@ from .sql.sqltypes import Unicode as Unicode
 from .sql.sqltypes import UnicodeText as UnicodeText
 from .sql.sqltypes import VARBINARY as VARBINARY
 from .sql.sqltypes import VARCHAR as VARCHAR
+from .sql.type_api import adapt_type as adapt_type
+from .sql.type_api import to_instance as to_instance
 from .sql.type_api import TypeDecorator as TypeDecorator
 from .sql.type_api import TypeEngine as TypeEngine
 from .sql.type_api import UserDefinedType as UserDefinedType
+from .sql.type_api import Variant as Variant
