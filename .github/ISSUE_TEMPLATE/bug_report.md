@@ -33,8 +33,8 @@ See also [Reporting Bugs](https://www.sqlalchemy.org/participate.html#bugs) on t
  - OS:
  - Python:
  - SQLAlchemy:
- - Database:
- - DBAPI:
+ - mypy:
+ - SQLAlchemy2-stubs:
 
 **Additional context**
 <!-- Add any other context about the problem here. -->

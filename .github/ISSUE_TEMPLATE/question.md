@@ -17,8 +17,8 @@ assignees: ''
  - OS:
  - Python:
  - SQLAlchemy:
- - Database:
- - DBAPI:
+ - mypy:
+ - SQLAlchemy2-stubs:
 
 **Additional context**
 Add any other context or screenshots about the feature request here.
