@@ -552,6 +552,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
             info: Optional[Mapping[Any, Any]] = ...,
+            **kw: Any,
         ) -> None: ...
         @overload
         def __init__(
@@ -590,6 +591,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
             info: Optional[Mapping[Any, Any]] = ...,
+            **kw: Any,
         ) -> None: ...
         @overload
         def __init__(
