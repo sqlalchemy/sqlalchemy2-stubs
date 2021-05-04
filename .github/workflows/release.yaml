@@ -38,7 +38,7 @@ jobs:
       - name: Commit version change
         # If the setup.cfg version was changed commit it.
         if: ${{ github.event.inputs.version != '~~version~~' }}
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: sqlalchemyorg/git-auto-commit-action@sa
         with:
           commit_message: Version ${{ github.event.inputs.version }}
           file_pattern: setup.cfg
@@ -62,7 +62,7 @@ jobs:
 
       - name: Create release
         # Create github tag and release and upload the distribution wheels and sdist
-        uses: softprops/action-gh-release@v1
+        uses: sqlalchemyorg/action-gh-release@sa
         with:
           body: Release ${{ steps.get-version.outputs.version }}
           files: dist/*
@@ -86,7 +86,7 @@ jobs:
 
       - name: Commit next version update
         # Commit new current version
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: sqlalchemyorg/git-auto-commit-action@sa
         with:
           commit_message: Start work on ${{ steps.get-new-version.outputs.version }}
           file_pattern: setup.cfg
