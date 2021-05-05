@@ -1,10 +1,7 @@
 from typing import Any
 
-from .base import Engine as Engine
-from .interfaces import Connectable as Connectable
-from .interfaces import Dialect as Dialect
-from .. import event as event
-from .. import exc as exc
+from .interfaces import Dialect
+from .. import event
 
 class ConnectionEvents(event.Events):
     def before_execute(
@@ -70,7 +67,7 @@ class ConnectionEvents(event.Events):
 
 class DialectEvents(event.Events):
     def do_connect(
-        self, dialect: Any, conn_rec: Any, cargs: Any, cparams: Any
+        self, dialect: Dialect, conn_rec: Any, cargs: Any, cparams: Any
     ) -> None: ...
     def do_executemany(
         self, cursor: Any, statement: Any, parameters: Any, context: Any

@@ -1,6 +1,6 @@
-from typing import Any
+from typing import Type
 
-from .mock import MockConnection as MockConnection
+from .mock import MockConnection as _MockConnection
 
 class MockEngineStrategy:
-    MockConnection: Any = ...
+    MockConnection: Type[_MockConnection] = ...
