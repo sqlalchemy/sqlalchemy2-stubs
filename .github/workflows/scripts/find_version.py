@@ -15,5 +15,6 @@ def go(argv):
     else:
         print("master")
 
+
 if __name__ == "__main__":
     go(sys.argv)
