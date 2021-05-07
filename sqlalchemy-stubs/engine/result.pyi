@@ -1,5 +1,6 @@
 import sys
 from typing import Any
+from typing import Callable
 from typing import Iterable
 from typing import Iterator
 from typing import List
@@ -18,6 +19,8 @@ _TMappingResult = TypeVar("_TMappingResult", bound=MappingResult)
 _TChunkedIteratorResult = TypeVar(
     "_TChunkedIteratorResult", bound=ChunkedIteratorResult
 )
+
+def tuplegetter(*indexes: Any) -> Callable[[Any], Tuple[Any, ...]]: ...
 
 class ResultMetaData:
     @property
@@ -50,7 +53,7 @@ class _WithKeys:
     def keys(self) -> RMKeyView: ...
 
 class Result(_WithKeys, ResultInternal):
-    def __init__(self, cursor_metadata: Any) -> None: ...
+    def __init__(self, cursor_metadata: ResultMetaData) -> None: ...
     def yield_per(self: _TResult, num: Any) -> _TResult: ...
     def unique(
         self: _TResult, strategy: Optional[object] = ...
@@ -134,7 +137,10 @@ class IteratorResult(Result):
     iterator: Any = ...
     raw: Any = ...
     def __init__(
-        self, cursor_metadata: Any, iterator: Any, raw: Optional[Any] = ...
+        self,
+        cursor_metadata: ResultMetaData,
+        iterator: Any,
+        raw: Optional[Any] = ...,
     ) -> None: ...
 
 def null_result() -> IteratorResult: ...
@@ -146,7 +152,7 @@ class ChunkedIteratorResult(IteratorResult):
     dynamic_yield_per: Any = ...
     def __init__(
         self,
-        cursor_metadata: Any,
+        cursor_metadata: ResultMetaData,
         chunks: Any,
         source_supports_scalars: bool = ...,
         raw: Optional[Any] = ...,
@@ -158,5 +164,7 @@ class ChunkedIteratorResult(IteratorResult):
 
 class MergedResult(IteratorResult):
     closed: bool = ...
-    def __init__(self, cursor_metadata: Any, results: Result) -> None: ...
+    def __init__(
+        self, cursor_metadata: ResultMetaData, results: Result
+    ) -> None: ...
     def close(self) -> None: ...
