@@ -2,6 +2,7 @@ from typing import Any
 from typing import List
 from typing import NoReturn
 from typing import Optional
+from typing import Sequence
 from typing import TypeVar
 
 from .base import Connection
@@ -48,8 +49,8 @@ class ResultFetchStrategy:
         result: Any,
         dbapi_cursor: _DBAPICursor,
         size: Optional[Any] = ...,
-    ) -> Any: ...
-    def fetchall(self, result: Any) -> Any: ...
+    ) -> Sequence[Any]: ...
+    def fetchall(self, result: Any) -> Sequence[Any]: ...
     def handle_exception(
         self, result: Any, dbapi_cursor: _DBAPICursor, err: Any
     ) -> None: ...
@@ -65,8 +66,8 @@ class NoCursorFetchStrategy(ResultFetchStrategy):
         result: Any,
         dbapi_cursor: _DBAPICursor,
         size: Optional[Any] = ...,
-    ) -> Any: ...
-    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Any: ...  # type: ignore[override]
+    ) -> Sequence[Any]: ...
+    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Sequence[Any]: ...  # type: ignore[override]
 
 class NoCursorDQLFetchStrategy(NoCursorFetchStrategy): ...
 class NoCursorDMLFetchStrategy(NoCursorFetchStrategy): ...
@@ -88,8 +89,8 @@ class CursorFetchStrategy(ResultFetchStrategy):
         result: Any,
         dbapi_cursor: _DBAPICursor,
         size: Optional[Any] = ...,
-    ) -> Any: ...
-    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Any: ...  # type: ignore[override]
+    ) -> Sequence[Any]: ...
+    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Sequence[Any]: ...  # type: ignore[override]
 
 class BufferedRowCursorFetchStrategy(CursorFetchStrategy):
     def __init__(
@@ -114,8 +115,8 @@ class BufferedRowCursorFetchStrategy(CursorFetchStrategy):
         result: Any,
         dbapi_cursor: _DBAPICursor,
         size: Optional[Any] = ...,
-    ) -> Any: ...
-    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Any: ...  # type: ignore[override]
+    ) -> Sequence[Any]: ...
+    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Sequence[Any]: ...  # type: ignore[override]
 
 class FullyBufferedCursorFetchStrategy(CursorFetchStrategy):
     alternate_cursor_description: Any = ...
@@ -138,8 +139,8 @@ class FullyBufferedCursorFetchStrategy(CursorFetchStrategy):
         result: Any,
         dbapi_cursor: _DBAPICursor,
         size: Optional[Any] = ...,
-    ) -> Any: ...
-    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Any: ...  # type: ignore[override]
+    ) -> Sequence[Any]: ...
+    def fetchall(self, result: Any, dbapi_cursor: _DBAPICursor) -> Sequence[Any]: ...  # type: ignore[override]
 
 class _NoResultMetaData(ResultMetaData):
     returns_rows: bool = ...
