@@ -1,9 +1,5 @@
-from datetime import date
-from datetime import datetime
-from datetime import time
 from typing import Any
 from typing import Dict
-from typing import Generic
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -21,8 +17,6 @@ from .url import URL
 from .. import pool
 from .. import util
 from ..sql import compiler
-from ..sql import sqltypes
-from ..sql.type_api import _LiteralProcessor
 from ..sql.type_api import TypeEngine
 from ..util import langhelpers
 
@@ -144,7 +138,9 @@ class DefaultDialect(interfaces.Dialect):
         schema: Optional[str] = ...,
     ) -> bool: ...
     def validate_identifier(self, ident: Any) -> None: ...
-    def connect(self, *cargs: Any, **cparams: Any) -> Any: ...
+    def connect(
+        self, *cargs: Any, **cparams: Any
+    ) -> interfaces._DBAPIConnection: ...
     def create_connect_args(
         self, url: Any
     ) -> Tuple[Sequence[Any], Mapping[str, Any]]: ...
@@ -206,15 +202,6 @@ class DefaultDialect(interfaces.Dialect):
     ) -> None: ...
     def normalize_name(self, name: Optional[str]) -> Optional[str]: ...
     def denormalize_name(self, name: Optional[str]) -> Optional[str]: ...
-
-class _RendersLiteral(Generic[_T]):
-    def literal_processor(
-        self, dialect: interfaces.Dialect
-    ) -> _LiteralProcessor[_T]: ...
-
-class _StrDateTime(_RendersLiteral[datetime], sqltypes.DateTime): ...  # type: ignore[misc]
-class _StrDate(_RendersLiteral[date], sqltypes.Date): ...  # type: ignore[misc]
-class _StrTime(_RendersLiteral[time], sqltypes.Time): ...  # type: ignore[misc]
 
 class StrCompileDialect(DefaultDialect):
     statement_compiler: Type[compiler.StrSQLCompiler] = ...
