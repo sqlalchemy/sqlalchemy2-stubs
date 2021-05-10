@@ -15,7 +15,6 @@ from .engine import AsyncEngine
 from .result import AsyncResult
 from ... import util
 from ...engine import Result
-from ...engine.base import _ExecutionOptions
 from ...orm import Session
 from ...orm.session import _IdentityMap
 from ...sql import ClauseElement
@@ -55,7 +54,7 @@ class AsyncSession:
         params: Optional[
             Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
         ] = ...,
-        execution_options: Optional[_ExecutionOptions] = ...,
+        execution_options: Optional[Mapping[Any, Any]] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> Result: ...
@@ -65,7 +64,7 @@ class AsyncSession:
         params: Optional[
             Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
         ] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Mapping[Any, Any] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> Any: ...
@@ -84,7 +83,7 @@ class AsyncSession:
         params: Optional[
             Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
         ] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Mapping[Any, Any] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> AsyncResult: ...
