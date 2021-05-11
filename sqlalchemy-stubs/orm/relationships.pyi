@@ -27,8 +27,8 @@ from .. import schema as schema
 from .. import sql as sql
 from .. import util as util
 from ..inspection import inspect as inspect
-from ..schema import Column
 from ..sql import coercions as coercions
+from ..sql import elements as elements
 from ..sql import expression as expression
 from ..sql import operators as operators
 from ..sql import roles as roles
@@ -45,6 +45,19 @@ def foreign(expr: Any): ...
 _T = TypeVar("_T")
 
 _InfoDict = Mapping[Any, Any]
+_OrderByArgument = Union[
+    Literal[False],
+    str,
+    elements.ColumnElement[Any],
+    Sequence[elements.ColumnElement[Any]],
+    Callable[
+        [],
+        Union[
+            elements.ColumnElement[Any],
+            Sequence[elements.ColumnElement[Any]],
+        ],
+    ],
+]
 
 class RelationshipProperty(StrategizedProperty[_T]):
     strategy_wildcard_key: str
@@ -91,9 +104,7 @@ class RelationshipProperty(StrategizedProperty[_T]):
         secondaryjoin: Optional[Any] = ...,
         foreign_keys: Optional[Any] = ...,
         uselist: Optional[bool] = ...,
-        order_by: Union[
-            Literal[False], str, Column, Callable[[], Column]
-        ] = ...,
+        order_by: _OrderByArgument = ...,
         backref: Union[str, _BackrefResult] = ...,
         back_populates: str = ...,
         overlaps: Union[AbstractSet[str], str] = ...,
