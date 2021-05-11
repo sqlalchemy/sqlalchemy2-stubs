@@ -15,5 +15,5 @@ class A:
     b = Column(Boolean, nullable=False, server_default=true())
     c = Column(DateTime, server_default=func.now(), nullable=False)
 
-    # EXPECTED: error: Cannot infer type argument 1 of "Column"
+    # EXPECTED_MYPY: Cannot infer type argument 1 of "Column"
     d = Column(Boolean, server_default=func.now(), nullable=False)
