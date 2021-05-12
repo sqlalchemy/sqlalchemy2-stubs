@@ -2,21 +2,21 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/python/black
-    rev: 21.5b0
+    rev: 21.5b1
     hooks:
     -   id: black
         types: [file]
         files: \.(py|pyi)$
 
 -   repo: https://github.com/sqlalchemyorg/zimports
-    rev: 0.3.0
+    rev: v0.4.0
     hooks:
     -   id: zimports
         types: [file]
         files: \.(py|pyi)$
 
 -   repo: https://github.com/pycqa/flake8
-    rev: 3.8.4
+    rev: 3.9.2
     hooks:
     -   id: flake8
         types: [file]
