@@ -85,7 +85,8 @@ class custom_op:
 
 class ColumnOperators(Operators, Generic[_TE]):
     timetuple: Any = ...
-    # TODO Can we also limit the "other" parameter? Most should be
+    # TODO https://github.com/sqlalchemy/sqlalchemy2-stubs/issues/114
+    #  Can we also limit the "other" parameter? Most should be
     #  Same TypeEngine[_T] or _T, but in case of ORM expressions
     #  _T is a Mapped type, can we extract the pure python type from
     #  a TypeEngine bounded TypeVar?
@@ -248,3 +249,19 @@ def is_boolean(op: Any) -> bool: ...
 def mirror(op: Any) -> Any: ...
 def is_associative(op: Any) -> bool: ...
 def is_precedent(operator: Any, against: Any) -> bool: ...
+
+# 1.4 deprecated; see sqlalchemy#5435
+istrue = is_true
+isfalse = is_false
+isnot_distinct_from = is_not_distinct_from
+isnot = is_not
+notlike_op = not_like_op
+notilike_op = not_ilike_op
+notbetween_op = not_between_op
+notin_op = not_in_op
+notstartswith_op = not_startswith_op
+notendswith_op = not_endswith_op
+notcontains_op = not_contains_op
+notmatch_op = not_match_op
+nullsfirst_op = nulls_first_op
+nullslast_op = nulls_last_op
