@@ -1,11 +1,13 @@
 from typing import Any
 from typing import Optional
 
+from ... import util as util
 from ...sql.dml import Insert as StandardInsert
 from ...sql.elements import ClauseElement
 
 class Insert(StandardInsert):
     stringify_dialect: str = ...
+    @util.memoized_property
     def excluded(self): ...
     def on_conflict_do_update(
         self,
