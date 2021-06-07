@@ -126,7 +126,7 @@ class ColumnElement(
     roles.DMLColumnRole,
     roles.DDLConstraintColumnRole,
     roles.DDLExpressionRole,
-    operators.ColumnOperators,
+    operators.ColumnOperators[_TE],
     ClauseElement,
     Generic[_TE],
 ):
