@@ -121,3 +121,5 @@ from .types import Unicode as Unicode
 from .types import UnicodeText as UnicodeText
 from .types import VARBINARY as VARBINARY
 from .types import VARCHAR as VARCHAR
+
+__version__: str
