@@ -1,17 +1,16 @@
 import abc
 from typing import Any
 from typing import Generator
+from typing import Generic
 from typing import TypeVar
 
-_TStartableContext = TypeVar("_TStartableContext", bound=StartableContext)
+_T = TypeVar("_T")
 
-class StartableContext(abc.ABC, metaclass=abc.ABCMeta):
+class StartableContext(abc.ABC, Generic[_T], metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    async def start(self: _TStartableContext) -> _TStartableContext: ...
-    def __await__(
-        self: _TStartableContext,
-    ) -> Generator[Any, None, _TStartableContext]: ...
-    async def __aenter__(self: _TStartableContext) -> _TStartableContext: ...
+    async def start(self) -> _T: ...
+    def __await__(self) -> Generator[Any, None, _T]: ...
+    async def __aenter__(self) -> _T: ...
     @abc.abstractmethod
     async def __aexit__(
         self, type_: Any, value: Any, traceback: Any
