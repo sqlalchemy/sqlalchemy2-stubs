@@ -16,7 +16,7 @@ on:
 jobs:
   release:
     name: Release
-    if: github.actor == 'CaselIT' || github.actor == 'zzzeek'
+    if: github.actor == 'CaselIT' || github.actor == 'zzzeek' || github.actor == 'MaicoTimmerman'
     runs-on: "ubuntu-latest"
 
     steps:
