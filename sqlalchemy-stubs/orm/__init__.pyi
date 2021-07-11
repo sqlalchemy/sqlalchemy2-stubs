@@ -3,7 +3,7 @@ from typing import Mapping
 from typing import Optional
 from typing import Tuple
 
-from . import exc
+from . import exc as exc
 from . import mapper as mapperlib
 from . import strategy_options
 from .attributes import AttributeEvent as AttributeEvent

@@ -22,11 +22,13 @@ from . import type_api
 from . import visitors
 from .base import DedupeColumnCollection
 from .base import DialectKWArgs
+from .base import ImmutableColumnCollection
 from .base import SchemaEventTarget
 from .elements import ClauseElement
 from .elements import ColumnClause
 from .elements import ColumnElement
 from .elements import TextClause
+from .events import DDLEvents
 from .selectable import TableClause
 from .. import util
 from ..engine import Connection
@@ -54,6 +56,7 @@ _ID = TypeVar("_ID", bound=Identity)
 class SchemaItem(SchemaEventTarget, visitors.Visitable):
     __visit_name__: str = ...
     create_drop_stringify_dialect: str = ...
+    dispatch: DDLEvents
     @util.memoized_property
     def info(self) -> Dict[Any, Any]: ...
 
@@ -118,6 +121,14 @@ class Table(DialectKWArgs, SchemaItem, TableClause):
         ] = ...,
         name: Optional[util.text_type] = ...,
     ) -> Table: ...
+    @util.memoized_property
+    def columns(self) -> ImmutableColumnCollection[Column[Any]]: ...
+    @util.memoized_property
+    def c(self) -> ImmutableColumnCollection[Column[Any]]: ...
+    @property
+    def _autoincrement_column(self) -> Optional[Column[Any]]: ...
+    @_autoincrement_column.setter
+    def _autoincrement_column(self, value: Optional[Column[Any]]) -> None: ...
 
 class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     __visit_name__: str = ...
