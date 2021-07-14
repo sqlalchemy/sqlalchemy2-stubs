@@ -68,7 +68,7 @@ class Inspector:
     def reflecttable(
         self,
         table: Table,
-        include_columns: Collection[str],
+        include_columns: Optional[Collection[str]],
         exclude_columns: Collection[str] = ...,
         resolve_fks: bool = ...,
         _extend_on: Set[Table] = ...,
@@ -76,7 +76,7 @@ class Inspector:
     def reflect_table(
         self,
         table: Table,
-        include_columns: Collection[str],
+        include_columns: Optional[Collection[str]],
         exclude_columns: Collection[str] = ...,
         resolve_fks: bool = ...,
         _extend_on: Set[Table] = ...,
