@@ -364,7 +364,7 @@ class _SessionTypingCommon(_SessionNoIoTypingCommon):
     def flush(self, objects: Optional[Collection[Any]] = ...) -> None: ...
     def get(
         self,
-        entity: Any,
+        entity: Type[_T],
         ident: Any,
         options: Optional[Sequence[Any]] = ...,
         populate_existing: bool = ...,
@@ -372,7 +372,7 @@ class _SessionTypingCommon(_SessionNoIoTypingCommon):
             Union[Literal[True], Mapping[str, Any]]
         ] = ...,
         identity_token: Optional[Any] = ...,
-    ) -> Any: ...
+    ) -> Optional[_T]: ...
     def bulk_save_objects(
         self,
         objects: Sequence[Any],
