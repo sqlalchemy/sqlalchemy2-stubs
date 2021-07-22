@@ -4,7 +4,7 @@ from typing import Optional
 from typing import Tuple
 
 from . import exc as exc
-from . import mapper as mapperlib
+from . import mapper as mapperlib  # noqa
 from . import strategy_options
 from .attributes import AttributeEvent as AttributeEvent
 from .attributes import InstrumentedAttribute as InstrumentedAttribute

@@ -7,8 +7,12 @@ from typing import Set
 from typing import Tuple
 from typing import Type
 from typing import TypeVar
+from typing import Union
 
 from .base import Connectable
+from .base import Connection
+from .base import Engine
+from .interfaces import Dialect
 from ..sql.schema import Table
 
 _TInspector = TypeVar("_TInspector", bound=Inspector)
@@ -16,6 +20,9 @@ _TInspector = TypeVar("_TInspector", bound=Inspector)
 def cache(fn: Any, self: Any, con: Any, *args: Any, **kw: Any) -> Any: ...
 
 class Inspector:
+    bind: Union[Engine, Connection] = ...
+    engine: Engine = ...
+    dialect: Dialect = ...
     def __init__(self, bind: Connectable): ...
     @classmethod
     def from_engine(
