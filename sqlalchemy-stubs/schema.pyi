@@ -21,6 +21,7 @@ from .sql.ddl import SetTableComment as SetTableComment
 from .sql.ddl import sort_tables as sort_tables
 from .sql.ddl import sort_tables_and_constraints as sort_tables_and_constraints
 from .sql.naming import conv as conv
+from .sql.schema import _get_table_key as _get_table_key
 from .sql.schema import BLANK_SCHEMA as BLANK_SCHEMA
 from .sql.schema import CheckConstraint as CheckConstraint
 from .sql.schema import Column as Column
