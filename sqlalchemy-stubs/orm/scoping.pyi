@@ -1,7 +1,7 @@
 from typing import Any
 from typing import Optional
 
-from ..orm import Session as Session
+from ..orm import Session
 
 class scoped_session:
     session_factory: Any = ...
