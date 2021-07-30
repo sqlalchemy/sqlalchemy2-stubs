@@ -1,7 +1,7 @@
 from typing import AbstractSet
 from typing import Any
 from typing import Callable
-from typing import Mapping
+from typing import MutableMapping
 from typing import Optional
 from typing import Sequence
 from typing import Tuple
@@ -44,7 +44,6 @@ def foreign(expr: Any): ...
 
 _T = TypeVar("_T")
 
-_InfoDict = Mapping[Any, Any]
 _OrderByArgument = Union[
     Literal[False],
     str,
@@ -91,7 +90,7 @@ class RelationshipProperty(StrategizedProperty[_T]):
     load_on_pending: bool
     comparator_factory: Any
     comparator: Any
-    info: _InfoDict  # NOTE: not set if constructor argument is ``None``
+    info: MutableMapping[Any, Any]  # NOTE: not set if constructor argument is ``None``
     strategy_key: Tuple[Tuple[str, str]]  # NOTE: not documented
     order_by: Any
     back_populates: Union[None, str]
@@ -129,7 +128,7 @@ class RelationshipProperty(StrategizedProperty[_T]):
         bake_queries: bool = ...,
         _local_remote_pairs: Optional[Any] = ...,
         query_class: Optional[Any] = ...,
-        info: Optional[_InfoDict] = ...,
+        info: Optional[MutableMapping[Any, Any]] = ...,
         omit_join: Optional[Literal[False]] = ...,
         sync_backref: Optional[Any] = ...,
     ) -> None: ...
