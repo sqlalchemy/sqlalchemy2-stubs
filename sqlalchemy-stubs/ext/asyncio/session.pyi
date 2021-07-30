@@ -4,6 +4,7 @@ from typing import ContextManager
 from typing import Iterable
 from typing import Iterator
 from typing import Mapping
+from typing import MutableMapping
 from typing import Optional
 from typing import Sequence
 from typing import TypeVar
@@ -140,7 +141,7 @@ class AsyncSession:
         self: _TAsyncSession,
     ) -> ContextManager[_TAsyncSession]: ...
     @util.memoized_property
-    def info(self) -> Mapping[Any, Any]: ...
+    def info(self) -> MutableMapping[Any, Any]: ...
 
 class _AsyncSessionContextManager:
     async_session: AsyncSession = ...

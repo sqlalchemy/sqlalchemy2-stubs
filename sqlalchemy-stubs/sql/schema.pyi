@@ -5,7 +5,7 @@ from typing import Generic
 from typing import Iterable
 from typing import Iterator
 from typing import List
-from typing import Mapping
+from typing import MutableMapping
 from typing import Optional
 from typing import overload
 from typing import Sequence
@@ -59,7 +59,7 @@ class SchemaItem(SchemaEventTarget, visitors.Visitable):
     create_drop_stringify_dialect: str = ...
     dispatch: DDLEvents
     @util.memoized_property
-    def info(self) -> Dict[Any, Any]: ...
+    def info(self) -> MutableMapping[Any, Any]: ...
 
 class Table(DialectKWArgs, SchemaItem, TableClause):
     __visit_name__: str = ...
@@ -165,7 +165,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         doc: Optional[str] = ...,
         key: Optional[str] = ...,
         index: Optional[bool] = ...,
-        info: Mapping[Any, Any] = ...,
+        info: MutableMapping[Any, Any] = ...,
         nullable: bool = ...,
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
@@ -188,7 +188,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         doc: Optional[str] = ...,
         key: Optional[str] = ...,
         index: Optional[bool] = ...,
-        info: Mapping[Any, Any] = ...,
+        info: MutableMapping[Any, Any] = ...,
         nullable: bool = ...,
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
@@ -213,7 +213,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         doc: Optional[str] = ...,
         key: Optional[str] = ...,
         index: Optional[bool] = ...,
-        info: Mapping[Any, Any] = ...,
+        info: MutableMapping[Any, Any] = ...,
         nullable: bool = ...,
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
@@ -237,7 +237,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         doc: Optional[str] = ...,
         key: Optional[str] = ...,
         index: Optional[bool] = ...,
-        info: Mapping[Any, Any] = ...,
+        info: MutableMapping[Any, Any] = ...,
         nullable: bool = ...,
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
@@ -279,7 +279,7 @@ class ForeignKey(DialectKWArgs, SchemaItem):
         initially: Optional[str] = ...,
         link_to_name: bool = ...,
         match: Optional[str] = ...,
-        info: Optional[Dict[Any, Any]] = ...,
+        info: Optional[MutableMapping[Any, Any]] = ...,
         **dialect_kw: Any,
     ) -> None: ...
     def copy(self: _FK, schema: Optional[str] = ...) -> _FK: ...
@@ -459,7 +459,7 @@ class Constraint(DialectKWArgs, SchemaItem):
         deferrable: Optional[bool] = ...,
         initially: Optional[str] = ...,
         _create_rule: Optional[Any] = ...,
-        info: Optional[Dict[Any, Any]] = ...,
+        info: Optional[MutableMapping[Any, Any]] = ...,
         _type_bound: bool = ...,
         **dialect_kw: Any,
     ) -> None: ...
@@ -495,7 +495,7 @@ class CheckConstraint(ColumnCollectionConstraint):
         deferrable: Optional[bool] = ...,
         initially: Optional[str] = ...,
         table: Optional[Table] = ...,
-        info: Optional[Dict[Any, Any]] = ...,
+        info: Optional[MutableMapping[Any, Any]] = ...,
         _create_rule: Optional[Any] = ...,
         _autoattach: bool = ...,
         _type_bound: bool = ...,
@@ -528,7 +528,7 @@ class ForeignKeyConstraint(ColumnCollectionConstraint):
         link_to_name: bool = ...,
         match: Optional[str] = ...,
         table: Optional[Table] = ...,
-        info: Optional[Dict[Any, Any]] = ...,
+        info: Optional[MutableMapping[Any, Any]] = ...,
         **dialect_kw: Any,
     ) -> None: ...
     @property
@@ -592,7 +592,7 @@ class MetaData(SchemaItem):
         schema: Optional[str] = ...,
         quote_schema: Optional[bool] = ...,
         naming_convention: Optional[Dict[str, str]] = ...,
-        info: Optional[Dict[Any, Any]] = ...,
+        info: Optional[MutableMapping[Any, Any]] = ...,
     ) -> None: ...
     def __contains__(self, table_or_key: Any) -> bool: ...
     def is_bound(self) -> bool: ...

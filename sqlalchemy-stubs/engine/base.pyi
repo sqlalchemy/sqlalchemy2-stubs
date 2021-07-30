@@ -1,6 +1,7 @@
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import MutableMapping
 from typing import Optional
 from typing import TypeVar
 from typing import Union
@@ -65,7 +66,7 @@ class Connection(Connectable):
     @property
     def default_isolation_level(self) -> Any: ...
     @property
-    def info(self) -> Dict[Any, Any]: ...
+    def info(self) -> MutableMapping[Any, Any]: ...
     def connect(self: _TConnection, close_with_result: bool = ...) -> _TConnection: ...  # type: ignore[override]
     def invalidate(self, exception: Optional[Any] = ...) -> None: ...
     def detach(self) -> None: ...

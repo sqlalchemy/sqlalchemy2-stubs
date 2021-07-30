@@ -8,6 +8,7 @@ from typing import Iterable
 from typing import Iterator
 from typing import List
 from typing import Mapping
+from typing import MutableMapping
 from typing import Optional
 from typing import overload
 from typing import Sequence
@@ -70,7 +71,7 @@ class _SharedSessionProtocol(Protocol[_T]):
         self: _TSharedSessionProtocol,
     ) -> ContextManager[_TSharedSessionProtocol]: ...
     @util.memoized_property
-    def info(self) -> Mapping[Any, Any]: ...
+    def info(self) -> MutableMapping[Any, Any]: ...
     def __contains__(self, instance: Any) -> bool: ...
     def __iter__(self) -> Iterator[Any]: ...
     def add(self, instance: Any, _warn: bool = ...) -> None: ...
@@ -405,7 +406,7 @@ class Session(_SessionClassMethods):
         twophase: bool = ...,
         binds: Optional[Mapping[Any, Union[Connection, Engine]]] = ...,
         enable_baked_queries: bool = ...,
-        info: Optional[Mapping[Any, Any]] = ...,
+        info: Optional[MutableMapping[Any, Any]] = ...,
         query_cls: Optional[
             Union[Type[Query[Any]], Callable[..., Query[Any]]]
         ] = ...,
@@ -422,7 +423,7 @@ class Session(_SessionClassMethods):
     def get_transaction(self) -> Optional[SessionTransaction]: ...
     def get_nested_transaction(self) -> Optional[SessionTransaction]: ...
     @util.memoized_property
-    def info(self) -> Mapping[Any, Any]: ...
+    def info(self) -> MutableMapping[Any, Any]: ...
     def begin(
         self,
         subtransactions: bool = ...,  # NOTE: Deprecated.
@@ -551,7 +552,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autoflush: bool = ...,
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
-            info: Optional[Mapping[Any, Any]] = ...,
+            info: Optional[MutableMapping[Any, Any]] = ...,
             **kw: Any,
         ) -> None: ...
         @overload
@@ -564,7 +565,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autoflush: bool = ...,
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
-            info: Optional[Mapping[Any, Any]] = ...,
+            info: Optional[MutableMapping[Any, Any]] = ...,
             **kw: Any,
         ) -> None: ...
         @overload
@@ -578,7 +579,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autoflush: bool = ...,
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
-            info: Optional[Mapping[Any, Any]] = ...,
+            info: Optional[MutableMapping[Any, Any]] = ...,
             **kw: Any,
         ) -> None: ...
     else:
@@ -590,7 +591,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autoflush: bool = ...,
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
-            info: Optional[Mapping[Any, Any]] = ...,
+            info: Optional[MutableMapping[Any, Any]] = ...,
             **kw: Any,
         ) -> None: ...
         @overload
@@ -601,7 +602,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autoflush: bool = ...,
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
-            info: Optional[Mapping[Any, Any]] = ...,
+            info: Optional[MutableMapping[Any, Any]] = ...,
             **kw: Any,
         ) -> None: ...
         @overload
@@ -613,7 +614,7 @@ class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
             autoflush: bool = ...,
             autocommit: bool = ...,  # NOTE: Deprecated.
             expire_on_commit: bool = ...,
-            info: Optional[Mapping[Any, Any]] = ...,
+            info: Optional[MutableMapping[Any, Any]] = ...,
             **kw: Any,
         ) -> None: ...
     # NOTE: The return type of `begin()` isn't technically correct, but since
