@@ -90,7 +90,7 @@ class RelationshipProperty(StrategizedProperty[_T]):
     load_on_pending: bool
     comparator_factory: Any
     comparator: Any
-    info: MutableMapping[Any, Any]  # NOTE: not set if constructor argument is ``None``
+    info: MutableMapping[Any, Any]
     strategy_key: Tuple[Tuple[str, str]]  # NOTE: not documented
     order_by: Any
     back_populates: Union[None, str]

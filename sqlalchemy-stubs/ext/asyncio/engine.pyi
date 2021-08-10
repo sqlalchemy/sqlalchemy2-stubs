@@ -10,28 +10,35 @@ from typing import TypeVar
 from .base import ProxyComparable
 from .base import StartableContext
 from .result import AsyncResult
+from ...engine import Dialect
 from ...engine import Result
 from ...engine import Transaction
+from ...engine.base import _ConnectionProxy
+from ...engine.base import _EngineProxy
 from ...future import Connection
 from ...future import Engine
 from ...sql import Executable
 
 _TAsyncConnection = TypeVar("_TAsyncConnection", bound=AsyncConnection)
 _TAsyncTransaction = TypeVar("_TAsyncTransaction", bound=AsyncTransaction)
+_TEngine = TypeVar("_TEngine", bound=AsyncEngine)
 
 def create_async_engine(*arg: Any, **kw: Any) -> AsyncEngine: ...
 
 class AsyncConnectable: ...
 
 class AsyncConnection(
-    ProxyComparable, StartableContext["AsyncConnection"], AsyncConnectable
+    _ConnectionProxy,
+    ProxyComparable,
+    StartableContext["AsyncConnection"],
+    AsyncConnectable,
 ):
     # copied from future.Connection via create_proxy_methods
     @property
     def closed(self) -> bool: ...
     @property
     def invalidated(self) -> bool: ...
-    dialect: Any
+    dialect: Dialect
     @property
     def default_isolation_level(self) -> Any: ...
     # end copied
@@ -99,12 +106,9 @@ class AsyncConnection(
         self, type_: Any, value: Any, traceback: Any
     ) -> None: ...
 
-class AsyncEngine(ProxyComparable, AsyncConnectable):
-    # copied from future.Engine by create_proxy_methods
-    def clear_compiled_cache(self) -> None: ...
-    def update_execution_options(self, **opt: Any) -> None: ...
-    def get_execution_options(self) -> Mapping[Any, Any]: ...
-    # end copied
+class AsyncEngine(_EngineProxy, ProxyComparable, AsyncConnectable):
+    @property
+    def engine(self: _TEngine) -> _TEngine: ...
     class _trans_ctx(StartableContext[AsyncConnection]):
         conn: AsyncConnection = ...
         def __init__(self, conn: AsyncConnection) -> None: ...
