@@ -13,8 +13,8 @@ from .result import AsyncResult
 from ...engine import Dialect
 from ...engine import Result
 from ...engine import Transaction
-from ...engine.base import _ConnectionProxy
-from ...engine.base import _EngineProxy
+from ...engine.base import _ConnectionTypingCommon
+from ...engine.base import _EngineTypingCommon
 from ...future import Connection
 from ...future import Engine
 from ...sql import Executable
@@ -28,7 +28,7 @@ def create_async_engine(*arg: Any, **kw: Any) -> AsyncEngine: ...
 class AsyncConnectable: ...
 
 class AsyncConnection(
-    _ConnectionProxy,
+    _ConnectionTypingCommon,
     ProxyComparable,
     StartableContext["AsyncConnection"],
     AsyncConnectable,
@@ -106,7 +106,7 @@ class AsyncConnection(
         self, type_: Any, value: Any, traceback: Any
     ) -> None: ...
 
-class AsyncEngine(_EngineProxy, ProxyComparable, AsyncConnectable):
+class AsyncEngine(_EngineTypingCommon, ProxyComparable, AsyncConnectable):
     @property
     def engine(self: _TEngine) -> _TEngine: ...
     class _trans_ctx(StartableContext[AsyncConnection]):

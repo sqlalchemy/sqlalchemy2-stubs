@@ -1,13 +1,13 @@
 from typing import Any
 from typing import Callable
 
-from .session import _AsyncSessionProxy
+from .session import _AsyncSessionTypingCommon
 from .session import AsyncSession
 from ...orm.scoping import ScopedSessionMixin
 from ...util import ScopedRegistry
 
 class async_scoped_session(
-    _AsyncSessionProxy, ScopedSessionMixin[AsyncSession]
+    _AsyncSessionTypingCommon, ScopedSessionMixin[AsyncSession]
 ):
     session_factory: Callable[..., AsyncSession] = ...
     registry: ScopedRegistry = ...

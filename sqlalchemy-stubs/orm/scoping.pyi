@@ -5,7 +5,7 @@ from typing import Optional
 from typing import TypeVar
 
 from .session import _SessionClassMethods
-from .session import _SessionProxy
+from .session import _SessionTypingCommon
 from .session import Session
 from ..util import ScopedRegistry
 
@@ -16,7 +16,7 @@ class ScopedSessionMixin(Generic[_T]):
     def configure(self, **kwargs: Any) -> None: ...
 
 class scoped_session(
-    _SessionProxy, _SessionClassMethods, ScopedSessionMixin[Session]
+    _SessionTypingCommon, _SessionClassMethods, ScopedSessionMixin[Session]
 ):
     session_factory: Callable[..., Session] = ...
     registry: ScopedRegistry = ...

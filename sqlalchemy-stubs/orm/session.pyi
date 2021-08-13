@@ -35,7 +35,9 @@ from ..sql.base import Options
 
 _T = TypeVar("_T")
 _TSession = TypeVar("_TSession", bound=Session)
-_TSessionNoIoProxy = TypeVar("_TSession", bound=_SessionNoIoProxy)
+_TSessionNoIoTypingCommon = TypeVar(
+    "_TSession", bound=_SessionNoIoTypingCommon
+)
 _TSessionTransaction = TypeVar(
     "_TSessionTransaction", bound=SessionTransaction
 )
@@ -189,13 +191,13 @@ if sys.version_info >= (3, 0):
 else:
     _TSessionMakerType = TypeVar("_TSessionMakerType", bound=_SessionProtocol)
 
-class _SessionClassMethodNoIoProxy:
+class _SessionClassMethodNoIoTypingCommon:
     @classmethod
     def identity_key(cls, *args: Any, **kwargs: Any) -> Any: ...
     @classmethod
     def object_session(cls, instance: Any) -> Session: ...
 
-class _SessionClassMethods(_SessionClassMethodNoIoProxy):
+class _SessionClassMethods(_SessionClassMethodNoIoTypingCommon):
     @classmethod
     def close_all(cls) -> None: ...  # NOTE: Deprecated.
 
@@ -288,7 +290,7 @@ class SessionTransaction:
     def __enter__(self: _TSessionTransaction) -> _TSessionTransaction: ...
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
 
-class _SessionNoIoProxy:
+class _SessionNoIoTypingCommon:
     @property
     def dirty(self) -> util.IdentitySet[Any]: ...
     @property
@@ -301,8 +303,8 @@ class _SessionNoIoProxy:
     autoflush: bool
     @property
     def no_autoflush(
-        self: _TSessionNoIoProxy,
-    ) -> ContextManager[_TSessionNoIoProxy]: ...
+        self: _TSessionNoIoTypingCommon,
+    ) -> ContextManager[_TSessionNoIoTypingCommon]: ...
     @util.memoized_property
     def info(self) -> MutableMapping[Any, Any]: ...
     def __contains__(self, instance: Any) -> bool: ...
@@ -327,7 +329,7 @@ class _SessionNoIoProxy:
         self, instance: Any, include_collections: bool = ...
     ) -> bool: ...
 
-class _SessionProxy(_SessionNoIoProxy):
+class _SessionTypingCommon(_SessionNoIoTypingCommon):
     bind: Optional[Union[Connection, Engine]]
     autocommit: bool
     def begin(
@@ -410,11 +412,15 @@ class _SessionProxy(_SessionNoIoProxy):
         **kw: Any,
     ) -> Any: ...
 
-class _SessionInTransactionProxy:
+class _SessionInTransactionTypingCommon:
     def in_transaction(self) -> bool: ...
     def in_nested_transaction(self) -> bool: ...
 
-class Session(_SessionProxy, _SessionInTransactionProxy, _SessionClassMethods):
+class Session(
+    _SessionTypingCommon,
+    _SessionInTransactionTypingCommon,
+    _SessionClassMethods,
+):
     future: bool
     hash_key: int
     expire_on_commit: bool

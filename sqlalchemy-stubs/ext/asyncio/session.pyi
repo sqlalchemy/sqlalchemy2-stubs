@@ -19,9 +19,9 @@ from ...engine import Result
 from ...engine.base import _ExecutionOptions
 from ...orm import Session
 from ...orm.session import _BindArguments
-from ...orm.session import _SessionClassMethodNoIoProxy
-from ...orm.session import _SessionInTransactionProxy
-from ...orm.session import _SessionNoIoProxy
+from ...orm.session import _SessionClassMethodNoIoTypingCommon
+from ...orm.session import _SessionInTransactionTypingCommon
+from ...orm.session import _SessionNoIoTypingCommon
 from ...orm.session import _SharedSessionProtocol
 from ...sql import Executable
 
@@ -132,7 +132,9 @@ class _AsyncSessionProtocol(
     @classmethod
     async def close_all(cls) -> None: ...  # NOTE: Deprecated.
 
-class _AsyncSessionProxy(_SessionNoIoProxy, _SessionClassMethodNoIoProxy):
+class _AsyncSessionTypingCommon(
+    _SessionNoIoTypingCommon, _SessionClassMethodNoIoTypingCommon
+):
     bind: Any = ...
     def begin(self, **kw: Any) -> AsyncSessionTransaction: ...
     def begin_nested(self, **kw: Any) -> AsyncSessionTransaction: ...
@@ -182,8 +184,8 @@ class _AsyncSessionProxy(_SessionNoIoProxy, _SessionClassMethodNoIoProxy):
     async def close_all(self) -> None: ...
 
 class AsyncSession(
-    _AsyncSessionProxy,
-    _SessionInTransactionProxy,
+    _AsyncSessionTypingCommon,
+    _SessionInTransactionTypingCommon,
 ):
     dispatch: Any = ...
     binds: Any = ...
