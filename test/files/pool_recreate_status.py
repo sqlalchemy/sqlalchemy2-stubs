@@ -1,4 +1,5 @@
-import sqlalchemy, sqlalchemy.pool
+import sqlalchemy
+import sqlalchemy.pool
 
 engine = sqlalchemy.create_engine("postgresql://scott:tiger@localhost/test")
 status: str = engine.pool.status()

@@ -1,11 +1,12 @@
 from typing import Any
 from typing import Callable
-from typing import ContextManager
+from typing import Collection
+from typing import Generator
 from typing import Iterable
-from typing import Iterator
+from typing import Literal
 from typing import Mapping
-from typing import MutableMapping
 from typing import Optional
+from typing import Protocol
 from typing import Sequence
 from typing import TypeVar
 from typing import Union
@@ -14,11 +15,14 @@ from .base import StartableContext
 from .engine import AsyncConnection
 from .engine import AsyncEngine
 from .result import AsyncResult
-from ... import util
 from ...engine import Result
+from ...engine.base import _ExecutionOptions
 from ...orm import Session
-from ...orm.session import _IdentityMap
-from ...sql import ClauseElement
+from ...orm.session import _BindArguments
+from ...orm.session import _SessionClassMethodNoIoTypingCommon
+from ...orm.session import _SessionInTransactionTypingCommon
+from ...orm.session import _SessionNoIoTypingCommon
+from ...orm.session import _SharedSessionProtocol
 from ...sql import Executable
 
 _T = TypeVar("_T")
@@ -26,29 +30,118 @@ _TAsyncSession = TypeVar("_TAsyncSession", bound=AsyncSession)
 _TAsyncSessionTransaction = TypeVar(
     "_TAsyncSessionTransaction", bound=AsyncSessionTransaction
 )
+_TAsyncSessionTransactionProtocol = TypeVar(
+    "_TAsyncSessionTransactionProtocol",
+    bound=_AsyncSessionTransactionProtocol,
+)
+_TAsyncSessionProtocol = TypeVar(
+    "_TAsyncSessionProtocol", bound=_AsyncSessionProtocol
+)
 
-class AsyncSession:
-    dispatch: Any = ...
-    bind: Any = ...
-    binds: Any = ...
-    sync_session: Session = ...
-    def __init__(
+class _AsyncSessionTransactionProtocol(Protocol):
+    @property
+    def is_active(self) -> bool: ...
+    async def commit(
         self,
-        bind: Optional[Union[AsyncConnection, AsyncEngine]] = ...,
-        binds: Optional[
-            Mapping[object, Union[AsyncConnection, AsyncEngine]]
-        ] = ...,
-        **kw: Any,
+    ) -> Optional[_AsyncSessionTransactionProtocol]: ...
+    async def rollback(
+        self,
+    ) -> Optional[_AsyncSessionTransactionProtocol]: ...
+    async def start(
+        self: _TAsyncSessionTransactionProtocol,
+    ) -> _TAsyncSessionTransactionProtocol: ...
+    def __await__(
+        self: _TAsyncSessionTransactionProtocol,
+    ) -> Generator[Any, None, _TAsyncSessionTransactionProtocol]: ...
+    async def __aenter__(
+        self: _TAsyncSessionTransactionProtocol,
+    ) -> _TAsyncSessionTransactionProtocol: ...
+    async def __aexit__(
+        self, type_: Any, value: Any, traceback: Any
     ) -> None: ...
+
+class _AsyncSessionProtocol(
+    _SharedSessionProtocol[Union[AsyncConnection, AsyncEngine]], Protocol
+):
+    async def __aenter__(
+        self: _TAsyncSessionProtocol,
+    ) -> _TAsyncSessionProtocol: ...
+    async def __aexit__(
+        self, type_: Any, value: Any, traceback: Any
+    ) -> None: ...
+    def begin(self) -> _AsyncSessionTransactionProtocol: ...
+    def begin_nested(self) -> _AsyncSessionTransactionProtocol: ...
+    async def rollback(self) -> None: ...
+    async def commit(self) -> None: ...
+    async def connection(self) -> Any: ...
+    async def execute(
+        self,
+        statement: Executable,
+        params: Optional[
+            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
+        ] = ...,
+        execution_options: _ExecutionOptions = ...,
+        bind_arguments: Optional[_BindArguments] = ...,
+        **kw: Any,
+    ) -> Result: ...
+    async def scalar(
+        self,
+        statement: Executable,
+        params: Optional[
+            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
+        ] = ...,
+        execution_options: _ExecutionOptions = ...,
+        bind_arguments: Optional[_BindArguments] = ...,
+        **kw: Any,
+    ) -> Any: ...
+    async def close(self) -> None: ...
     async def refresh(
         self,
         instance: Any,
-        attribute_names: Optional[Any] = ...,
-        with_for_update: Optional[Any] = ...,
+        attribute_names: Optional[Iterable[str]] = ...,
+        with_for_update: Optional[
+            Union[Literal[True], Mapping[str, Any]]
+        ] = ...,
     ) -> None: ...
-    async def run_sync(
-        self, fn: Callable[..., _T], *arg: Any, **kw: Any
-    ) -> _T: ...
+    async def get(
+        self,
+        entity: Any,
+        ident: Any,
+        options: Optional[Sequence[Any]] = ...,
+        populate_existing: bool = ...,
+        with_for_update: Optional[
+            Union[Literal[True], Mapping[str, Any]]
+        ] = ...,
+        identity_token: Optional[Any] = ...,
+    ) -> Any: ...
+    async def stream(
+        self,
+        statement: Any,
+        params: Optional[
+            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
+        ] = ...,
+        execution_options: _ExecutionOptions = ...,
+        bind_arguments: Optional[_BindArguments] = ...,
+        **kw: Any,
+    ) -> Any: ...
+    async def delete(self, instance: Any) -> None: ...
+    async def merge(self, instance: _T, load: bool = ...) -> _T: ...
+    async def flush(
+        self, objects: Optional[Collection[Any]] = ...
+    ) -> None: ...
+    @classmethod
+    async def close_all(cls) -> None: ...  # NOTE: Deprecated.
+
+class _AsyncSessionTypingCommon(
+    _SessionNoIoTypingCommon, _SessionClassMethodNoIoTypingCommon
+):
+    bind: Any = ...
+    def begin(self, **kw: Any) -> AsyncSessionTransaction: ...
+    def begin_nested(self, **kw: Any) -> AsyncSessionTransaction: ...
+    async def close(self) -> None: ...
+    async def commit(self) -> None: ...
+    async def connection(self) -> AsyncConnection: ...
+    async def delete(self, instance: Any) -> None: ...
     async def execute(
         self,
         statement: Executable,
@@ -59,6 +152,24 @@ class AsyncSession:
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> Result: ...
+    async def flush(self, objects: Optional[Any] = ...) -> None: ...
+    async def get(
+        self,
+        entity: Any,
+        ident: Any,
+        options: Optional[Any] = ...,
+        populate_existing: bool = ...,
+        with_for_update: Optional[Any] = ...,
+        identity_token: Optional[Any] = ...,
+    ) -> Any: ...
+    async def merge(self, instance: _T, load: bool = ...) -> _T: ...
+    async def refresh(
+        self,
+        instance: Any,
+        attribute_names: Optional[Any] = ...,
+        with_for_update: Optional[Any] = ...,
+    ) -> None: ...
+    async def rollback(self) -> None: ...
     async def scalar(
         self,
         statement: Executable,
@@ -69,15 +180,27 @@ class AsyncSession:
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> Any: ...
-    async def get(
+    @classmethod
+    async def close_all(self) -> None: ...
+
+class AsyncSession(
+    _AsyncSessionTypingCommon,
+    _SessionInTransactionTypingCommon,
+):
+    dispatch: Any = ...
+    binds: Any = ...
+    sync_session: Session = ...
+    def __init__(
         self,
-        entity: Any,
-        ident: Any,
-        options: Optional[Any] = ...,
-        populate_existing: bool = ...,
-        with_for_update: Optional[Any] = ...,
-        identity_token: Optional[Any] = ...,
-    ) -> Any: ...
+        bind: Optional[Union[AsyncConnection, AsyncEngine]] = ...,
+        binds: Optional[
+            Mapping[object, Union[AsyncConnection, AsyncEngine]]
+        ] = ...,
+        **kw: Any,
+    ) -> None: ...
+    async def run_sync(
+        self, fn: Callable[..., _T], *arg: Any, **kw: Any
+    ) -> _T: ...
     async def stream(
         self,
         statement: Any,
@@ -88,60 +211,10 @@ class AsyncSession:
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> AsyncResult: ...
-    async def delete(self, instance: Any) -> None: ...
-    async def merge(self, instance: _T, load: bool = ...) -> _T: ...
-    async def flush(self, objects: Optional[Any] = ...) -> None: ...
-    async def connection(self) -> AsyncConnection: ...
-    def begin(self, **kw: Any) -> AsyncSessionTransaction: ...
-    def begin_nested(self, **kw: Any) -> AsyncSessionTransaction: ...
-    async def rollback(self) -> None: ...
-    async def commit(self) -> None: ...
-    async def close(self) -> None: ...
-    @classmethod
-    async def close_all(self) -> None: ...
     async def __aenter__(self: _TAsyncSession) -> _TAsyncSession: ...
     async def __aexit__(
         self, type_: Any, value: Any, traceback: Any
     ) -> None: ...
-    # copied via create_proxy_methods
-    def __contains__(self, instance: Any) -> bool: ...
-    def __iter__(self) -> Iterator[Any]: ...
-    def add(self, instance: Any, _warn: bool = ...) -> None: ...
-    def add_all(self, instances: Any) -> None: ...
-    def expire(
-        self, instance: Any, attribute_names: Optional[Iterable[str]] = ...
-    ) -> None: ...
-    def expire_all(self) -> None: ...
-    def expunge(self, instance: Any) -> None: ...
-    def expunge_all(self) -> None: ...
-    def get_bind(
-        self,
-        mapper: Optional[Any] = ...,
-        clause: Optional[ClauseElement] = ...,
-        bind: Optional[Union[AsyncConnection, AsyncEngine]] = ...,
-        _sa_skip_events: Optional[Any] = ...,
-        _sa_skip_for_implicit_returning: bool = ...,
-    ) -> Union[AsyncConnection, AsyncEngine]: ...
-    def is_modified(
-        self, instance: Any, include_collections: bool = ...
-    ) -> bool: ...
-    def in_transaction(self) -> bool: ...
-    @property
-    def dirty(self) -> util.IdentitySet[Any]: ...
-    @property
-    def deleted(self) -> util.IdentitySet[Any]: ...
-    @property
-    def new(self) -> util.IdentitySet[Any]: ...
-    identity_map: _IdentityMap
-    @property
-    def is_active(self) -> bool: ...
-    autoflush: bool
-    @property
-    def no_autoflush(
-        self: _TAsyncSession,
-    ) -> ContextManager[_TAsyncSession]: ...
-    @util.memoized_property
-    def info(self) -> MutableMapping[Any, Any]: ...
 
 class _AsyncSessionContextManager:
     async_session: AsyncSession = ...
@@ -167,3 +240,6 @@ class AsyncSessionTransaction(StartableContext["AsyncSessionTransaction"]):
     async def __aexit__(
         self, type_: Any, value: Any, traceback: Any
     ) -> None: ...
+
+def async_object_session(instance: Any) -> Optional[AsyncSession]: ...
+def async_session(session: Session) -> Optional[AsyncSession]: ...

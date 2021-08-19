@@ -35,6 +35,9 @@ from ..sql.base import Options
 
 _T = TypeVar("_T")
 _TSession = TypeVar("_TSession", bound=Session)
+_TSessionNoIoTypingCommon = TypeVar(
+    "_TSession", bound=_SessionNoIoTypingCommon
+)
 _TSessionTransaction = TypeVar(
     "_TSessionTransaction", bound=SessionTransaction
 )
@@ -179,123 +182,24 @@ class _SessionTransactionProtocol(Protocol):
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
 
 if sys.version_info >= (3, 0):
-    from typing import Generator
-    from ..ext.asyncio import AsyncEngine, AsyncConnection
+    from ..ext.asyncio.session import _AsyncSessionProtocol
 
     _TSessionMakerType = TypeVar(
         "_TSessionMakerType",
         bound=Union[_SessionProtocol, _AsyncSessionProtocol],
     )
-    _TAsyncSessionTransactionProtocol = TypeVar(
-        "_TAsyncSessionTransactionProtocol",
-        bound=_AsyncSessionTransactionProtocol,
-    )
-    _TAsyncSessionProtocol = TypeVar(
-        "_TAsyncSessionProtocol", bound=_AsyncSessionProtocol
-    )
-    class _AsyncSessionTransactionProtocol(Protocol):
-        @property
-        def is_active(self) -> bool: ...
-        async def commit(
-            self,
-        ) -> Optional[_AsyncSessionTransactionProtocol]: ...
-        async def rollback(
-            self,
-        ) -> Optional[_AsyncSessionTransactionProtocol]: ...
-        async def start(
-            self: _TAsyncSessionTransactionProtocol,
-        ) -> _TAsyncSessionTransactionProtocol: ...
-        def __await__(
-            self: _TAsyncSessionTransactionProtocol,
-        ) -> Generator[Any, None, _TAsyncSessionTransactionProtocol]: ...
-        async def __aenter__(
-            self: _TAsyncSessionTransactionProtocol,
-        ) -> _TAsyncSessionTransactionProtocol: ...
-        async def __aexit__(
-            self, type_: Any, value: Any, traceback: Any
-        ) -> None: ...
-    class _AsyncSessionProtocol(
-        _SharedSessionProtocol[Union[AsyncConnection, AsyncEngine]], Protocol
-    ):
-        async def __aenter__(
-            self: _TAsyncSessionProtocol,
-        ) -> _TAsyncSessionProtocol: ...
-        async def __aexit__(
-            self, type_: Any, value: Any, traceback: Any
-        ) -> None: ...
-        def begin(self) -> _AsyncSessionTransactionProtocol: ...
-        def begin_nested(self) -> _AsyncSessionTransactionProtocol: ...
-        async def rollback(self) -> None: ...
-        async def commit(self) -> None: ...
-        async def connection(self) -> Any: ...
-        async def execute(
-            self,
-            statement: Executable,
-            params: Optional[
-                Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-            ] = ...,
-            execution_options: _ExecutionOptions = ...,
-            bind_arguments: Optional[_BindArguments] = ...,
-            **kw: Any,
-        ) -> Result: ...
-        async def scalar(
-            self,
-            statement: Executable,
-            params: Optional[
-                Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-            ] = ...,
-            execution_options: _ExecutionOptions = ...,
-            bind_arguments: Optional[_BindArguments] = ...,
-            **kw: Any,
-        ) -> Any: ...
-        async def close(self) -> None: ...
-        async def refresh(
-            self,
-            instance: Any,
-            attribute_names: Optional[Iterable[str]] = ...,
-            with_for_update: Optional[
-                Union[Literal[True], Mapping[str, Any]]
-            ] = ...,
-        ) -> None: ...
-        async def get(
-            self,
-            entity: Any,
-            ident: Any,
-            options: Optional[Sequence[Any]] = ...,
-            populate_existing: bool = ...,
-            with_for_update: Optional[
-                Union[Literal[True], Mapping[str, Any]]
-            ] = ...,
-            identity_token: Optional[Any] = ...,
-        ) -> Any: ...
-        async def stream(
-            self,
-            statement: Any,
-            params: Optional[
-                Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-            ] = ...,
-            execution_options: _ExecutionOptions = ...,
-            bind_arguments: Optional[_BindArguments] = ...,
-            **kw: Any,
-        ) -> Any: ...
-        async def delete(self, instance: Any) -> None: ...
-        async def merge(self, instance: _T, load: bool = ...) -> _T: ...
-        async def flush(
-            self, objects: Optional[Collection[Any]] = ...
-        ) -> None: ...
-        @classmethod
-        async def close_all(cls) -> None: ...  # NOTE: Deprecated.
-
 else:
     _TSessionMakerType = TypeVar("_TSessionMakerType", bound=_SessionProtocol)
 
-class _SessionClassMethods:
-    @classmethod
-    def close_all(cls) -> None: ...  # NOTE: Deprecated.
+class _SessionClassMethodNoIoTypingCommon:
     @classmethod
     def identity_key(cls, *args: Any, **kwargs: Any) -> Any: ...
     @classmethod
     def object_session(cls, instance: Any) -> Session: ...
+
+class _SessionClassMethods(_SessionClassMethodNoIoTypingCommon):
+    @classmethod
+    def close_all(cls) -> None: ...  # NOTE: Deprecated.
 
 ACTIVE: util.langhelpers._symbol
 PREPARED: util.langhelpers._symbol
@@ -386,15 +290,141 @@ class SessionTransaction:
     def __enter__(self: _TSessionTransaction) -> _TSessionTransaction: ...
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
 
-class Session(_SessionClassMethods):
+class _SessionNoIoTypingCommon:
+    @property
+    def dirty(self) -> util.IdentitySet[Any]: ...
+    @property
+    def deleted(self) -> util.IdentitySet[Any]: ...
+    @property
+    def new(self) -> util.IdentitySet[Any]: ...
     identity_map: _IdentityMap
+    @property
+    def is_active(self) -> bool: ...
+    autoflush: bool
+    @property
+    def no_autoflush(
+        self: _TSessionNoIoTypingCommon,
+    ) -> ContextManager[_TSessionNoIoTypingCommon]: ...
+    @util.memoized_property
+    def info(self) -> MutableMapping[Any, Any]: ...
+    def __contains__(self, instance: Any) -> bool: ...
+    def __iter__(self) -> Iterator[Any]: ...
+    def add(self, instance: Any, _warn: bool = ...) -> None: ...
+    def add_all(self, instances: Any) -> None: ...
+    def expire(
+        self, instance: Any, attribute_names: Optional[Iterable[str]] = ...
+    ) -> None: ...
+    def expire_all(self) -> None: ...
+    def expunge(self, instance: Any) -> None: ...
+    def expunge_all(self) -> None: ...
+    def get_bind(
+        self,
+        mapper: Optional[Any] = ...,
+        clause: Optional[ClauseElement] = ...,
+        bind: Optional[Union[Connection, Engine]] = ...,
+        _sa_skip_events: Optional[Any] = ...,
+        _sa_skip_for_implicit_returning: bool = ...,
+    ) -> Union[Connection, Engine]: ...
+    def is_modified(
+        self, instance: Any, include_collections: bool = ...
+    ) -> bool: ...
+
+class _SessionTypingCommon(_SessionNoIoTypingCommon):
     bind: Optional[Union[Connection, Engine]]
+    autocommit: bool
+    def begin(
+        self,
+        subtransactions: bool = ...,  # NOTE: Deprecated.
+        nested: bool = ...,
+        _subtrans: bool = ...,
+    ) -> SessionTransaction: ...
+    def begin_nested(self) -> SessionTransaction: ...
+    def close(self) -> None: ...
+    def commit(self) -> None: ...
+    def connection(
+        self,
+        bind_arguments: Optional[_BindArguments] = ...,
+        close_with_result: bool = ...,
+        execution_options: _ExecutionOptions = ...,
+        **kw: Any,
+    ) -> Connection: ...
+    def delete(self, instance: Any) -> None: ...
+    def execute(
+        self,
+        statement: Executable,
+        params: Optional[
+            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
+        ] = ...,
+        execution_options: _ExecutionOptions = ...,
+        bind_arguments: Optional[_BindArguments] = ...,
+        _parent_execute_state: Optional[Any] = ...,
+        _add_event: Optional[Any] = ...,
+        **kw: Any,
+    ) -> Result: ...
+    def flush(self, objects: Optional[Collection[Any]] = ...) -> None: ...
+    def get(
+        self,
+        entity: Any,
+        ident: Any,
+        options: Optional[Sequence[Any]] = ...,
+        populate_existing: bool = ...,
+        with_for_update: Optional[
+            Union[Literal[True], Mapping[str, Any]]
+        ] = ...,
+        identity_token: Optional[Any] = ...,
+    ) -> Any: ...
+    def bulk_save_objects(
+        self,
+        objects: Sequence[Any],
+        return_defaults: bool = ...,
+        update_changed_only: bool = ...,
+        preserve_order: bool = ...,
+    ) -> None: ...
+    def bulk_insert_mappings(
+        self,
+        mapper: Any,
+        mappings: Sequence[Mapping[str, Any]],
+        return_defaults: bool = ...,
+        render_nulls: bool = ...,
+    ) -> None: ...
+    def bulk_update_mappings(
+        self, mapper: Any, mappings: Sequence[Mapping[str, Any]]
+    ) -> None: ...
+    def merge(self, instance: _T, load: bool = ...) -> _T: ...
+    def query(self, *entities: Any, **kwargs: Any) -> Query[Any]: ...
+    def refresh(
+        self,
+        instance: Any,
+        attribute_names: Optional[Iterable[str]] = ...,
+        with_for_update: Optional[
+            Union[Literal[True], Mapping[str, Any]]
+        ] = ...,
+    ) -> None: ...
+    def rollback(self) -> None: ...
+    def scalar(
+        self,
+        statement: Executable,
+        params: Optional[
+            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
+        ] = ...,
+        execution_options: _ExecutionOptions = ...,
+        bind_arguments: Optional[_BindArguments] = ...,
+        **kw: Any,
+    ) -> Any: ...
+
+class _SessionInTransactionTypingCommon:
+    def in_transaction(self) -> bool: ...
+    def in_nested_transaction(self) -> bool: ...
+
+class Session(
+    _SessionTypingCommon,
+    _SessionInTransactionTypingCommon,
+    _SessionClassMethods,
+):
     future: bool
     hash_key: int
-    autoflush: bool
     expire_on_commit: bool
     enable_baked_queries: bool
-    autocommit: bool
     twophase: bool
     def __init__(
         self,
@@ -418,127 +448,13 @@ class Session(_SessionClassMethods):
     def transaction(
         self,
     ) -> Optional[SessionTransaction]: ...  # NOTE: Deprecated.
-    def in_transaction(self) -> bool: ...
-    def in_nested_transaction(self) -> bool: ...
     def get_transaction(self) -> Optional[SessionTransaction]: ...
     def get_nested_transaction(self) -> Optional[SessionTransaction]: ...
-    @util.memoized_property
-    def info(self) -> MutableMapping[Any, Any]: ...
-    def begin(
-        self,
-        subtransactions: bool = ...,  # NOTE: Deprecated.
-        nested: bool = ...,
-        _subtrans: bool = ...,
-    ) -> SessionTransaction: ...
-    def begin_nested(self) -> SessionTransaction: ...
-    def rollback(self) -> None: ...
-    def commit(self) -> None: ...
     def prepare(self) -> None: ...
-    def connection(
-        self,
-        bind_arguments: Optional[_BindArguments] = ...,
-        close_with_result: bool = ...,
-        execution_options: _ExecutionOptions = ...,
-        **kw: Any,
-    ) -> Connection: ...
-    def execute(
-        self,
-        statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
-        execution_options: _ExecutionOptions = ...,
-        bind_arguments: Optional[_BindArguments] = ...,
-        _parent_execute_state: Optional[Any] = ...,
-        _add_event: Optional[Any] = ...,
-        **kw: Any,
-    ) -> Result: ...
-    def scalar(
-        self,
-        statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
-        execution_options: _ExecutionOptions = ...,
-        bind_arguments: Optional[_BindArguments] = ...,
-        **kw: Any,
-    ) -> Any: ...
-    def close(self) -> None: ...
     def invalidate(self) -> None: ...
-    def expunge_all(self) -> None: ...
     def bind_mapper(self, mapper: Any, bind: Any) -> None: ...
     def bind_table(self, table: Any, bind: Any) -> None: ...
-    def get_bind(
-        self,
-        mapper: Optional[Any] = ...,
-        clause: Optional[ClauseElement] = ...,
-        bind: Optional[Union[Connection, Engine]] = ...,
-        _sa_skip_events: Optional[Any] = ...,
-        _sa_skip_for_implicit_returning: bool = ...,
-    ) -> Union[Connection, Engine]: ...
-    def query(self, *entities: Any, **kwargs: Any) -> Query[Any]: ...
-    @property
-    def no_autoflush(self: _TSession) -> ContextManager[_TSession]: ...
-    def refresh(
-        self,
-        instance: Any,
-        attribute_names: Optional[Iterable[str]] = ...,
-        with_for_update: Optional[
-            Union[Literal[True], Mapping[str, Any]]
-        ] = ...,
-    ) -> None: ...
-    def expire_all(self) -> None: ...
-    def expire(
-        self, instance: Any, attribute_names: Optional[Iterable[str]] = ...
-    ) -> None: ...
-    def expunge(self, instance: Any) -> None: ...
-    def add(self, instance: Any, _warn: bool = ...) -> None: ...
-    def add_all(self, instances: Any) -> None: ...
-    def delete(self, instance: Any) -> None: ...
-    def get(
-        self,
-        entity: Any,
-        ident: Any,
-        options: Optional[Sequence[Any]] = ...,
-        populate_existing: bool = ...,
-        with_for_update: Optional[
-            Union[Literal[True], Mapping[str, Any]]
-        ] = ...,
-        identity_token: Optional[Any] = ...,
-    ) -> Any: ...
-    def merge(self, instance: _T, load: bool = ...) -> _T: ...
     def enable_relationship_loading(self, obj: Any) -> None: ...
-    def __contains__(self, instance: Any) -> bool: ...
-    def __iter__(self) -> Iterator[Any]: ...
-    def flush(self, objects: Optional[Collection[Any]] = ...) -> None: ...
-    def bulk_save_objects(
-        self,
-        objects: Sequence[Any],
-        return_defaults: bool = ...,
-        update_changed_only: bool = ...,
-        preserve_order: bool = ...,
-    ) -> None: ...
-    def bulk_insert_mappings(
-        self,
-        mapper: Any,
-        mappings: Sequence[Mapping[str, Any]],
-        return_defaults: bool = ...,
-        render_nulls: bool = ...,
-    ) -> None: ...
-    def bulk_update_mappings(
-        self, mapper: Any, mappings: Sequence[Mapping[str, Any]]
-    ) -> None: ...
-    def is_modified(
-        self, instance: Any, include_collections: bool = ...
-    ) -> bool: ...
-    @property
-    def is_active(self) -> bool: ...
-    @property
-    def dirty(self) -> util.IdentitySet[Any]: ...
-    @property
-    def deleted(self) -> util.IdentitySet[Any]: ...
-    @property
-    def new(self) -> util.IdentitySet[Any]: ...
 
 class sessionmaker(_SessionClassMethods, Generic[_TSessionMakerType]):
     kw: Mapping[str, Any]
