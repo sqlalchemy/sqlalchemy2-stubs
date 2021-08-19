@@ -144,7 +144,7 @@ class _SessionProtocol(
     def delete(self, instance: Any) -> None: ...
     def get(
         self,
-        entity: Any,
+        entity: Type[_T],
         ident: Any,
         options: Optional[Sequence[Any]] = ...,
         populate_existing: bool = ...,
@@ -152,7 +152,7 @@ class _SessionProtocol(
             Union[Literal[True], Mapping[str, Any]]
         ] = ...,
         identity_token: Optional[Any] = ...,
-    ) -> Any: ...
+    ) -> Optional[_T]: ...
     def merge(self, instance: _T, load: bool = ...) -> _T: ...
     def flush(self, objects: Optional[Collection[Any]] = ...) -> None: ...
     @classmethod

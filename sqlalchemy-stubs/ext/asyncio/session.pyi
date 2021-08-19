@@ -8,6 +8,7 @@ from typing import Mapping
 from typing import Optional
 from typing import Protocol
 from typing import Sequence
+from typing import Type
 from typing import TypeVar
 from typing import Union
 
@@ -105,7 +106,7 @@ class _AsyncSessionProtocol(
     ) -> None: ...
     async def get(
         self,
-        entity: Any,
+        entity: Type[_T],
         ident: Any,
         options: Optional[Sequence[Any]] = ...,
         populate_existing: bool = ...,
@@ -113,7 +114,7 @@ class _AsyncSessionProtocol(
             Union[Literal[True], Mapping[str, Any]]
         ] = ...,
         identity_token: Optional[Any] = ...,
-    ) -> Any: ...
+    ) -> Optional[_T]: ...
     async def stream(
         self,
         statement: Any,
@@ -155,13 +156,13 @@ class _AsyncSessionTypingCommon(
     async def flush(self, objects: Optional[Any] = ...) -> None: ...
     async def get(
         self,
-        entity: Any,
+        entity: Type[_T],
         ident: Any,
         options: Optional[Any] = ...,
         populate_existing: bool = ...,
         with_for_update: Optional[Any] = ...,
         identity_token: Optional[Any] = ...,
-    ) -> Any: ...
+    ) -> Optional[_T]: ...
     async def merge(self, instance: _T, load: bool = ...) -> _T: ...
     async def refresh(
         self,
