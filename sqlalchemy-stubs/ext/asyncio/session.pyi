@@ -134,7 +134,8 @@ class _AsyncSessionProtocol(
     async def close_all(cls) -> None: ...  # NOTE: Deprecated.
 
 class _AsyncSessionTypingCommon(
-    _SessionNoIoTypingCommon, _SessionClassMethodNoIoTypingCommon
+    _SessionNoIoTypingCommon[Union[AsyncConnection, AsyncEngine]],
+    _SessionClassMethodNoIoTypingCommon,
 ):
     bind: Any = ...
     def begin(self, **kw: Any) -> AsyncSessionTransaction: ...

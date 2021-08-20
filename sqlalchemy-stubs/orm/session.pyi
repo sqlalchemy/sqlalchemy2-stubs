@@ -290,7 +290,7 @@ class SessionTransaction:
     def __enter__(self: _TSessionTransaction) -> _TSessionTransaction: ...
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
 
-class _SessionNoIoTypingCommon:
+class _SessionNoIoTypingCommon(Generic[_T]):
     @property
     def dirty(self) -> util.IdentitySet[Any]: ...
     @property
@@ -321,15 +321,17 @@ class _SessionNoIoTypingCommon:
         self,
         mapper: Optional[Any] = ...,
         clause: Optional[ClauseElement] = ...,
-        bind: Optional[Union[Connection, Engine]] = ...,
+        bind: Optional[_T] = ...,
         _sa_skip_events: Optional[Any] = ...,
         _sa_skip_for_implicit_returning: bool = ...,
-    ) -> Union[Connection, Engine]: ...
+    ) -> _T: ...
     def is_modified(
         self, instance: Any, include_collections: bool = ...
     ) -> bool: ...
 
-class _SessionTypingCommon(_SessionNoIoTypingCommon):
+class _SessionTypingCommon(
+    _SessionNoIoTypingCommon[Union[Connection, Engine]]
+):
     bind: Optional[Union[Connection, Engine]]
     autocommit: bool
     def begin(
