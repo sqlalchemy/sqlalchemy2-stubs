@@ -2,6 +2,7 @@ from typing import Any
 from typing import Generic
 from typing import Optional
 from typing import overload
+from typing import Sequence
 from typing import Type
 from typing import TypeVar
 from typing import Union
@@ -35,6 +36,8 @@ _T_co = TypeVar("_T_co", covariant=True)
 _TE = TypeVar("_TE", bound=type_api.TypeEngine[Any])
 _FE = TypeVar("_FE", bound=FunctionElement[Any])
 
+_OverByType = Union[ClauseElement, str]
+
 def register_function(
     identifier: str, fn: Any, package: str = ...
 ) -> None: ...
@@ -63,8 +66,10 @@ class FunctionElement(  # type: ignore[misc]
     def clauses(self) -> ClauseList[Any]: ...
     def over(
         self,
-        partition_by: Optional[ClauseElement] = ...,
-        order_by: Optional[ClauseElement] = ...,
+        partition_by: Optional[
+            Union[_OverByType, Sequence[_OverByType]]
+        ] = ...,
+        order_by: Optional[Union[_OverByType, Sequence[_OverByType]]] = ...,
         rows: Optional[Any] = ...,
         range_: Optional[Any] = ...,
     ) -> Over[_TE]: ...
