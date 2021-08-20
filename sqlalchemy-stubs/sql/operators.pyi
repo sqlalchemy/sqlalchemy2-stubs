@@ -24,6 +24,7 @@ from typing import NoReturn
 from typing import Optional
 from typing import Type
 from typing import TypeVar
+from typing import overload
 from typing import Union
 
 from . import sqltypes
@@ -34,13 +35,15 @@ from .type_api import TypeEngine
 _F = TypeVar("_F", bound=Callable[..., Any])
 _T = TypeVar("_T")
 _TE = TypeVar("_TE", bound=TypeEngine[Any])
+_OTE = TypeVar("_OTE", bound=TypeEngine[Any])
+_CE = TypeVar("_CE", bound=ClauseElement)
 
 div = truediv
 
-class Operators:
-    def __and__(self, other: Any) -> ClauseElement: ...
-    def __or__(self, other: Any) -> ClauseElement: ...
-    def __invert__(self) -> ClauseElement: ...
+class Operators(Generic[_CE]):
+    def __and__(self, other: Any) -> _CE: ...
+    def __or__(self, other: Any) -> _CE: ...
+    def __invert__(self) -> _CE: ...
     def op(
         self,
         opstring: Any,
@@ -52,13 +55,9 @@ class Operators:
     ) -> Callable[[Any], ClauseElement]: ...
     def bool_op(
         self, opstring: Any, precedence: int = ...
-    ) -> Callable[[Any], ClauseElement]: ...
-    def operate(
-        self, op: Any, *other: Any, **kwargs: Any
-    ) -> ClauseElement: ...
-    def reverse_operate(
-        self, op: Any, other: Any, **kwargs: Any
-    ) -> ClauseElement: ...
+    ) -> Callable[[Any], _CE]: ...
+    def operate(self, op: Any, *other: Any, **kwargs: Any) -> _CE: ...
+    def reverse_operate(self, op: Any, other: Any, **kwargs: Any) -> _CE: ...
 
 class custom_op:
     __name__: str = ...
@@ -83,7 +82,23 @@ class custom_op:
     def __hash__(self) -> int: ...
     def __call__(self, left: Any, right: Any, **kw: Any) -> ClauseElement: ...
 
-class ColumnOperators(Operators, Generic[_TE]):
+class ColumnOperators(Operators[ColumnElement[_TE]], Generic[_TE]):
+    # op requires custom override
+    @overload
+    def op(
+        self,
+        opstring: Any,
+        precedence: int = ...,
+        is_comparison: bool = ...,
+    ) -> Callable[[Any], ColumnElement[_TE]]: ...
+    @overload
+    def op(
+        self,
+        opstring: Any,
+        precedence: int = ...,
+        is_comparison: bool = ...,
+        return_type: Union[Type[_OTE], _OTE] = ...,
+    ) -> Callable[[Any], ColumnElement[_OTE]]: ...
     timetuple: Any = ...
     # TODO https://github.com/sqlalchemy/sqlalchemy2-stubs/issues/114
     #  Can we also limit the "other" parameter? Most should be
