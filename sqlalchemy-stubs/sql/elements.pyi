@@ -59,6 +59,8 @@ _BE = TypeVar("_BE", bound=BinaryExpression[Any])
 _QN = TypeVar("_QN", bound=quoted_name)
 _TL = TypeVar("_TL", bound=_truncated_label)
 
+_OverByType = Union[ClauseElement, str]
+
 def collate(expression: Any, collation: str) -> BinaryExpression[_TE]: ...
 def between(
     expr: Any,
@@ -542,8 +544,10 @@ class Over(ColumnElement[_TE]):
     def __init__(
         self,
         element: ColumnElement[_TE],
-        partition_by: Optional[ClauseElement] = ...,
-        order_by: Optional[ClauseElement] = ...,
+        partition_by: Optional[
+            Union[_OverByType, Sequence[_OverByType]]
+        ] = ...,
+        order_by: Optional[Union[_OverByType, Sequence[_OverByType]]] = ...,
         range_: Optional[Any] = ...,
         rows: Optional[Any] = ...,
     ) -> None: ...
