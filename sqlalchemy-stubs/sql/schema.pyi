@@ -56,7 +56,6 @@ _CP = TypeVar("_CP", bound=Computed)
 _ID = TypeVar("_ID", bound=Identity)
 
 _ServerDefaultType = Union[FetchedValue, str, TextClause, ColumnElement[_T]]
-_ServerOnUpdateType = Union[FetchedValue, FunctionElement]
 
 class SchemaItem(SchemaEventTarget, visitors.Visitable):
     __visit_name__: str = ...
@@ -145,7 +144,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     nullable: bool = ...
     default: Optional[Any] = ...
     server_default: Optional[_ServerDefaultType[_TE]] = ...
-    server_onupdate: Optional[_ServerOnUpdateType] = ...
+    server_onupdate: Optional[FetchedValue] = ...
     index: Optional[bool] = ...
     unique: Optional[bool] = ...
     system: bool = ...
@@ -172,7 +171,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
         server_default: Optional[_ServerDefaultType[Any]] = ...,
-        server_onupdate: Optional[_ServerOnUpdateType] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
         quote: Optional[bool] = ...,
         unique: Optional[bool] = ...,
         system: bool = ...,
@@ -193,7 +192,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
         server_default: Optional[_ServerDefaultType[Any]] = ...,
-        server_onupdate: Optional[_ServerOnUpdateType] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
         quote: Optional[bool] = ...,
         unique: Optional[bool] = ...,
         system: bool = ...,
@@ -216,7 +215,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
         server_default: Optional[_ServerDefaultType[_TE]] = ...,
-        server_onupdate: Optional[_ServerOnUpdateType] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
         quote: Optional[bool] = ...,
         unique: Optional[bool] = ...,
         system: bool = ...,
@@ -238,7 +237,7 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
         onupdate: Optional[Any] = ...,
         primary_key: bool = ...,
         server_default: Optional[_ServerDefaultType[_TE]] = ...,
-        server_onupdate: Optional[_ServerOnUpdateType] = ...,
+        server_onupdate: Optional[FetchedValue] = ...,
         quote: Optional[bool] = ...,
         unique: Optional[bool] = ...,
         system: bool = ...,
