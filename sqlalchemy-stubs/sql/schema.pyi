@@ -29,7 +29,6 @@ from .elements import ClauseElement
 from .elements import ColumnClause
 from .elements import ColumnElement
 from .elements import TextClause
-from .functions import FunctionElement
 from .events import DDLEvents
 from .selectable import TableClause
 from .. import util
