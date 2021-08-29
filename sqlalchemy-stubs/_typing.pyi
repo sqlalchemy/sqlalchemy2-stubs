@@ -20,3 +20,4 @@ class _TypeToInstance(Generic[_T]):
     def __set__(self, instance: object, value: _T) -> None: ...
 
 _ExecuteParams = Union[Mapping[Any, Any], Sequence[Mapping[Any, Any]]]
+_ExecuteOptions = Mapping[Any, Any]

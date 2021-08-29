@@ -15,6 +15,7 @@ from .result import ResultMetaData
 from .result import Row
 from .row import LegacyRow
 from .. import util as util
+from .._typing import _ExecuteOptions
 
 _TCursorResult = TypeVar("_TCursorResult", bound=CursorResult)
 
@@ -97,7 +98,7 @@ class BufferedRowCursorFetchStrategy(CursorFetchStrategy):
     def __init__(
         self,
         dbapi_cursor: _DBAPICursor,
-        execution_options: Any,
+        execution_options: _ExecuteOptions,
         growth_factor: int = ...,
         initial_buffer: Optional[Any] = ...,
     ) -> None: ...

@@ -25,11 +25,11 @@ from .path_registry import PathRegistry
 from .query import Query
 from .state import InstanceState
 from .. import util
+from .._typing import _ExecuteOptions
 from .._typing import _ExecuteParams
 from ..engine import Connection
 from ..engine import Engine
 from ..engine import Result
-from ..engine.base import _ExecutionOptions
 from ..sql import ClauseElement
 from ..sql import Executable
 from ..sql.base import Options
@@ -117,7 +117,7 @@ class _SessionProtocol(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Result: ...
@@ -125,7 +125,7 @@ class _SessionProtocol(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Any: ...
@@ -166,7 +166,7 @@ class _SessionTransactionProtocol(Protocol):
     def connection(
         self,
         bindkey: Any,
-        execution_options: Optional[_ExecutionOptions] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         **kwargs: Any,
     ) -> Connection: ...
     def prepare(self) -> None: ...
@@ -208,15 +208,15 @@ class ORMExecuteState(util.MemoizedSlots):
     session: Session
     statement: Executable
     parameters: Mapping[str, Any]
-    local_execution_options: Any
-    execution_options: Any
+    local_execution_options: _ExecuteOptions
+    execution_options: _ExecuteOptions
     bind_arguments: _BindArguments
     def __init__(
         self,
         session: Session,
         statement: Executable,
         parameters: Mapping[str, Any],
-        execution_options: _ExecutionOptions,
+        execution_options: Optional[_ExecuteOptions],
         bind_arguments: _BindArguments,
         compile_state_cls: Any,
         events_todo: Any,
@@ -225,7 +225,7 @@ class ORMExecuteState(util.MemoizedSlots):
         self,
         statement: Optional[Any] = ...,
         params: Optional[Mapping[str, Any]] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
     ) -> Any: ...
     @property
@@ -275,7 +275,7 @@ class SessionTransaction:
     def connection(
         self,
         bindkey: Any,
-        execution_options: Optional[_ExecutionOptions] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         **kwargs: Any,
     ) -> Connection: ...
     def prepare(self) -> None: ...
@@ -344,7 +344,7 @@ class _SessionTypingCommon(
         self,
         bind_arguments: Optional[_BindArguments] = ...,
         close_with_result: bool = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         **kw: Any,
     ) -> Connection: ...
     def delete(self, instance: Any) -> None: ...
@@ -352,7 +352,7 @@ class _SessionTypingCommon(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         _parent_execute_state: Optional[Any] = ...,
         _add_event: Optional[Any] = ...,
@@ -402,7 +402,7 @@ class _SessionTypingCommon(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Any: ...

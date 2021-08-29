@@ -16,9 +16,9 @@ from .base import StartableContext
 from .engine import AsyncConnection
 from .engine import AsyncEngine
 from .result import AsyncResult
+from ..._typing import _ExecuteOptions
 from ..._typing import _ExecuteParams
 from ...engine import Result
-from ...engine.base import _ExecutionOptions
 from ...orm import Session
 from ...orm.session import _BindArguments
 from ...orm.session import _SessionClassMethodNoIoTypingCommon
@@ -80,7 +80,7 @@ class _AsyncSessionProtocol(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Result: ...
@@ -88,7 +88,7 @@ class _AsyncSessionProtocol(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Any: ...
@@ -116,7 +116,7 @@ class _AsyncSessionProtocol(
         self,
         statement: Any,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: _ExecutionOptions = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Any: ...
@@ -143,7 +143,7 @@ class _AsyncSessionTypingCommon(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: Optional[Mapping[Any, Any]] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> Result: ...
@@ -169,7 +169,7 @@ class _AsyncSessionTypingCommon(
         self,
         statement: Executable,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: Mapping[Any, Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> Any: ...
@@ -198,7 +198,7 @@ class AsyncSession(
         self,
         statement: Any,
         params: Optional[_ExecuteParams] = ...,
-        execution_options: Mapping[Any, Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> AsyncResult: ...

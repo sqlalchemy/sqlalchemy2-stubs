@@ -14,6 +14,7 @@ from .. import future as future
 from .. import inspect as inspect
 from .. import sql as sql
 from .. import util as util
+from .._typing import _ExecuteOptions
 from ..sql import coercions as coercions
 from ..sql import expression as expression
 from ..sql import roles as roles
@@ -34,7 +35,7 @@ LABEL_STYLE_LEGACY_ORM: Any
 class QueryContext:
     class default_load_options(Options): ...
     load_options: Any = ...
-    execution_options: Any = ...
+    execution_options: _ExecuteOptions = ...
     bind_arguments: Any = ...
     compile_state: Any = ...
     query: Any = ...
@@ -58,7 +59,7 @@ class QueryContext:
         params: Any,
         session: Any,
         load_options: Any,
-        execution_options: Optional[Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[Any] = ...,
     ) -> None: ...
 
@@ -78,7 +79,7 @@ class ORMCompileState(CompileState):
         session: Any,
         statement: Any,
         params: Any,
-        execution_options: Any,
+        execution_options: Optional[_ExecuteOptions],
         bind_arguments: Any,
         is_reentrant_invoke: Any,
     ): ...
@@ -88,7 +89,7 @@ class ORMCompileState(CompileState):
         session: Any,
         statement: Any,
         params: Any,
-        execution_options: Any,
+        execution_options: Optional[_ExecuteOptions],
         bind_arguments: Any,
         result: Any,
     ): ...

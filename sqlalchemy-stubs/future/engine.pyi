@@ -8,6 +8,7 @@ from typing import Type
 from typing import Union
 
 from .. import util
+from .._typing import _ExecuteOptions
 from .._typing import _ExecuteParams
 from ..engine.base import Connection as _LegacyConnection
 from ..engine.base import Engine as _LegacyEngine
@@ -34,7 +35,7 @@ def create_engine(
     echo_pool: Union[bool, _Debug] = ...,
     enable_from_linting: bool = ...,
     encoding: str = ...,
-    execution_options: Dict[Any, Any] = ...,
+    execution_options: _ExecuteOptions = ...,
     hide_parameters: bool = ...,
     implicit_returning: bool = ...,
     isolation_level: _IsolationLevel = ...,
@@ -71,13 +72,13 @@ class Connection(_LegacyConnection):
         self,
         statement: Any,
         parameters: Optional[_ExecuteParams] = ...,
-        execution_options: Optional[Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Any: ...
     def scalar(  # type: ignore[override]
         self,
         statement: Any,
         parameters: Optional[_ExecuteParams] = ...,
-        execution_options: Optional[Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Any: ...
 
 class Engine(_LegacyEngine):

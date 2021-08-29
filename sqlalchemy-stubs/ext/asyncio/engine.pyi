@@ -1,7 +1,6 @@
 from typing import Any
 from typing import Callable
 from typing import Generator
-from typing import Mapping
 from typing import MutableMapping
 from typing import NoReturn
 from typing import Optional
@@ -10,6 +9,7 @@ from typing import TypeVar
 from .base import ProxyComparable
 from .base import StartableContext
 from .result import AsyncResult
+from ..._typing import _ExecuteOptions
 from ..._typing import _ExecuteParams
 from ...engine import Dialect
 from ...engine import Result
@@ -77,25 +77,25 @@ class AsyncConnection(
         self,
         statement: str,
         parameters: Optional[_ExecuteParams] = ...,
-        execution_options: Mapping[Any, Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Result: ...
     async def stream(
         self,
         statement: Executable,
         parameters: Optional[_ExecuteParams] = ...,
-        execution_options: Mapping[Any, Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> AsyncResult: ...
     async def execute(
         self,
         statement: Executable,
         parameters: Optional[_ExecuteParams] = ...,
-        execution_options: Mapping[Any, Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Result: ...
     async def scalar(
         self,
         statement: Executable,
         parameters: Optional[_ExecuteParams] = ...,
-        execution_options: Mapping[Any, Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Any: ...
     async def run_sync(
         self, fn: Callable[..., Any], *arg: Any, **kw: Any
