@@ -1,5 +1,4 @@
 from typing import Any
-from typing import Dict
 from typing import List
 from typing import MutableMapping
 from typing import Optional
@@ -18,7 +17,8 @@ from .interfaces import ExceptionContext
 from .interfaces import ExecutionContext
 from .url import URL
 from .. import log
-from .. import util
+from .._typing import _ExecuteOptions
+from .._typing import _ExecuteParams
 from ..exc import StatementError
 from ..pool import Pool
 
@@ -28,8 +28,6 @@ _T_contra = TypeVar("_T_contra", contravariant=True)
 _TConnection = TypeVar("_TConnection", bound=Connection)
 _TTransaction = TypeVar("_TTransaction", bound=Transaction)
 _TEngine = TypeVar("_TEngine", bound=Engine)
-
-_ExecutionOptions: util.immutabledict[Any, Any]
 
 class _ConnectionCallable(Protocol[_T_contra, _T_co]):
     def __call__(
@@ -55,7 +53,7 @@ class Connection(_ConnectionTypingCommon, Connectable):
         connection: Optional[_DBAPIConnection] = ...,
         close_with_result: bool = ...,
         _branch_from: Optional[Any] = ...,
-        _execution_options: Optional[Dict[str, Any]] = ...,
+        _execution_options: Optional[_ExecuteOptions] = ...,
         _dispatch: Optional[Any] = ...,
         _has_events: Optional[Any] = ...,
     ) -> None: ...
@@ -63,7 +61,7 @@ class Connection(_ConnectionTypingCommon, Connectable):
     def __enter__(self: _TConnection) -> _TConnection: ...
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
     def execution_options(self: _TConnection, **opt: Any) -> _TConnection: ...
-    def get_execution_options(self) -> Dict[str, Any]: ...
+    def get_execution_options(self) -> _ExecuteOptions: ...
     @property
     def connection(self) -> _DBAPIConnection: ...
     def get_isolation_level(self) -> Any: ...
@@ -92,8 +90,8 @@ class Connection(_ConnectionTypingCommon, Connectable):
     def exec_driver_sql(
         self,
         statement: str,
-        parameters: Optional[Any] = ...,
-        execution_options: Optional[Any] = ...,
+        parameters: Optional[_ExecuteParams] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> CursorResult: ...
     def transaction(
         self: _TConnection,
@@ -176,7 +174,7 @@ class _EngineTypingCommon:
     def driver(self) -> str: ...
     def clear_compiled_cache(self) -> None: ...
     def update_execution_options(self, **opt: Any) -> None: ...
-    def get_execution_options(self) -> Dict[str, Any]: ...
+    def get_execution_options(self) -> _ExecuteOptions: ...
 
 class Engine(_EngineTypingCommon, Connectable, log.Identified):
     @property
@@ -190,7 +188,7 @@ class Engine(_EngineTypingCommon, Connectable, log.Identified):
         logging_name: Optional[str] = ...,
         echo: Optional[Union[bool, Literal["debug"]]] = ...,
         query_cache_size: int = ...,
-        execution_options: Optional[Dict[str, Any]] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
         hide_parameters: bool = ...,
     ) -> None: ...
     def execution_options(self, **opt: Any) -> OptionEngine: ...
@@ -248,7 +246,7 @@ class OptionEngineMixin:
     dispatch: Any = ...
     pool: Pool = ...
     def __init__(
-        self, proxied: Engine, execution_options: Dict[str, Any]
+        self, proxied: Engine, execution_options: _ExecuteOptions
     ) -> None: ...
 
 class OptionEngine(OptionEngineMixin, Engine): ...

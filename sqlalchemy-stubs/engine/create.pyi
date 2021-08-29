@@ -11,6 +11,7 @@ from typing_extensions import Literal
 
 from .base import Engine
 from .url import URL
+from .._typing import _ExecuteOptions
 from ..future import Engine as FutureEngine
 from ..pool import Pool
 
@@ -37,7 +38,7 @@ def create_engine(
     echo_pool: Union[bool, _Debug] = ...,
     enable_from_linting: bool = ...,
     encoding: str = ...,
-    execution_options: Dict[Any, Any] = ...,
+    execution_options: _ExecuteOptions = ...,
     future: Literal[True],
     hide_parameters: bool = ...,
     implicit_returning: bool = ...,
@@ -76,7 +77,7 @@ def create_engine(
     echo_pool: Union[bool, _Debug] = ...,
     enable_from_linting: bool = ...,
     encoding: str = ...,
-    execution_options: Dict[Any, Any] = ...,
+    execution_options: _ExecuteOptions = ...,
     future: Literal[False] = ...,
     hide_parameters: bool = ...,
     implicit_returning: bool = ...,
@@ -115,7 +116,7 @@ def create_engine(
     echo_pool: Union[bool, _Debug] = ...,
     enable_from_linting: bool = ...,
     encoding: str = ...,
-    execution_options: Dict[Any, Any] = ...,
+    execution_options: _ExecuteOptions = ...,
     future: Union[bool],
     hide_parameters: bool = ...,
     implicit_returning: bool = ...,

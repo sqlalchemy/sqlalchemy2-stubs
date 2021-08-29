@@ -13,6 +13,7 @@ from typing_extensions import Protocol
 from . import interfaces
 from .session import _SessionProtocol
 from .state import InstanceState
+from .._typing import _ExecuteOptions
 from ..sql.annotation import SupportsCloneAnnotations
 from ..sql.base import Executable
 from ..sql.elements import BooleanClauseList
@@ -115,7 +116,7 @@ class Query(
     def with_transformation(
         self: _TQuery, fn: _WithTransformationFn[_TQuery]
     ) -> _TQuery: ...
-    def get_execution_options(self) -> Any: ...
+    def get_execution_options(self) -> _ExecuteOptions: ...
     def execution_options(self: _TQuery, **kwargs: Any) -> _TQuery: ...
     def with_for_update(
         self: _TQuery,
