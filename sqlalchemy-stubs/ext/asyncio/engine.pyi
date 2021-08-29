@@ -10,6 +10,7 @@ from typing import TypeVar
 from .base import ProxyComparable
 from .base import StartableContext
 from .result import AsyncResult
+from ..._typing import _ExecuteParams
 from ...engine import Dialect
 from ...engine import Result
 from ...engine import Transaction
@@ -75,25 +76,25 @@ class AsyncConnection(
     async def exec_driver_sql(
         self,
         statement: str,
-        parameters: Optional[Mapping[Any, Any]] = ...,
+        parameters: Optional[_ExecuteParams] = ...,
         execution_options: Mapping[Any, Any] = ...,
     ) -> Result: ...
     async def stream(
         self,
         statement: Executable,
-        parameters: Optional[Mapping[Any, Any]] = ...,
+        parameters: Optional[_ExecuteParams] = ...,
         execution_options: Mapping[Any, Any] = ...,
     ) -> AsyncResult: ...
     async def execute(
         self,
         statement: Executable,
-        parameters: Optional[Mapping[Any, Any]] = ...,
+        parameters: Optional[_ExecuteParams] = ...,
         execution_options: Mapping[Any, Any] = ...,
     ) -> Result: ...
     async def scalar(
         self,
         statement: Executable,
-        parameters: Optional[Mapping[Any, Any]] = ...,
+        parameters: Optional[_ExecuteParams] = ...,
         execution_options: Mapping[Any, Any] = ...,
     ) -> Any: ...
     async def run_sync(

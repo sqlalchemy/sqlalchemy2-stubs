@@ -16,6 +16,7 @@ from .base import StartableContext
 from .engine import AsyncConnection
 from .engine import AsyncEngine
 from .result import AsyncResult
+from ..._typing import _ExecuteParams
 from ...engine import Result
 from ...engine.base import _ExecutionOptions
 from ...orm import Session
@@ -78,9 +79,7 @@ class _AsyncSessionProtocol(
     async def execute(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: _ExecutionOptions = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
@@ -88,9 +87,7 @@ class _AsyncSessionProtocol(
     async def scalar(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: _ExecutionOptions = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
@@ -118,9 +115,7 @@ class _AsyncSessionProtocol(
     async def stream(
         self,
         statement: Any,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: _ExecutionOptions = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
@@ -147,9 +142,7 @@ class _AsyncSessionTypingCommon(
     async def execute(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: Optional[Mapping[Any, Any]] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
@@ -175,9 +168,7 @@ class _AsyncSessionTypingCommon(
     async def scalar(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: Mapping[Any, Any] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
@@ -206,9 +197,7 @@ class AsyncSession(
     async def stream(
         self,
         statement: Any,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: Mapping[Any, Any] = ...,
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,

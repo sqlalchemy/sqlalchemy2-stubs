@@ -25,6 +25,7 @@ from .path_registry import PathRegistry
 from .query import Query
 from .state import InstanceState
 from .. import util
+from .._typing import _ExecuteParams
 from ..engine import Connection
 from ..engine import Engine
 from ..engine import Result
@@ -115,9 +116,7 @@ class _SessionProtocol(
     def execute(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: _ExecutionOptions = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
@@ -125,9 +124,7 @@ class _SessionProtocol(
     def scalar(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: _ExecutionOptions = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
@@ -354,9 +351,7 @@ class _SessionTypingCommon(
     def execute(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: _ExecutionOptions = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         _parent_execute_state: Optional[Any] = ...,
@@ -406,9 +401,7 @@ class _SessionTypingCommon(
     def scalar(
         self,
         statement: Executable,
-        params: Optional[
-            Union[Mapping[str, Any], Sequence[Mapping[str, Any]]]
-        ] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: _ExecutionOptions = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,

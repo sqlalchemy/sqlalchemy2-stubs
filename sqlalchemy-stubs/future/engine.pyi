@@ -8,6 +8,7 @@ from typing import Type
 from typing import Union
 
 from .. import util
+from .._typing import _ExecuteParams
 from ..engine.base import Connection as _LegacyConnection
 from ..engine.base import Engine as _LegacyEngine
 from ..engine.base import NestedTransaction
@@ -69,13 +70,13 @@ class Connection(_LegacyConnection):
     def execute(  # type: ignore[override]
         self,
         statement: Any,
-        parameters: Optional[Any] = ...,
+        parameters: Optional[_ExecuteParams] = ...,
         execution_options: Optional[Any] = ...,
     ) -> Any: ...
     def scalar(  # type: ignore[override]
         self,
         statement: Any,
-        parameters: Optional[Any] = ...,
+        parameters: Optional[_ExecuteParams] = ...,
         execution_options: Optional[Any] = ...,
     ) -> Any: ...
 
