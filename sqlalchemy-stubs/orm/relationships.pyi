@@ -3,6 +3,7 @@ from typing import Any
 from typing import Callable
 from typing import MutableMapping
 from typing import Optional
+from typing import overload
 from typing import Sequence
 from typing import Tuple
 from typing import Type
@@ -13,6 +14,7 @@ from typing_extensions import Literal
 
 from . import _BackrefResult
 from . import attributes as attributes
+from .attributes import Mapped
 from .base import state_str as state_str
 from .interfaces import MANYTOMANY as MANYTOMANY
 from .interfaces import MANYTOONE as MANYTOONE
@@ -188,6 +190,12 @@ class RelationshipProperty(StrategizedProperty[_T]):
     def cascade(self) -> CascadeOptions: ...
     @cascade.setter
     def cascade(self, cascade: Sequence[str]) -> None: ...
+    # NOTE: his doesn't exist at runtime, it's used when not using the plugin
+    # makes the inferred type of class attrs Mapped, Any for instance ones
+    @overload
+    def __get__(self, instance: None, owner: Any) -> Mapped: ...
+    @overload
+    def __get__(self, instance: object, owner: Any) -> Any: ...
 
 class JoinCondition:
     parent_persist_selectable: Any = ...

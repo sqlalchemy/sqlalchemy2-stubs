@@ -34,6 +34,7 @@ from .selectable import TableClause
 from .. import util
 from ..engine import Connection
 from ..engine import Engine
+from ..orm import Mapped
 from ..util import langhelpers
 
 RETAIN_SCHEMA: langhelpers._symbol
@@ -246,6 +247,12 @@ class Column(DialectKWArgs, SchemaItem, ColumnClause[_TE]):
     def references(self, column: Column[Any]) -> bool: ...
     def append_foreign_key(self, fk: ForeignKey) -> None: ...
     def copy(self: _CO, **kw: Any) -> _CO: ...
+    # NOTE: his doesn't exist at runtime, it's used when not using the plugin
+    # makes the inferred type of orm class attrs Mapped, Any for instance ones
+    @overload
+    def __get__(self, instance: None, owner: Any) -> Mapped: ...
+    @overload
+    def __get__(self, instance: object, owner: Any) -> Any: ...
 
 class ForeignKey(DialectKWArgs, SchemaItem):
     __visit_name__: str = ...
