@@ -16,9 +16,11 @@ from .base import StartableContext
 from .engine import AsyncConnection
 from .engine import AsyncEngine
 from .result import AsyncResult
+from .result import AsyncScalarResult
 from ..._typing import _ExecuteOptions
 from ..._typing import _ExecuteParams
 from ...engine import Result
+from ...engine import ScalarResult
 from ...orm import Session
 from ...orm.session import _BindArguments
 from ...orm.session import _SessionClassMethodNoIoTypingCommon
@@ -119,7 +121,19 @@ class _AsyncSessionProtocol(
         execution_options: Optional[_ExecuteOptions] = ...,
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
-    ) -> Any: ...
+    ) -> AsyncResult: ...
+    async def scalars(
+        self,
+        statement: Executable,
+        parameters: Optional[_ExecuteParams] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
+    ) -> ScalarResult: ...
+    async def stream_scalars(
+        self,
+        statement: Executable,
+        parameters: Optional[_ExecuteParams] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
+    ) -> AsyncScalarResult: ...
     async def delete(self, instance: Any) -> None: ...
     async def merge(
         self,
@@ -183,6 +197,18 @@ class _AsyncSessionTypingCommon(
         bind_arguments: Optional[Mapping[str, Any]] = ...,
         **kw: Any,
     ) -> Any: ...
+    async def scalars(
+        self,
+        statement: Executable,
+        parameters: Optional[_ExecuteParams] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
+    ) -> ScalarResult: ...
+    async def stream_scalars(
+        self,
+        statement: Executable,
+        parameters: Optional[_ExecuteParams] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
+    ) -> AsyncScalarResult: ...
     @classmethod
     async def close_all(self) -> None: ...
 
