@@ -11,11 +11,11 @@ from .base import PGExecutionContext as PGExecutionContext
 from .base import PGIdentifierPreparer as PGIdentifierPreparer
 from .base import REGCLASS as REGCLASS
 from .base import UUID as UUID
-from ...engine import AdaptedConnection
 from ... import exc as exc
 from ... import pool as pool
 from ... import processors as processors
 from ... import util as util
+from ...engine import AdaptedConnection
 from ...sql import sqltypes as sqltypes
 from ...util.concurrency import await_fallback as await_fallback
 from ...util.concurrency import await_only as await_only
@@ -212,6 +212,6 @@ class PGDialect_asyncpg(PGDialect):
         self, cursor: Any, list_of_tuples: Any, context: Any
     ) -> None: ...
     def on_connect(self): ...
-    def get_driver_connection(self, connection: Any) -> Any:
+    def get_driver_connection(self, connection: Any) -> Any: ...
 
 dialect = PGDialect_asyncpg

@@ -1,11 +1,11 @@
 from typing import Any
 from typing import Optional
 
-from ..engine.interfaces import _DBAPIConnection
 from .. import event as event
 from .. import exc as exc
 from .. import log as log
 from .. import util as util
+from ..engine.interfaces import _DBAPIConnection
 
 reset_rollback: Any
 reset_commit: Any

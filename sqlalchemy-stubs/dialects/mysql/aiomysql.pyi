@@ -2,9 +2,9 @@ from typing import Any
 from typing import Optional
 
 from .pymysql import MySQLDialect_pymysql as MySQLDialect_pymysql
-from ...engine import AdaptedConnection
 from ... import pool as pool
 from ... import util as util
+from ...engine import AdaptedConnection
 from ...util.concurrency import await_fallback as await_fallback
 from ...util.concurrency import await_only as await_only
 
@@ -72,6 +72,6 @@ class MySQLDialect_aiomysql(MySQLDialect_pymysql):
     def get_pool_class(cls, url: Any): ...
     def create_connect_args(self, url: Any): ...
     def is_disconnect(self, e: Any, connection: Any, cursor: Any): ...
-    def get_driver_connection(self, connection: Any) -> Any:
+    def get_driver_connection(self, connection: Any) -> Any: ...
 
 dialect = MySQLDialect_aiomysql
