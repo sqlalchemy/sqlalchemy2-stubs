@@ -121,7 +121,12 @@ class _AsyncSessionProtocol(
         **kw: Any,
     ) -> Any: ...
     async def delete(self, instance: Any) -> None: ...
-    async def merge(self, instance: _T, load: bool = ...) -> _T: ...
+    async def merge(
+        self,
+        instance: _T,
+        load: bool = ...,
+        options: Optional[Sequence[Any]] = ...,
+    ) -> _T: ...
     async def flush(
         self, objects: Optional[Collection[Any]] = ...
     ) -> None: ...
@@ -152,12 +157,17 @@ class _AsyncSessionTypingCommon(
         self,
         entity: Type[_T],
         ident: Any,
-        options: Optional[Any] = ...,
+        options: Optional[Sequence[Any]] = ...,
         populate_existing: bool = ...,
         with_for_update: Optional[Any] = ...,
         identity_token: Optional[Any] = ...,
     ) -> Optional[_T]: ...
-    async def merge(self, instance: _T, load: bool = ...) -> _T: ...
+    async def merge(
+        self,
+        instance: _T,
+        load: bool = ...,
+        options: Optional[Sequence[Any]] = ...,
+    ) -> _T: ...
     async def refresh(
         self,
         instance: Any,

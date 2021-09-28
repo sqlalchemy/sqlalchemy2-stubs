@@ -150,7 +150,12 @@ class _SessionProtocol(
         ] = ...,
         identity_token: Optional[Any] = ...,
     ) -> Optional[_T]: ...
-    def merge(self, instance: _T, load: bool = ...) -> _T: ...
+    def merge(
+        self,
+        instance: _T,
+        load: bool = ...,
+        options: Optional[Sequence[Any]] = ...,
+    ) -> _T: ...
     def flush(self, objects: Optional[Collection[Any]] = ...) -> None: ...
     @classmethod
     def close_all(cls) -> None: ...  # NOTE: Deprecated.
@@ -387,7 +392,12 @@ class _SessionTypingCommon(
     def bulk_update_mappings(
         self, mapper: Any, mappings: Sequence[Mapping[str, Any]]
     ) -> None: ...
-    def merge(self, instance: _T, load: bool = ...) -> _T: ...
+    def merge(
+        self,
+        instance: _T,
+        load: bool = ...,
+        options: Optional[Sequence[Any]] = ...,
+    ) -> _T: ...
     def query(self, *entities: Any, **kwargs: Any) -> Query[Any]: ...
     def refresh(
         self,
