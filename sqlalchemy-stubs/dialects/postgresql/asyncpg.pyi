@@ -11,6 +11,7 @@ from .base import PGExecutionContext as PGExecutionContext
 from .base import PGIdentifierPreparer as PGIdentifierPreparer
 from .base import REGCLASS as REGCLASS
 from .base import UUID as UUID
+from ...engine import AdaptedConnection
 from ... import exc as exc
 from ... import pool as pool
 from ... import processors as processors
@@ -117,7 +118,7 @@ class AsyncAdapt_asyncpg_ss_cursor(AsyncAdapt_asyncpg_cursor):
     def fetchall(self): ...
     def executemany(self, operation: Any, seq_of_parameters: Any) -> None: ...
 
-class AsyncAdapt_asyncpg_connection:
+class AsyncAdapt_asyncpg_connection(AdaptedConnection):
     await_: Any = ...
     dbapi: Any = ...
     isolation_level: str = ...
@@ -211,5 +212,6 @@ class PGDialect_asyncpg(PGDialect):
         self, cursor: Any, list_of_tuples: Any, context: Any
     ) -> None: ...
     def on_connect(self): ...
+    def get_driver_connection(self, connection: Any) -> Any:
 
 dialect = PGDialect_asyncpg

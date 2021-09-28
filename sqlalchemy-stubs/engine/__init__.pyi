@@ -15,6 +15,7 @@ from .cursor import BufferedRowResultProxy as BufferedRowResultProxy
 from .cursor import CursorResult as CursorResult
 from .cursor import FullyBufferedResultProxy as FullyBufferedResultProxy
 from .cursor import LegacyCursorResult as LegacyCursorResult
+from .interfaces import AdaptedConnection as AdaptedConnection
 from .interfaces import Compiled as Compiled
 from .interfaces import Connectable as Connectable
 from .interfaces import CreateEnginePlugin as CreateEnginePlugin
