@@ -30,6 +30,7 @@ from .._typing import _ExecuteParams
 from ..engine import Connection
 from ..engine import Engine
 from ..engine import Result
+from ..engine import ScalarResult
 from ..sql import ClauseElement
 from ..sql import Executable
 from ..sql.base import Options
@@ -129,6 +130,14 @@ class _SessionProtocol(
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Any: ...
+    def scalars(
+        self,
+        statement: Executable,
+        params: Optional[_ExecuteParams] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
+        bind_arguments: Optional[_BindArguments] = ...,
+        **kw: Any,
+    ) -> ScalarResult: ...
     def close(self) -> None: ...
     def refresh(
         self,
@@ -406,6 +415,14 @@ class _SessionTypingCommon(
         bind_arguments: Optional[_BindArguments] = ...,
         **kw: Any,
     ) -> Any: ...
+    def scalars(
+        self,
+        statement: Executable,
+        params: Optional[_ExecuteParams] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
+        bind_arguments: Optional[_BindArguments] = ...,
+        **kw: Any,
+    ) -> ScalarResult: ...
 
 class _SessionInTransactionTypingCommon:
     def in_transaction(self) -> bool: ...

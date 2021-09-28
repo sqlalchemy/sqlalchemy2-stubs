@@ -15,6 +15,7 @@ from .interfaces import Connectable as Connectable
 from .interfaces import Dialect
 from .interfaces import ExceptionContext
 from .interfaces import ExecutionContext
+from .result import ScalarResult
 from .url import URL
 from .. import log
 from .._typing import _ExecuteOptions
@@ -86,6 +87,9 @@ class Connection(_ConnectionTypingCommon, Connectable):
     def scalar(
         self, object_: Any, *multiparams: Any, **params: Any
     ) -> Any: ...
+    def scalars(
+        self, statement: Any, *multiparams: Any, **params: Any
+    ) -> ScalarResult: ...
     def execute(self, statement: Any, *multiparams: Any, **params: Any) -> CursorResult: ...  # type: ignore[override]
     def exec_driver_sql(
         self,

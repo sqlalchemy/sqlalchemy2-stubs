@@ -1,7 +1,31 @@
+from asyncio import current_task
+
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import async_scoped_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import Session
 
 engine = create_async_engine(...)
-async_session = sessionmaker(engine, class_=AsyncSession)
+SM = sessionmaker(engine, class_=AsyncSession)
+
+async_session = AsyncSession(engine)
+
+as_session = async_scoped_session(SM, current_task)
+
+
+async def go() -> None:
+    r = await async_session.scalars(text("select 1"))
+    r.first()
+    sr = await async_session.stream_scalars(text("select 1"))
+    await sr.all()
+    r = await as_session.scalars(text("select 1"))
+    r.first()
+    sr = await as_session.stream_scalars(text("select 1"))
+    await sr.all()
+
+    async with engine.connect() as conn:
+        cr = await conn.scalars(text("select 1"))
+        cr.first()
+        scr = await conn.stream_scalars(text("select 1"))
+        await scr.all()
