@@ -13,7 +13,7 @@ def go(argv):
         version = parsed["info"]["version"]
         print(f"rel_{version}".replace(".", "_"))
     else:
-        print("master")
+        print("main")
 
 
 if __name__ == "__main__":
