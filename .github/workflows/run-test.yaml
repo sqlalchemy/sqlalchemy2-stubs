@@ -18,7 +18,7 @@ jobs:
           - "3.9"
         sqlalchemy:
           - sqla_release
-          - sqla_master
+          - sqla_main
 
       fail-fast: false
 
