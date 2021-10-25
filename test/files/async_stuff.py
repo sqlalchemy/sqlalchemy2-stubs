@@ -29,3 +29,7 @@ async def go() -> None:
         cr.first()
         scr = await conn.stream_scalars(text("select 1"))
         await scr.all()
+
+    ast = async_session.get_transaction()
+    if ast:
+        ast.is_active
