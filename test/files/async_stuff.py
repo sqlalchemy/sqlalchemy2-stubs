@@ -33,3 +33,6 @@ async def go() -> None:
     ast = async_session.get_transaction()
     if ast:
         ast.is_active
+    nt = async_session.get_nested_transaction()
+    if nt:
+        nt.is_active
