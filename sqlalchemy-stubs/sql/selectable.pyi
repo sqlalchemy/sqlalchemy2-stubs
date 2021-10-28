@@ -263,13 +263,19 @@ class CTE(Generative, HasPrefixes, HasSuffixes, AliasedReturnsRows):
         selectable: Any,
         name: Optional[str] = ...,
         recursive: bool = ...,
+        nesting: bool = ...,
     ) -> CTE: ...
     def alias(self, name: Optional[str] = ..., flat: bool = ...) -> CTE: ...  # type: ignore[override]
     def union(self, other: Any) -> CTE: ...
     def union_all(self, other: Any) -> CTE: ...
 
 class HasCTE(roles.HasCTERole):
-    def cte(self, name: Optional[str] = ..., recursive: bool = ...) -> CTE: ...
+    def cte(
+        self,
+        name: Optional[str] = ...,
+        recursive: bool = ...,
+        nesting: bool = ...,
+    ) -> CTE: ...
 
 class Subquery(AliasedReturnsRows):
     __visit_name__: str = ...
