@@ -49,7 +49,7 @@ def declarative_base(
     mapper: Optional[Callable[..., Mapper]] = ...,
     cls: Union[type, Tuple[type, ...]] = ...,
     name: str = ...,
-    constructor: Callable[..., None] = ...,
+    constructor: Optional[Callable[..., None]] = ...,
     class_registry: Optional[MutableMapping[Any, Any]] = ...,
     metaclass: type = ...,
 ) -> type: ...
