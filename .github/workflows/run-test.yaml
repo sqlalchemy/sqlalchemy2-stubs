@@ -15,9 +15,10 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.9"
+          - "3.10"
         sqlalchemy:
           - sqla_release
+          - sqla_rel_1_4
           - sqla_main
 
       fail-fast: false
