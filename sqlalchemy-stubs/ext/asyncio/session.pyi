@@ -113,6 +113,7 @@ class _AsyncSessionProtocol(
             Union[Literal[True], Mapping[str, Any]]
         ] = ...,
         identity_token: Optional[Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Optional[_T]: ...
     async def stream(
         self,
@@ -175,6 +176,7 @@ class _AsyncSessionTypingCommon(
         populate_existing: bool = ...,
         with_for_update: Optional[Any] = ...,
         identity_token: Optional[Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Optional[_T]: ...
     async def merge(
         self,
