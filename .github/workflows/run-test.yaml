@@ -19,7 +19,6 @@ jobs:
         sqlalchemy:
           - sqla_release
           - sqla_rel_1_4
-          - sqla_main
 
       fail-fast: false
 
