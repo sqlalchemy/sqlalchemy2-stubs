@@ -158,6 +158,7 @@ class _SessionProtocol(
             Union[Literal[True], Mapping[str, Any]]
         ] = ...,
         identity_token: Optional[Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Optional[_T]: ...
     def merge(
         self,
@@ -383,6 +384,7 @@ class _SessionTypingCommon(
             Union[Literal[True], Mapping[str, Any]]
         ] = ...,
         identity_token: Optional[Any] = ...,
+        execution_options: Optional[_ExecuteOptions] = ...,
     ) -> Optional[_T]: ...
     def bulk_save_objects(
         self,
