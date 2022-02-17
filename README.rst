@@ -2,21 +2,33 @@
 SQLAlchemy 2 Stubs
 ===================
 
-These are PEP-484 typing stubs for `SQLAlchemy <https://www.sqlalchemy.org>`_
-1.4 and 2.0.  They are released concurrently along with
-a `Mypy extension <https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html>`_
-which is designed to work with these stubs, which assists primarily in the
-area of ORM mappings.
+These are interim PEP-484 typing stubs for the
+`SQLAlchemy <https://www.sqlalchemy.org>`_ **1.4 release series only**. They
+are released concurrently along with a
+`Mypy extension <https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html>`_
+which is designed to work with these stubs, which assists primarily in the area
+of ORM mappings.
 
 The stubs replace the use of the "sqlalchemy-stubs" package published by
-Dropbox.  Differences include that these stubs are generated against
-1.4's API as well as some adjustments to the use of generics.
+Dropbox. Differences include that these stubs are generated against 1.4's API
+as well as some adjustments to the use of generics. The sqlalchemy2-stubs stubs
+package **will not work with SQLAlchemy 2.0, and will need to be explicitly /
+manually uninstalled when upgrading to SQLAlchemy 2.0**.
 
 This project should be considered **alpha level** and is not as mature
 as the Dropbox stubs for the initial release.
 
 See the Mypy plugin documentation at https://docs.sqlalchemy.org/en/14/orm/extensions/mypy.html
 for an overview of how to use PEP-484 annotations with ORM mapped classes.
+
+For SQLAlchemy 2.0, when released, **the sqlalchemy2-stubs project is not
+compatible**.  SQLAlchemy 2.0 will be / is fully pep-484 typed inline and
+will not be compatible with any stubs.  There unfortunately appears to be no
+standard approach in Python for the problem of a library that upgrades to
+include typing annotations inline, as typing tools will still consider
+any installed stubs to take precedence.  Therefore **sqlalchemy2-stubs
+will need to be manually uninstalled when upgrading to SQLAlchemy 2.0**.
+
 
 Code of Conduct
 ---------------
