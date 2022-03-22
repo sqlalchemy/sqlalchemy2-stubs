@@ -8,7 +8,7 @@ from typing import List
 from typing import MutableMapping
 from typing import Optional
 from typing import overload
-from typing import Sequence
+from typing import Sequence as _Sequence
 from typing import Set
 from typing import Type
 from typing import TypeVar
@@ -74,7 +74,7 @@ class Table(DialectKWArgs, SchemaItem, TableClause):
     fullname: str = ...
     implicit_returning: bool = ...
     comment: Optional[str] = ...
-    _prefixes: Sequence[str] = ...
+    _prefixes: _Sequence[str] = ...
     def __new__(cls: Type[_TAB], *args: Any, **kw: Any) -> _TAB: ...
     def __init__(self, *args: Any, **kw: Any) -> None: ...
     @property
@@ -343,7 +343,7 @@ class Sequence(
     data_type: Optional[_TE] = ...
     @overload
     def __init__(
-        self: Sequence[sqltypes.Integer],
+        self: _Sequence[sqltypes.Integer],
         name: str,
         start: Optional[int] = ...,
         increment: Optional[int] = ...,
