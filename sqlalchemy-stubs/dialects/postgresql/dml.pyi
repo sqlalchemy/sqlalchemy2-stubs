@@ -1,9 +1,17 @@
-from typing import Any, Union, Sequence, Optional, Mapping
+from typing import Any
+from typing import Mapping
+from typing import Optional
+from typing import Sequence
+from typing import Union
 
 from . import ExcludeConstraint
-from ... import util as util, Column, Index, Constraint
+from ... import Column
+from ... import Constraint
+from ... import Index
+from ... import util as util
 from ...sql.dml import Insert as StandardInsert
-from ...sql.elements import ClauseElement, ColumnElement
+from ...sql.elements import ClauseElement
+from ...sql.elements import ColumnElement
 from ...sql.functions import GenericFunction
 
 
