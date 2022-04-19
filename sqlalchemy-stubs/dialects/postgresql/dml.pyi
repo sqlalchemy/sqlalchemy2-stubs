@@ -1,28 +1,40 @@
 from typing import Any
+from typing import Mapping
 from typing import Optional
+from typing import Sequence
+from typing import Union
 
+from . import ExcludeConstraint
+from ... import Column
+from ... import Constraint
+from ... import Index
 from ... import util as util
 from ...sql.dml import Insert as StandardInsert
 from ...sql.elements import ClauseElement
+from ...sql.elements import ColumnElement
+from ...sql.functions import GenericFunction
+
 
 class Insert(StandardInsert):
     stringify_dialect: str = ...
     @util.memoized_property
     def excluded(self): ...
+
     def on_conflict_do_update(
         self,
-        constraint: Optional[Any] = ...,
-        index_elements: Optional[Any] = ...,
-        index_where: Optional[Any] = ...,
-        set_: Optional[Any] = ...,
-        where: Optional[Any] = ...,
-    ) -> None: ...
+        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        index_elements: Sequence[Union[str, Column]] = ...,
+        index_where: Optional[ClauseElement] = ...,
+        set_: Mapping[str, Union[ColumnElement, GenericFunction]] = ...,
+        where: Optional[ClauseElement] = ...,
+    ) -> 'Insert': ...
+
     def on_conflict_do_nothing(
         self,
-        constraint: Optional[Any] = ...,
-        index_elements: Optional[Any] = ...,
+        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
-    ) -> None: ...
+    ) -> 'Index': ...
 
 insert: Any
 
@@ -33,8 +45,8 @@ class OnConflictClause(ClauseElement):
     inferred_target_whereclause: Any = ...
     def __init__(
         self,
-        constraint: Optional[Any] = ...,
-        index_elements: Optional[Any] = ...,
+        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
     ) -> None: ...
 
@@ -47,9 +59,9 @@ class OnConflictDoUpdate(OnConflictClause):
     update_whereclause: Any = ...
     def __init__(
         self,
-        constraint: Optional[Any] = ...,
-        index_elements: Optional[Any] = ...,
+        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
-        set_: Optional[Any] = ...,
-        where: Optional[Any] = ...,
+        set_: Mapping[str, Union[ColumnElement, GenericFunction]] = ...,
+        where: Optional[ClauseElement] = ...,
     ) -> None: ...
