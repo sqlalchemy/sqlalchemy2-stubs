@@ -37,8 +37,8 @@ class OnConflictClause(ClauseElement):
     inferred_target_whereclause: Any = ...
     def __init__(
         self,
-        constraint: Optional[Union[str]] = ...,
-        index_elements: Sequence[Union[str, Column]] = ...,
+        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
     ) -> None: ...
 
