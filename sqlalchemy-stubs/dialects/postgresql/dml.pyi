@@ -13,19 +13,19 @@ class Insert(StandardInsert):
     def excluded(self): ...
 
     def on_conflict_do_update(
-            self,
-            constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
-            index_elements: Sequence[Union[str, Column]] = ...,
-            index_where: Optional[ClauseElement] = ...,
-            set_: Mapping[str, Union[ColumnElement, GenericFunction]] = ...,
-            where: Optional[ClauseElement] = ...,
+        self,
+        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        index_elements: Sequence[Union[str, Column]] = ...,
+        index_where: Optional[ClauseElement] = ...,
+        set_: Mapping[str, Union[ColumnElement, GenericFunction]] = ...,
+        where: Optional[ClauseElement] = ...,
     ) -> 'Insert': ...
 
     def on_conflict_do_nothing(
-            self,
-            constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
-            index_elements: Optional[Sequence[Union[str, Column]]] = ...,
-            index_where: Optional[Any] = ...,
+        self,
+        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        index_elements: Optional[Sequence[Union[str, Column]]] = ...,
+        index_where: Optional[Any] = ...,
     ) -> 'Index': ...
 
 insert: Any
