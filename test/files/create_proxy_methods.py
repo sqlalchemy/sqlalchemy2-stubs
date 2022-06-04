@@ -54,43 +54,45 @@ async_session.autoflush
 async_session.no_autoflush
 async_session.info
 
+
 # async scoped session
-async_scoped_session.object_session(object())
-async_scoped_session.identity_key()
-async_scoped_session.close_all()
-async_ss = async_scoped_session(AsyncSession, lambda: 42)
-"foo" in async_ss
-list(async_ss)
-async_ss.add(object())
-async_ss.add_all([])
-async_ss.begin()
-async_ss.begin_nested()
-async_ss.close()
-async_ss.commit()
-async_ss.connection()
-async_ss.delete(object())
-async_ss.execute(text("select 1"))
-async_ss.expire(object())
-async_ss.expire_all()
-async_ss.expunge(object())
-async_ss.expunge_all()
-async_ss.flush()
-async_ss.get(object, 1)
-async_ss.get_bind()
-async_ss.is_modified(object())
-async_ss.merge(object())
-async_ss.refresh(object())
-async_ss.rollback()
-async_ss.scalar(text("select 1"))
-async_ss.bind
-async_ss.dirty
-async_ss.deleted
-async_ss.new
-async_ss.identity_map
-async_ss.is_active
-async_ss.autoflush
-async_ss.no_autoflush
-async_ss.info
+async def test_async_scoped_session() -> None:
+    async_scoped_session.object_session(object())
+    async_scoped_session.identity_key()
+    await async_scoped_session.close_all()
+    async_ss = async_scoped_session(AsyncSession, lambda: 42)
+    "foo" in async_ss
+    list(async_ss)
+    async_ss.add(object())
+    async_ss.add_all([])
+    async_ss.begin()
+    async_ss.begin_nested()
+    await async_ss.close()
+    await async_ss.commit()
+    await async_ss.connection()
+    await async_ss.delete(object())
+    await async_ss.execute(text("select 1"))
+    async_ss.expire(object())
+    async_ss.expire_all()
+    async_ss.expunge(object())
+    async_ss.expunge_all()
+    await async_ss.flush()
+    await async_ss.get(object, 1)
+    async_ss.get_bind()
+    async_ss.is_modified(object())
+    await async_ss.merge(object())
+    await async_ss.refresh(object())
+    await async_ss.rollback()
+    await async_ss.scalar(text("select 1"))
+    async_ss.bind
+    async_ss.dirty
+    async_ss.deleted
+    async_ss.new
+    async_ss.identity_map
+    async_ss.is_active
+    async_ss.autoflush
+    async_ss.no_autoflush
+    async_ss.info
 
 # scoped session
 scoped_session.object_session(object())
