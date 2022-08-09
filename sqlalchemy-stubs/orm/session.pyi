@@ -36,6 +36,7 @@ from ..sql import Executable
 from ..sql.base import Options
 
 _T = TypeVar("_T")
+_M = TypeVar("_M")
 _TSession = TypeVar("_TSession", bound=Session)
 _TSessionNoIoTypingCommon = TypeVar(
     "_TSession", bound=_SessionNoIoTypingCommon
@@ -150,7 +151,7 @@ class _SessionProtocol(
     def delete(self, instance: Any) -> None: ...
     def get(
         self,
-        entity: Type[_T],
+        entity: Type[_M],
         ident: Any,
         options: Optional[Sequence[Any]] = ...,
         populate_existing: bool = ...,
@@ -159,13 +160,13 @@ class _SessionProtocol(
         ] = ...,
         identity_token: Optional[Any] = ...,
         execution_options: Optional[_ExecuteOptions] = ...,
-    ) -> Optional[_T]: ...
+    ) -> Optional[_M]: ...
     def merge(
         self,
-        instance: _T,
+        instance: _M,
         load: bool = ...,
         options: Optional[Sequence[Any]] = ...,
-    ) -> _T: ...
+    ) -> _M: ...
     def flush(self, objects: Optional[Collection[Any]] = ...) -> None: ...
     @classmethod
     def close_all(cls) -> None: ...  # NOTE: Deprecated.
@@ -376,7 +377,7 @@ class _SessionTypingCommon(
     def flush(self, objects: Optional[Collection[Any]] = ...) -> None: ...
     def get(
         self,
-        entity: Type[_T],
+        entity: Type[_M],
         ident: Any,
         options: Optional[Sequence[Any]] = ...,
         populate_existing: bool = ...,
@@ -385,7 +386,7 @@ class _SessionTypingCommon(
         ] = ...,
         identity_token: Optional[Any] = ...,
         execution_options: Optional[_ExecuteOptions] = ...,
-    ) -> Optional[_T]: ...
+    ) -> Optional[_M]: ...
     def bulk_save_objects(
         self,
         objects: Sequence[Any],
@@ -405,10 +406,10 @@ class _SessionTypingCommon(
     ) -> None: ...
     def merge(
         self,
-        instance: _T,
+        instance: _M,
         load: bool = ...,
         options: Optional[Sequence[Any]] = ...,
-    ) -> _T: ...
+    ) -> _M: ...
     def query(self, *entities: Any, **kwargs: Any) -> Query[Any]: ...
     def refresh(
         self,
