@@ -77,9 +77,6 @@ Column("name", type_=None)
 Column("name", ForeignKey("a.id"), type_=Integer())
 
 
-# We are no longer able to detect there, as the kwargs must stay in place.
-# EXPECTED_MYPY: No overload variant of "Column" matches argument types "Type[Integer]", "ForeignKey", "Type[String]"  # noqa E501
+# These seems supported now
 Column(Integer, ForeignKey("a.id"), type_=String)
-
-# EXPECTED_MYPY: No overload variant of "Column" matches argument types "str", "ForeignKey", "str"  # noqa E501
 Column("name", ForeignKey("a.id"), name="String")
