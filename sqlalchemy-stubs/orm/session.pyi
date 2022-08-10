@@ -39,7 +39,7 @@ _T = TypeVar("_T")
 _M = TypeVar("_M")
 _TSession = TypeVar("_TSession", bound=Session)
 _TSessionNoIoTypingCommon = TypeVar(
-    "_TSession", bound=_SessionNoIoTypingCommon
+    "_TSessionNoIoTypingCommon", bound=_SessionNoIoTypingCommon
 )
 _TSessionTransaction = TypeVar(
     "_TSessionTransaction", bound=SessionTransaction
