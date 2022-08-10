@@ -11,20 +11,20 @@ from typing_extensions import Literal
 
 from .base import Engine
 from .url import URL
-from .._typing import _ExecuteOptions
+from .._typing import TypingExecuteOptions as _ExecuteOptions
 from ..future import Engine as FutureEngine
 from ..pool import Pool
 
-_Debug = Literal["debug"]
-_IsolationLevel = Literal[
+TypingDebug = _Debug = Literal["debug"]
+TypingIsolationLevel = _IsolationLevel = Literal[
     "SERIALIZABLE",
     "REPEATABLE READ",
     "READ COMMITTED",
     "READ UNCOMMITTED",
     "AUTOCOMMIT",
 ]
-_ParamStyle = Literal["qmark", "numeric", "named", "format", "pyformat"]
-_ResetOnReturn = Literal["rollback", "commit"]
+TypingParamStyle = _ParamStyle = Literal["qmark", "numeric", "named", "format", "pyformat"]
+TypingResetOnReturn = _ResetOnReturn = Literal["rollback", "commit"]
 
 @overload
 def create_engine(

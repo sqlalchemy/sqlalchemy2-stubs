@@ -115,3 +115,5 @@ selectin_polymorphic = strategy_options.selectin_polymorphic._unbound_fn
 eagerload = joinedload
 
 contains_alias = AliasOption
+
+TypingBackrefResult = _BackrefResult

@@ -10,14 +10,14 @@ from .base import ProxyComparable
 from .base import StartableContext
 from .result import AsyncResult
 from .result import AsyncScalarResult
-from ..._typing import _ExecuteOptions
-from ..._typing import _ExecuteParams
+from ..._typing import TypingExecuteOptions as _ExecuteOptions
+from ..._typing import TypingExecuteParams as _ExecuteParams
 from ...engine import Dialect
 from ...engine import Result
 from ...engine import ScalarResult
 from ...engine import Transaction
-from ...engine.base import _ConnectionTypingCommon
-from ...engine.base import _EngineTypingCommon
+from ...engine.base import TypingConnectionTypingCommon as _ConnectionTypingCommon
+from ...engine.base import TypingEngineTypingCommon as _EngineTypingCommon
 from ...future import Connection
 from ...future import Engine
 from ...sql import Executable

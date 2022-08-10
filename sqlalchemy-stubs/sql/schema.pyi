@@ -36,9 +36,9 @@ from ..engine import Connection
 from ..engine import Engine
 from ..util import langhelpers
 
-RETAIN_SCHEMA: langhelpers._symbol
-BLANK_SCHEMA: langhelpers._symbol
-NULL_UNSPECIFIED: langhelpers._symbol
+RETAIN_SCHEMA: langhelpers.TypingSymbol
+BLANK_SCHEMA: langhelpers.TypingSymbol
+NULL_UNSPECIFIED: langhelpers.TypingSymbol
 
 _T = TypeVar("_T")
 
@@ -104,7 +104,7 @@ class Table(DialectKWArgs, SchemaItem, TableClause):
     def tometadata(
         self,
         metadata: MetaData,
-        schema: Optional[Union[langhelpers._symbol, util.text_type]] = ...,
+        schema: Optional[Union[langhelpers.TypingSymbol, util.text_type]] = ...,
         referred_schema_fn: Optional[
             Callable[
                 [Table, util.text_type, ForeignKeyConstraint, util.text_type],
@@ -116,7 +116,7 @@ class Table(DialectKWArgs, SchemaItem, TableClause):
     def to_metadata(
         self,
         metadata: MetaData,
-        schema: Optional[Union[langhelpers._symbol, util.text_type]] = ...,
+        schema: Optional[Union[langhelpers.TypingSymbol, util.text_type]] = ...,
         referred_schema_fn: Optional[
             Callable[
                 [Table, util.text_type, ForeignKeyConstraint, util.text_type],
@@ -338,7 +338,7 @@ class Sequence(
     is_sequence: bool = ...
     name: str = ...
     optional: bool = ...
-    schema: Optional[Union[str, langhelpers._symbol]] = ...
+    schema: Optional[Union[str, langhelpers.TypingSymbol]] = ...
     metadata: Optional[MetaData] = ...
     data_type: Optional[_TE] = ...
     @overload

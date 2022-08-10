@@ -7,7 +7,7 @@ from ..util import langhelpers
 
 _TE = TypeVar("_TE", bound=type_api.TypeEngine[Any])
 
-REQUIRED: langhelpers._symbol
+REQUIRED: langhelpers.TypingSymbol
 
 class _multiparam_column(elements.ColumnElement[_TE]):
     index: Any = ...

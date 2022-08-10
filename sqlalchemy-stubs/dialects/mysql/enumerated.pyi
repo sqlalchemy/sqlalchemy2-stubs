@@ -1,13 +1,14 @@
 from typing import Any
 
-from .types import _StringType
+from .types import TypingStringType as _StringType
 from ... import exc as exc
 from ... import sql as sql
 from ... import util as util
 from ...sql import sqltypes as sqltypes
 from ...sql.base import NO_ARG as NO_ARG
+from ...sql import type_api as type_api
 
-class ENUM(sqltypes.NativeForEmulated, sqltypes.Enum, _StringType):
+class ENUM(type_api.NativeForEmulated, sqltypes.Enum, _StringType):
     __visit_name__: str = ...
     native_enum: bool = ...
     def __init__(self, *enums: Any, **kw: Any) -> None: ...

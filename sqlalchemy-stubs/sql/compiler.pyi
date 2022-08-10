@@ -18,7 +18,7 @@ from .elements import ClauseElement
 from .schema import Table
 from .type_api import TypeEngine
 from .. import util
-from .._typing import _ExecuteOptions
+from .._typing import TypingExecuteOptions as _ExecuteOptions
 from ..engine import Dialect
 from ..util import langhelpers
 
@@ -47,7 +47,7 @@ BIND_TRANSLATE: Dict[str, Pattern[str]]
 OPERATORS: Dict[Any, str]
 FUNCTIONS: Dict[Any, str]
 EXTRACT_MAP: Dict[str, str]
-COMPOUND_KEYWORDS: Dict[langhelpers._symbol, str]
+COMPOUND_KEYWORDS: Dict[langhelpers.TypingSymbol, str]
 RM_RENDERED_NAME: int
 RM_NAME: int
 RM_OBJECTS: int
@@ -60,10 +60,10 @@ class ExpandedState(NamedTuple):
     positiontup: Any
     parameter_expansion: Any
 
-NO_LINTING: langhelpers._symbol
-COLLECT_CARTESIAN_PRODUCTS: langhelpers._symbol
-WARN_LINTING: langhelpers._symbol
-FROM_LINTING: langhelpers._symbol
+NO_LINTING: langhelpers.TypingSymbol
+COLLECT_CARTESIAN_PRODUCTS: langhelpers.TypingSymbol
+WARN_LINTING: langhelpers.TypingSymbol
+FROM_LINTING: langhelpers.TypingSymbol
 
 class FromLinter(NamedTuple):
     froms: Dict[Table, str]

@@ -2,7 +2,7 @@ from typing import Any
 
 from .interfaces import Dialect
 from .. import event
-from .._typing import _ExecuteOptions
+from .._typing import TypingExecuteOptions as _ExecuteOptions
 
 class ConnectionEvents(event.Events):
     def before_execute(

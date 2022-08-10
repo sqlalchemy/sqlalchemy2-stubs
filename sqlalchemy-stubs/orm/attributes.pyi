@@ -44,14 +44,14 @@ from ..sql import traversals as traversals
 from ..sql import visitors as visitors
 
 class QueryableAttribute(
-    interfaces._MappedAttribute,
+    interfaces.TypingMappedAttribute,
     interfaces.InspectionAttr,
     interfaces.PropComparator,
     traversals.HasCopyInternals,
     roles.JoinTargetRole,
     roles.OnClauseRole,
     sql_base.Immutable,
-    sql_base.MemoizedHasCacheKey,
+    traversals.MemoizedHasCacheKey,
 ):
     is_attribute: bool = ...
     class_: Any = ...

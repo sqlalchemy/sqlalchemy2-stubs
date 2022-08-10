@@ -26,7 +26,7 @@ from ...util import compat as compat
 RESERVED_WORDS: Any
 NO_ARG_FNS: Any
 
-class RAW(sqltypes._Binary):
+class RAW(sqltypes.TypingBinary):
     __visit_name__: str = ...
 
 OracleRaw = RAW

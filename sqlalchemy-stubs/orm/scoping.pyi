@@ -4,8 +4,8 @@ from typing import Generic
 from typing import Optional
 from typing import TypeVar
 
-from .session import _SessionClassMethods
-from .session import _SessionTypingCommon
+from .session import TypingSessionClassMethods as _SessionClassMethods
+from .session import TypingSessionTypingCommon as _SessionTypingCommon
 from .session import Session
 from ..util import ScopedRegistry
 

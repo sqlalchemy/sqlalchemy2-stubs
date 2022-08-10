@@ -2,7 +2,7 @@ from typing import Any
 from typing import Optional
 
 from ... import exc as exc
-from ... import types as sqltypes
+from ...sql import sqltypes as sqltypes
 from ... import util as util
 
 class _NumericType:
@@ -194,11 +194,13 @@ class NCHAR(_StringType, sqltypes.NCHAR):
     __visit_name__: str = ...
     def __init__(self, length: Optional[Any] = ..., **kwargs: Any) -> None: ...
 
-class TINYBLOB(sqltypes._Binary):
+class TINYBLOB(sqltypes.TypingBinary):
     __visit_name__: str = ...
 
-class MEDIUMBLOB(sqltypes._Binary):
+class MEDIUMBLOB(sqltypes.TypingBinary):
     __visit_name__: str = ...
 
-class LONGBLOB(sqltypes._Binary):
+class LONGBLOB(sqltypes.TypingBinary):
     __visit_name__: str = ...
+
+TypingStringType=_StringType

@@ -36,8 +36,8 @@ _OCE = TypeVar("_OCE", bound=ColumnElement[Any])
 coercions: ModuleType
 elements: ModuleType
 type_api: ModuleType
-PARSE_AUTOCOMMIT: langhelpers._symbol
-NO_ARG: langhelpers._symbol
+PARSE_AUTOCOMMIT: langhelpers.TypingSymbol
+NO_ARG: langhelpers.TypingSymbol
 
 class Immutable:
     def unique_params(self, *optionaldict: Any, **kwargs: Any) -> NoReturn: ...

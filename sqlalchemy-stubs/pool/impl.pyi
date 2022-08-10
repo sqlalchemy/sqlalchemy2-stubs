@@ -1,6 +1,6 @@
 from typing import Any
 
-from .base import _ConnDialect
+from .base import TypingConnDialect as _ConnDialect
 from .base import Pool as Pool
 from .. import exc as exc
 from .. import util as util

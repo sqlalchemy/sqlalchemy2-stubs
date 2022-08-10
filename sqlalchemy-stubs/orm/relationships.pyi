@@ -11,7 +11,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from . import _BackrefResult
+from . import TypingBackrefResult as _BackrefResult
 from . import attributes as attributes
 from .base import state_str as state_str
 from .interfaces import MANYTOMANY as MANYTOMANY

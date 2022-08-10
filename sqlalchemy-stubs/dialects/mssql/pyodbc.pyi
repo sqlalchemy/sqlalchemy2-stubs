@@ -54,3 +54,4 @@ class MSDialect_pyodbc(PyODBCConnector, MSDialect):
     def is_disconnect(self, e: Any, connection: Any, cursor: Any): ...
 
 dialect = MSDialect_pyodbc
+TypingMSNumeric_pyodbc=_MSNumeric_pyodbc

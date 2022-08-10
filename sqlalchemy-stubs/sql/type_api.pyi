@@ -183,3 +183,7 @@ class Variant(TypeDecorator[_T]):
 
 def to_instance(typeobj: Any, *arg: Any, **kw: Any) -> Any: ...
 def adapt_type(typeobj: Any, colspecs: Any) -> Any: ...
+
+TypingBindProcessor = _BindProcessor
+TypingLiteralProcessor = _LiteralProcessor
+TypingResultProcessor = _ResultProcessor

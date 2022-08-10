@@ -16,7 +16,7 @@ from .base import Engine
 from .cursor import CursorFetchStrategy
 from .cursor import CursorResult
 from .url import URL
-from .._typing import _TypeToInstance
+from .._typing import TypingTypeToInstance as _TypeToInstance
 from ..exc import StatementError
 from ..sql import compiler
 from ..sql.compiler import Compiled as Compiled
@@ -367,3 +367,7 @@ class ExceptionContext:
 class AdaptedConnection:
     @property
     def driver_connection(self) -> Any: ...
+
+TypingDBAPIConnection = _DBAPIConnection
+TypingDBAPICursor = _DBAPICursor
+TypingOnConnect = _OnConnect

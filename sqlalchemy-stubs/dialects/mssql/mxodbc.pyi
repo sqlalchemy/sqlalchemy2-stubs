@@ -1,11 +1,11 @@
 from typing import Any
 from typing import Optional
 
-from .base import _MSDate
-from .base import _MSTime
+from .base import TypingMSDate as _MSDate
+from .base import MSTime as _MSTime
 from .base import MSDialect as MSDialect
 from .base import VARBINARY as VARBINARY
-from .pyodbc import _MSNumeric_pyodbc
+from .pyodbc import TypingMSNumeric_pyodbc as _MSNumeric_pyodbc
 from .pyodbc import MSExecutionContext_pyodbc as MSExecutionContext_pyodbc
 from ...connectors.mxodbc import MxODBCConnector as MxODBCConnector
 

@@ -8,7 +8,8 @@ from ... import exc as exc
 from ... import Identity as Identity
 from ... import Sequence as Sequence
 from ... import sql as sql
-from ... import types as sqltypes
+from ...sql import sqltypes as sqltypes
+from ...sql import type_api as type_api
 from ... import util as util
 from ...engine import default as default
 from ...engine import reflection as reflection
@@ -89,7 +90,7 @@ class _UnicodeLiteral:
 class _MSUnicode(_UnicodeLiteral, sqltypes.Unicode): ...
 class _MSUnicodeText(_UnicodeLiteral, sqltypes.UnicodeText): ...
 
-class TIMESTAMP(sqltypes._Binary):
+class TIMESTAMP(sqltypes.TypingBinary):
     __visit_name__: str = ...
     length: Any = ...
     convert_int: Any = ...
@@ -111,19 +112,19 @@ class IMAGE(sqltypes.LargeBinary):
 class XML(sqltypes.Text):
     __visit_name__: str = ...
 
-class BIT(sqltypes.TypeEngine):
+class BIT(type_api.TypeEngine):
     __visit_name__: str = ...
 
-class MONEY(sqltypes.TypeEngine):
+class MONEY(type_api.TypeEngine):
     __visit_name__: str = ...
 
-class SMALLMONEY(sqltypes.TypeEngine):
+class SMALLMONEY(type_api.TypeEngine):
     __visit_name__: str = ...
 
-class UNIQUEIDENTIFIER(sqltypes.TypeEngine):
+class UNIQUEIDENTIFIER(type_api.TypeEngine):
     __visit_name__: str = ...
 
-class SQL_VARIANT(sqltypes.TypeEngine):
+class SQL_VARIANT(type_api.TypeEngine):
     __visit_name__: str = ...
 
 class TryCast(sql.elements.Cast):
@@ -418,3 +419,5 @@ class MSDialect(default.DefaultDialect):
         schema: Any,
         **kw: Any,
     ): ...
+
+TypingMSDate = _MSDate

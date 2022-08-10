@@ -533,8 +533,8 @@ class Grouping(GroupedElement, ColumnElement[_TE]):  # type: ignore[misc]
     ) -> None: ...
     def __getattr__(self, attr: Any) -> Any: ...
 
-RANGE_UNBOUNDED: langhelpers._symbol
-RANGE_CURRENT: langhelpers._symbol
+RANGE_UNBOUNDED: langhelpers.TypingSymbol
+RANGE_CURRENT: langhelpers.TypingSymbol
 
 class Over(ColumnElement[_TE]):
     __visit_name__: str = ...
