@@ -14,7 +14,8 @@ from ...sql import elements as elements
 from ...sql import expression as expression
 from ...sql import roles as roles
 from ...sql import sqltypes as sqltypes
-from ...sql.ddl import DDLBase as DDLBase
+from ...sql import type_api as type_api
+from ...sql.ddl import DDLBase as DDLBase, TypingCreateDropBase
 from ...types import BIGINT as BIGINT
 from ...types import BOOLEAN as BOOLEAN
 from ...types import CHAR as CHAR
@@ -37,28 +38,28 @@ class BYTEA(sqltypes.LargeBinary):
 class DOUBLE_PRECISION(sqltypes.Float):
     __visit_name__: str = ...
 
-class INET(sqltypes.TypeEngine):
+class INET(type_api.TypeEngine):
     __visit_name__: str = ...
 
 PGInet = INET
 
-class CIDR(sqltypes.TypeEngine):
+class CIDR(type_api.TypeEngine):
     __visit_name__: str = ...
 
 PGCidr = CIDR
 
-class MACADDR(sqltypes.TypeEngine):
+class MACADDR(type_api.TypeEngine):
     __visit_name__: str = ...
 
 PGMacAddr = MACADDR
 
-class MONEY(sqltypes.TypeEngine):
+class MONEY(type_api.TypeEngine):
     __visit_name__: str = ...
 
-class OID(sqltypes.TypeEngine):
+class OID(type_api.TypeEngine):
     __visit_name__: str = ...
 
-class REGCLASS(sqltypes.TypeEngine):
+class REGCLASS(type_api.TypeEngine):
     __visit_name__: str = ...
 
 class TIMESTAMP(sqltypes.TIMESTAMP):
@@ -73,7 +74,7 @@ class TIME(sqltypes.TIME):
         self, timezone: bool = ..., precision: Optional[Any] = ...
     ) -> None: ...
 
-class INTERVAL(sqltypes.NativeForEmulated, sqltypes._AbstractInterval):
+class INTERVAL(type_api.NativeForEmulated, sqltypes.TypingAbstractInterval):
     __visit_name__: str = ...
     native: bool = ...
     precision: Any = ...
@@ -89,7 +90,7 @@ class INTERVAL(sqltypes.NativeForEmulated, sqltypes._AbstractInterval):
 
 PGInterval = INTERVAL
 
-class BIT(sqltypes.TypeEngine):
+class BIT(type_api.TypeEngine):
     __visit_name__: str = ...
     length: Any = ...
     varying: Any = ...
@@ -99,7 +100,7 @@ class BIT(sqltypes.TypeEngine):
 
 PGBit = BIT
 
-class UUID(sqltypes.TypeEngine):
+class UUID(type_api.TypeEngine):
     __visit_name__: str = ...
     as_uuid: Any = ...
     def __init__(self, as_uuid: bool = ...) -> None: ...
@@ -109,10 +110,10 @@ class UUID(sqltypes.TypeEngine):
 
 PGUuid = UUID
 
-class TSVECTOR(sqltypes.TypeEngine):
+class TSVECTOR(type_api.TypeEngine):
     __visit_name__: str = ...
 
-class ENUM(sqltypes.NativeForEmulated, sqltypes.Enum):
+class ENUM(type_api.NativeForEmulated, sqltypes.Enum):
     native_enum: bool = ...
     create_type: Any = ...
     def __init__(self, *enums: Any, **kw: Any) -> None: ...
@@ -263,10 +264,10 @@ class PGInspector(reflection.Inspector):
         self, schema: Optional[Any] = ..., include: Any = ...
     ): ...
 
-class CreateEnumType(schema._CreateDropBase):
+class CreateEnumType(TypingCreateDropBase):
     __visit_name__: str = ...
 
-class DropEnumType(schema._CreateDropBase):
+class DropEnumType(TypingCreateDropBase):
     __visit_name__: str = ...
 
 class PGExecutionContext(default.DefaultExecutionContext):

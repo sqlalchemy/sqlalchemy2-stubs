@@ -528,3 +528,4 @@ MATCHTYPE: MatchType
 TABLEVALUE: TableValueType
 
 TypingBinary = _Binary
+TypingAbstractInterval = _AbstractInterval

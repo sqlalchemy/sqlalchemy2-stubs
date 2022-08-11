@@ -258,3 +258,5 @@ def sort_tables_and_constraints(
     extra_dependencies: Optional[Iterable[Tuple[Table, Table]]] = ...,
     _warn_for_cycles: bool = ...,
 ) -> List[Tuple[Optional[Table], List[ForeignKeyConstraint]]]: ...
+
+TypingCreateDropBase = _CreateDropBase

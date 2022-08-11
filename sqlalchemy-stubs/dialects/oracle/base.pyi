@@ -10,6 +10,7 @@ from ...engine import reflection as reflection
 from ...sql import compiler as compiler
 from ...sql import expression as expression
 from ...sql import sqltypes as sqltypes
+from ...sql import type_api as type_api
 from ...sql import visitors as visitors
 from ...types import BLOB as BLOB
 from ...types import CHAR as CHAR
@@ -67,7 +68,7 @@ class LONG(sqltypes.Text):
 class DATE(sqltypes.DateTime):
     __visit_name__: str = ...
 
-class INTERVAL(sqltypes.NativeForEmulated, sqltypes._AbstractInterval):
+class INTERVAL(type_api.NativeForEmulated, sqltypes.TypingAbstractInterval):
     __visit_name__: str = ...
     day_precision: Any = ...
     second_precision: Any = ...
@@ -78,7 +79,7 @@ class INTERVAL(sqltypes.NativeForEmulated, sqltypes._AbstractInterval):
     ) -> None: ...
     def as_generic(self, allow_nulltype: bool = ...): ...
 
-class ROWID(sqltypes.TypeEngine):
+class ROWID(type_api.TypeEngine):
     __visit_name__: str = ...
 
 class _OracleBoolean(sqltypes.Boolean):
