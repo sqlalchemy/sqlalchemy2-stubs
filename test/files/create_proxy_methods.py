@@ -94,6 +94,7 @@ async def test_async_scoped_session() -> None:
     async_ss.no_autoflush
     async_ss.info
 
+
 # scoped session
 scoped_session.object_session(object())
 scoped_session.identity_key()

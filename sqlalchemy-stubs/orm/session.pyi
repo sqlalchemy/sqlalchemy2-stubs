@@ -196,7 +196,9 @@ class _SessionTransactionProtocol(Protocol):
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
 
 if sys.version_info >= (3, 0):
-    from ..ext.asyncio.session import TypingAsyncSessionProtocol as _AsyncSessionProtocol
+    from ..ext.asyncio.session import (
+        TypingAsyncSessionProtocol as _AsyncSessionProtocol,
+    )
 
     _TSessionMakerType = TypeVar(
         "_TSessionMakerType",

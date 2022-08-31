@@ -14,27 +14,28 @@ from ...sql.elements import ClauseElement
 from ...sql.elements import ColumnElement
 from ...sql.functions import GenericFunction
 
-
 class Insert(StandardInsert):
     stringify_dialect: str = ...
     @util.memoized_property
     def excluded(self): ...
-
     def on_conflict_do_update(
         self,
-        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        constraint: Optional[
+            Union[str, Index, Constraint, ExcludeConstraint]
+        ] = ...,
         index_elements: Sequence[Union[str, Column]] = ...,
         index_where: Optional[ClauseElement] = ...,
         set_: Mapping[str, Union[ColumnElement, GenericFunction]] = ...,
         where: Optional[ClauseElement] = ...,
-    ) -> 'Insert': ...
-
+    ) -> "Insert": ...
     def on_conflict_do_nothing(
         self,
-        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        constraint: Optional[
+            Union[str, Index, Constraint, ExcludeConstraint]
+        ] = ...,
         index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
-    ) -> 'Index': ...
+    ) -> "Index": ...
 
 insert: Any
 
@@ -45,7 +46,9 @@ class OnConflictClause(ClauseElement):
     inferred_target_whereclause: Any = ...
     def __init__(
         self,
-        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        constraint: Optional[
+            Union[str, Index, Constraint, ExcludeConstraint]
+        ] = ...,
         index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
     ) -> None: ...
@@ -59,7 +62,9 @@ class OnConflictDoUpdate(OnConflictClause):
     update_whereclause: Any = ...
     def __init__(
         self,
-        constraint: Optional[Union[str, Index, Constraint, ExcludeConstraint]] = ...,
+        constraint: Optional[
+            Union[str, Index, Constraint, ExcludeConstraint]
+        ] = ...,
         index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
         set_: Mapping[str, Union[ColumnElement, GenericFunction]] = ...,

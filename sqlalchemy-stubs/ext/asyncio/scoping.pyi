@@ -1,7 +1,9 @@
 from typing import Any
 from typing import Callable
 
-from .session import TypingAsyncSessionTypingCommon as _AsyncSessionTypingCommon
+from .session import (
+    TypingAsyncSessionTypingCommon as _AsyncSessionTypingCommon,
+)
 from .session import AsyncSession
 from ...orm.scoping import ScopedSessionMixin
 from ...util import ScopedRegistry

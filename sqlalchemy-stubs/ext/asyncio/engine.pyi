@@ -16,7 +16,9 @@ from ...engine import Dialect
 from ...engine import Result
 from ...engine import ScalarResult
 from ...engine import Transaction
-from ...engine.base import TypingConnectionTypingCommon as _ConnectionTypingCommon
+from ...engine.base import (
+    TypingConnectionTypingCommon as _ConnectionTypingCommon,
+)
 from ...engine.base import TypingEngineTypingCommon as _EngineTypingCommon
 from ...future import Connection
 from ...future import Engine
@@ -124,6 +126,7 @@ class AsyncConnection(
 class AsyncEngine(_EngineTypingCommon, ProxyComparable, AsyncConnectable):
     @property
     def engine(self: _TEngine) -> _TEngine: ...
+
     class _trans_ctx(StartableContext[AsyncConnection]):
         conn: AsyncConnection = ...
         def __init__(self, conn: AsyncConnection) -> None: ...

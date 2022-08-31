@@ -23,7 +23,9 @@ TypingIsolationLevel = _IsolationLevel = Literal[
     "READ UNCOMMITTED",
     "AUTOCOMMIT",
 ]
-TypingParamStyle = _ParamStyle = Literal["qmark", "numeric", "named", "format", "pyformat"]
+TypingParamStyle = _ParamStyle = Literal[
+    "qmark", "numeric", "named", "format", "pyformat"
+]
 TypingResetOnReturn = _ResetOnReturn = Literal["rollback", "commit"]
 
 @overload

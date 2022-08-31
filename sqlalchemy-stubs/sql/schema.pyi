@@ -104,7 +104,9 @@ class Table(DialectKWArgs, SchemaItem, TableClause):
     def tometadata(
         self,
         metadata: MetaData,
-        schema: Optional[Union[langhelpers.TypingSymbol, util.text_type]] = ...,
+        schema: Optional[
+            Union[langhelpers.TypingSymbol, util.text_type]
+        ] = ...,
         referred_schema_fn: Optional[
             Callable[
                 [Table, util.text_type, ForeignKeyConstraint, util.text_type],
@@ -116,7 +118,9 @@ class Table(DialectKWArgs, SchemaItem, TableClause):
     def to_metadata(
         self,
         metadata: MetaData,
-        schema: Optional[Union[langhelpers.TypingSymbol, util.text_type]] = ...,
+        schema: Optional[
+            Union[langhelpers.TypingSymbol, util.text_type]
+        ] = ...,
         referred_schema_fn: Optional[
             Callable[
                 [Table, util.text_type, ForeignKeyConstraint, util.text_type],

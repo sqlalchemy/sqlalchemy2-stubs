@@ -23,10 +23,18 @@ from ...engine import Result
 from ...engine import ScalarResult
 from ...orm import Session
 from ...orm.session import TypingBindArguments as _BindArguments
-from ...orm.session import TypingSessionClassMethodNoIoTypingCommon as _SessionClassMethodNoIoTypingCommon
-from ...orm.session import TypingSessionInTransactionTypingCommon as _SessionInTransactionTypingCommon
-from ...orm.session import TypingSessionNoIoTypingCommon as _SessionNoIoTypingCommon
-from ...orm.session import TypingSharedSessionProtocol as _SharedSessionProtocol
+from ...orm.session import (
+    TypingSessionClassMethodNoIoTypingCommon as _SessionClassMethodNoIoTypingCommon,
+)
+from ...orm.session import (
+    TypingSessionInTransactionTypingCommon as _SessionInTransactionTypingCommon,
+)
+from ...orm.session import (
+    TypingSessionNoIoTypingCommon as _SessionNoIoTypingCommon,
+)
+from ...orm.session import (
+    TypingSharedSessionProtocol as _SharedSessionProtocol,
+)
 from ...sql import Executable
 
 _T = TypeVar("_T")
@@ -276,7 +284,6 @@ class AsyncSessionTransaction(StartableContext["AsyncSessionTransaction"]):
     ) -> None: ...
 
 def async_object_session(instance: Any) -> Optional[AsyncSession]: ...
-
 def async_session(session: Session) -> Optional[AsyncSession]: ...
 
 TypingAsyncSessionTypingCommon = _AsyncSessionTypingCommon
