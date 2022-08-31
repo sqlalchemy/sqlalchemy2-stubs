@@ -44,7 +44,7 @@ from ..sql import traversals as traversals
 from ..sql import visitors as visitors
 
 class QueryableAttribute(
-    interfaces._MappedAttribute,
+    interfaces.TypingMappedAttribute,
     interfaces.InspectionAttr,
     interfaces.PropComparator,
     traversals.HasCopyInternals,

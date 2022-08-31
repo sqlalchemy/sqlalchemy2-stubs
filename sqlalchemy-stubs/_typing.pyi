@@ -21,3 +21,7 @@ class _TypeToInstance(Generic[_T]):
 
 _ExecuteParams = Union[Mapping[Any, Any], Sequence[Mapping[Any, Any]]]
 _ExecuteOptions = Mapping[Any, Any]
+
+TypingExecuteOptions = _ExecuteOptions
+TypingExecuteParams = _ExecuteParams
+TypingTypeToInstance = _TypeToInstance

@@ -11,15 +11,15 @@ from typing import Union
 from typing_extensions import Protocol
 
 from . import interfaces
-from .session import _SessionProtocol
+from .session import TypingSessionProtocol as _SessionProtocol
 from .state import InstanceState
-from .._typing import _ExecuteOptions
+from .._typing import TypingExecuteOptions as _ExecuteOptions
 from ..sql.annotation import SupportsCloneAnnotations
 from ..sql.base import Executable
 from ..sql.elements import BooleanClauseList
 from ..sql.elements import GroupedElement
 from ..sql.elements import Label
-from ..sql.selectable import _SelectFromElements
+from ..sql.selectable import TypingSelectFromElements as _SelectFromElements
 from ..sql.selectable import Alias
 from ..sql.selectable import CTE
 from ..sql.selectable import Exists
@@ -30,7 +30,7 @@ from ..sql.selectable import ScalarSelect
 from ..sql.selectable import Select
 from ..sql.selectable import SelectBase
 from ..sql.selectable import SelectStatementGrouping
-from ..util.langhelpers import _symbol
+from ..util.langhelpers import TypingSymbol as _symbol
 
 _T = TypeVar("_T")
 _TQuery = TypeVar("_TQuery", bound=Query[Any])

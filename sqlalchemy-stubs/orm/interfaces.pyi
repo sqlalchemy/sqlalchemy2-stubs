@@ -3,7 +3,7 @@ from typing import Generic
 from typing import Optional
 from typing import TypeVar
 
-from .base import _MappedAttribute as _MappedAttribute
+from .base import TypingMappedAttribute as TypingMappedAttribute
 from .base import EXT_CONTINUE as EXT_CONTINUE
 from .base import EXT_SKIP as EXT_SKIP
 from .base import EXT_STOP as EXT_STOP
@@ -30,7 +30,7 @@ _T = TypeVar("_T")
 
 class MapperProperty(
     HasCacheKey,
-    _MappedAttribute,
+    TypingMappedAttribute,
     InspectionAttr,
     util.MemoizedSlots,
     Generic[_T],

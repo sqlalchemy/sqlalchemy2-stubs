@@ -6,7 +6,7 @@ from typing import Sequence
 from typing import TypeVar
 
 from .base import Connection
-from .interfaces import _DBAPICursor
+from .interfaces import TypingDBAPICursor as _DBAPICursor
 from .interfaces import Dialect
 from .interfaces import ExecutionContext
 from .result import MergedResult
@@ -15,7 +15,7 @@ from .result import ResultMetaData
 from .result import Row
 from .row import LegacyRow
 from .. import util as util
-from .._typing import _ExecuteOptions
+from .._typing import TypingExecuteOptions as _ExecuteOptions
 
 _TCursorResult = TypeVar("_TCursorResult", bound=CursorResult)
 

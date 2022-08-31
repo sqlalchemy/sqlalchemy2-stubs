@@ -17,19 +17,20 @@ from .engine import AsyncConnection
 from .engine import AsyncEngine
 from .result import AsyncResult
 from .result import AsyncScalarResult
-from ..._typing import _ExecuteOptions
-from ..._typing import _ExecuteParams
+from ..._typing import TypingExecuteOptions as _ExecuteOptions
+from ..._typing import TypingExecuteParams as _ExecuteParams
 from ...engine import Result
 from ...engine import ScalarResult
 from ...orm import Session
-from ...orm.session import _BindArguments
-from ...orm.session import _SessionClassMethodNoIoTypingCommon
-from ...orm.session import _SessionInTransactionTypingCommon
-from ...orm.session import _SessionNoIoTypingCommon
-from ...orm.session import _SharedSessionProtocol
+from ...orm.session import TypingBindArguments as _BindArguments
+from ...orm.session import TypingSessionClassMethodNoIoTypingCommon as _SessionClassMethodNoIoTypingCommon
+from ...orm.session import TypingSessionInTransactionTypingCommon as _SessionInTransactionTypingCommon
+from ...orm.session import TypingSessionNoIoTypingCommon as _SessionNoIoTypingCommon
+from ...orm.session import TypingSharedSessionProtocol as _SharedSessionProtocol
 from ...sql import Executable
 
 _T = TypeVar("_T")
+_M = TypeVar("_M")
 _TAsyncSession = TypeVar("_TAsyncSession", bound=AsyncSession)
 _TAsyncSessionTransaction = TypeVar(
     "_TAsyncSessionTransaction", bound=AsyncSessionTransaction
@@ -170,20 +171,20 @@ class _AsyncSessionTypingCommon(
     async def flush(self, objects: Optional[Any] = ...) -> None: ...
     async def get(
         self,
-        entity: Type[_T],
+        entity: Type[_M],
         ident: Any,
         options: Optional[Sequence[Any]] = ...,
         populate_existing: bool = ...,
         with_for_update: Optional[Any] = ...,
         identity_token: Optional[Any] = ...,
         execution_options: Optional[_ExecuteOptions] = ...,
-    ) -> Optional[_T]: ...
+    ) -> Optional[_M]: ...
     async def merge(
         self,
-        instance: _T,
+        instance: _M,
         load: bool = ...,
         options: Optional[Sequence[Any]] = ...,
-    ) -> _T: ...
+    ) -> _M: ...
     async def refresh(
         self,
         instance: Any,
@@ -232,8 +233,8 @@ class AsyncSession(
         **kw: Any,
     ) -> None: ...
     async def run_sync(
-        self, fn: Callable[..., _T], *arg: Any, **kw: Any
-    ) -> _T: ...
+        self, fn: Callable[..., _M], *arg: Any, **kw: Any
+    ) -> _M: ...
     async def stream(
         self,
         statement: Any,
@@ -275,4 +276,8 @@ class AsyncSessionTransaction(StartableContext["AsyncSessionTransaction"]):
     ) -> None: ...
 
 def async_object_session(instance: Any) -> Optional[AsyncSession]: ...
+
 def async_session(session: Session) -> Optional[AsyncSession]: ...
+
+TypingAsyncSessionTypingCommon = _AsyncSessionTypingCommon
+TypingAsyncSessionProtocol = _AsyncSessionProtocol

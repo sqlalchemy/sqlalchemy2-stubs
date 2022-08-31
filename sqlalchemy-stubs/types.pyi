@@ -1,4 +1,4 @@
-from .sql.sqltypes import _Binary as _Binary
+from .sql.sqltypes import TypingBinary as _Binary
 from .sql.sqltypes import ARRAY as ARRAY
 from .sql.sqltypes import BIGINT as BIGINT
 from .sql.sqltypes import BigInteger as BigInteger

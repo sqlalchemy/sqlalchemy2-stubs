@@ -8,17 +8,17 @@ from typing import Type
 from typing import Union
 
 from .. import util
-from .._typing import _ExecuteOptions
-from .._typing import _ExecuteParams
+from .._typing import TypingExecuteOptions as _ExecuteOptions
+from .._typing import TypingExecuteParams as _ExecuteParams
 from ..engine.base import Connection as _LegacyConnection
 from ..engine.base import Engine as _LegacyEngine
 from ..engine.base import NestedTransaction
 from ..engine.base import OptionEngineMixin
 from ..engine.base import Transaction
-from ..engine.create import _Debug
-from ..engine.create import _IsolationLevel
-from ..engine.create import _ParamStyle
-from ..engine.create import _ResetOnReturn
+from ..engine.create import TypingDebug as _Debug
+from ..engine.create import TypingIsolationLevel as _IsolationLevel
+from ..engine.create import TypingParamStyle as _ParamStyle
+from ..engine.create import TypingResetOnReturn as _ResetOnReturn
 from ..engine.url import URL
 from ..pool import Pool
 

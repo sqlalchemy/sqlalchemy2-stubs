@@ -1,7 +1,7 @@
 import abc
 from typing import Any
 
-from .interfaces import _DBAPIConnection
+from .interfaces import TypingDBAPIConnection as _DBAPIConnection
 from .interfaces import Dialect
 from ..util import ABC
 

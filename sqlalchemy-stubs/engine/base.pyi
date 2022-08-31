@@ -9,8 +9,8 @@ from typing_extensions import Literal
 from typing_extensions import Protocol
 
 from .cursor import CursorResult
-from .interfaces import _DBAPIConnection
-from .interfaces import _DBAPICursor
+from .interfaces import TypingDBAPIConnection as _DBAPIConnection
+from .interfaces import TypingDBAPICursor as _DBAPICursor
 from .interfaces import Connectable as Connectable
 from .interfaces import Dialect
 from .interfaces import ExceptionContext
@@ -18,11 +18,11 @@ from .interfaces import ExecutionContext
 from .result import ScalarResult
 from .url import URL
 from .. import log
-from .._typing import _ExecuteOptions
-from .._typing import _ExecuteParams
+from .._typing import TypingExecuteOptions as _ExecuteOptions
+from .._typing import TypingExecuteParams as _ExecuteParams
 from ..exc import StatementError
 from ..pool import Pool
-from ..pool.base import _ConnectionFairy
+from ..pool.base import TypingConnectionFairy as _ConnectionFairy
 
 _T = TypeVar("_T")
 _T_co = TypeVar("_T_co", covariant=True)
@@ -255,3 +255,6 @@ class OptionEngineMixin:
     ) -> None: ...
 
 class OptionEngine(OptionEngineMixin, Engine): ...
+
+TypingConnectionTypingCommon=_ConnectionTypingCommon
+TypingEngineTypingCommon=_EngineTypingCommon

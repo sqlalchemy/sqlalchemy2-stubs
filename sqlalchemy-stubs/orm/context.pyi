@@ -14,7 +14,7 @@ from .. import future as future
 from .. import inspect as inspect
 from .. import sql as sql
 from .. import util as util
-from .._typing import _ExecuteOptions
+from .._typing import TypingExecuteOptions as _ExecuteOptions
 from ..sql import coercions as coercions
 from ..sql import expression as expression
 from ..sql import roles as roles

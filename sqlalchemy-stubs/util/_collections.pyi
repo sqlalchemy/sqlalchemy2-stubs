@@ -1,4 +1,4 @@
-from builtins import _NotImplementedType
+from builtins import NotImplementedError as _NotImplementedType
 import sys
 from types import MethodType
 from typing import Any
@@ -20,7 +20,7 @@ from typing import Union
 from _typeshed import SupportsKeysAndGetItem
 from typing_extensions import Protocol
 
-from .compat import _SortKeyFunction
+from .compat import TypingSortKeyFunction as _SortKeyFunction
 from .compat import collections_abc as collections_abc
 from .compat import threading
 

@@ -25,12 +25,13 @@ from .path_registry import PathRegistry
 from .query import Query
 from .state import InstanceState
 from .. import util
-from .._typing import _ExecuteOptions
-from .._typing import _ExecuteParams
+from .._typing import TypingExecuteOptions as _ExecuteOptions
+from .._typing import TypingExecuteParams as _ExecuteParams
 from ..engine import Connection
 from ..engine import Engine
 from ..engine import Result
 from ..engine import ScalarResult
+from ..ext.asyncio import AsyncConnection, AsyncEngine
 from ..sql import ClauseElement
 from ..sql import Executable
 from ..sql.base import Options
@@ -195,7 +196,7 @@ class _SessionTransactionProtocol(Protocol):
     def __exit__(self, type_: Any, value: Any, traceback: Any) -> None: ...
 
 if sys.version_info >= (3, 0):
-    from ..ext.asyncio.session import _AsyncSessionProtocol
+    from ..ext.asyncio.session import TypingAsyncSessionProtocol as _AsyncSessionProtocol
 
     _TSessionMakerType = TypeVar(
         "_TSessionMakerType",
@@ -214,11 +215,11 @@ class _SessionClassMethods(_SessionClassMethodNoIoTypingCommon):
     @classmethod
     def close_all(cls) -> None: ...  # NOTE: Deprecated.
 
-ACTIVE: util.langhelpers._symbol
-PREPARED: util.langhelpers._symbol
-COMMITTED: util.langhelpers._symbol
-DEACTIVE: util.langhelpers._symbol
-CLOSED: util.langhelpers._symbol
+ACTIVE: util.langhelpers.TypingSymbol
+PREPARED: util.langhelpers.TypingSymbol
+COMMITTED: util.langhelpers.TypingSymbol
+DEACTIVE: util.langhelpers.TypingSymbol
+CLOSED: util.langhelpers.TypingSymbol
 
 class ORMExecuteState(util.MemoizedSlots):
     session: Session
@@ -577,3 +578,12 @@ if sys.version_info >= (3, 0):
 
 else:
     def object_session(instance: object) -> Session: ...
+
+TypingBindArguments = _BindArguments
+TypingSessionClassMethodNoIoTypingCommon = _SessionClassMethodNoIoTypingCommon
+TypingSessionInTransactionTypingCommon = _SessionInTransactionTypingCommon
+TypingSessionNoIoTypingCommon = _SessionNoIoTypingCommon
+TypingSharedSessionProtocol = _SharedSessionProtocol
+TypingSessionClassMethods = _SessionClassMethods
+TypingSessionTypingCommon = _SessionTypingCommon
+TypingSessionProtocol = _SessionProtocol

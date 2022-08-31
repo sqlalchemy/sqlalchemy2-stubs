@@ -5,7 +5,7 @@ from .. import event as event
 from .. import exc as exc
 from .. import log as log
 from .. import util as util
-from ..engine.interfaces import _DBAPIConnection
+from ..engine.interfaces import TypingDBAPIConnection as _DBAPIConnection
 
 reset_rollback: Any
 reset_commit: Any
@@ -88,3 +88,6 @@ class _ConnectionFairy:
     def __getattr__(self, key: Any): ...
     def detach(self) -> None: ...
     def close(self) -> None: ...
+
+TypingConnectionFairy = _ConnectionFairy
+TypingConnDialect = _ConnDialect
