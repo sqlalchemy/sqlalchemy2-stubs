@@ -43,6 +43,7 @@ from .sql.sqltypes import Text as Text
 from .sql.sqltypes import TIME as TIME
 from .sql.sqltypes import Time as Time
 from .sql.sqltypes import TIMESTAMP as TIMESTAMP
+from .sql.sqltypes import TupleType as TupleType
 from .sql.sqltypes import Unicode as Unicode
 from .sql.sqltypes import UnicodeText as UnicodeText
 from .sql.sqltypes import VARBINARY as VARBINARY
