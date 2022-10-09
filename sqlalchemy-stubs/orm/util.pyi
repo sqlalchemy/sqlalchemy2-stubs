@@ -29,6 +29,7 @@ from ..sql import coercions as coercions
 from ..sql import expression as expression
 from ..sql import lambdas as lambdas
 from ..sql import roles as roles
+from ..sql import traversals as traversals
 from ..sql import util as sql_util
 from ..sql import visitors as visitors
 from ..sql.annotation import SupportsCloneAnnotations as SupportsCloneAnnotations
@@ -88,7 +89,7 @@ class AliasedClass:
 class AliasedInsp(
     ORMEntityColumnsClauseRole,
     ORMFromClauseRole,
-    sql_base.MemoizedHasCacheKey,
+    traversals.MemoizedHasCacheKey,
     InspectionAttr,
 ):
     mapper: Any = ...

@@ -51,7 +51,7 @@ class QueryableAttribute(
     roles.JoinTargetRole,
     roles.OnClauseRole,
     sql_base.Immutable,
-    sql_base.MemoizedHasCacheKey,
+    traversals.MemoizedHasCacheKey,
 ):
     is_attribute: bool = ...
     class_: Any = ...
