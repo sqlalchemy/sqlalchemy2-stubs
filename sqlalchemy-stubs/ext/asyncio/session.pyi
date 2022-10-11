@@ -135,13 +135,13 @@ class _AsyncSessionProtocol(
     async def scalars(
         self,
         statement: Executable,
-        parameters: Optional[_ExecuteParams] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: Optional[_ExecuteOptions] = ...,
     ) -> ScalarResult: ...
     async def stream_scalars(
         self,
         statement: Executable,
-        parameters: Optional[_ExecuteParams] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: Optional[_ExecuteOptions] = ...,
     ) -> AsyncScalarResult: ...
     async def delete(self, instance: Any) -> None: ...
@@ -211,13 +211,13 @@ class _AsyncSessionTypingCommon(
     async def scalars(
         self,
         statement: Executable,
-        parameters: Optional[_ExecuteParams] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: Optional[_ExecuteOptions] = ...,
     ) -> ScalarResult: ...
     async def stream_scalars(
         self,
         statement: Executable,
-        parameters: Optional[_ExecuteParams] = ...,
+        params: Optional[_ExecuteParams] = ...,
         execution_options: Optional[_ExecuteOptions] = ...,
     ) -> AsyncScalarResult: ...
     @classmethod

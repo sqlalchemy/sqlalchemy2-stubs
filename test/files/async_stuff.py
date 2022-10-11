@@ -15,13 +15,13 @@ as_session = async_scoped_session(SM, current_task)
 
 
 async def go() -> None:
-    r = await async_session.scalars(text("select 1"))
+    r = await async_session.scalars(text("select 1"), params=[])
     r.first()
-    sr = await async_session.stream_scalars(text("select 1"))
+    sr = await async_session.stream_scalars(text("select 1"), params=[])
     await sr.all()
-    r = await as_session.scalars(text("select 1"))
+    r = await as_session.scalars(text("select 1"), params=[])
     r.first()
-    sr = await as_session.stream_scalars(text("select 1"))
+    sr = await as_session.stream_scalars(text("select 1"), params=[])
     await sr.all()
 
     async with engine.connect() as conn:
