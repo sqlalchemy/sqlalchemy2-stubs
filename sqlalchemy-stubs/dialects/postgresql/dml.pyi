@@ -35,7 +35,7 @@ class Insert(StandardInsert):
         ] = ...,
         index_elements: Optional[Sequence[Union[str, Column]]] = ...,
         index_where: Optional[Any] = ...,
-    ) -> "Index": ...
+    ) -> "Insert": ...
 
 insert: Any
 

@@ -80,3 +80,11 @@ Column("name", ForeignKey("a.id"), type_=Integer())
 # These seems supported now
 Column(Integer, ForeignKey("a.id"), type_=String)
 Column("name", ForeignKey("a.id"), name="String")
+
+
+# TypeEngine.with_variant should accept both a TypeEngine instance and the Concrete Type
+Integer().with_variant(Integer, "mysql")
+Integer().with_variant(Integer(), "mysql")
+# Also test Variant.with_variant
+Integer().with_variant(Integer, "mysql").with_variant(Integer, "mysql")
+Integer().with_variant(Integer, "mysql").with_variant(Integer(), "mysql")
