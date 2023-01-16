@@ -31,12 +31,13 @@ from .selectable import FromClause
 from .selectable import Select
 from .selectable import TableValuedAlias
 from .visitors import TraversibleType
+from ..orm.attributes import Mapped
 
 _T_co = TypeVar("_T_co", covariant=True)
 _TE = TypeVar("_TE", bound=type_api.TypeEngine[Any])
 _FE = TypeVar("_FE", bound=FunctionElement[Any])
 
-_OverByType = Union[ClauseElement, str]
+_OverByType = Union[ClauseElement, str, Mapped]
 
 def register_function(
     identifier: str, fn: Any, package: str = ...

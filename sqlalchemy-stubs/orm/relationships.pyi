@@ -49,9 +49,13 @@ _OrderByArgument = Union[
     str,
     elements.ColumnElement[Any],
     Sequence[elements.ColumnElement[Any]],
+    attributes.Mapped[Any],
+    Sequence[attributes.Mapped[Any]],
     Callable[
         [],
         Union[
+            attributes.Mapped[Any],
+            Sequence[attributes.Mapped[Any]],
             elements.ColumnElement[Any],
             Sequence[elements.ColumnElement[Any]],
         ],

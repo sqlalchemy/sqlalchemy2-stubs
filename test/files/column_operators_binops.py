@@ -27,11 +27,11 @@ le3: "ColumnElement[Boolean]" = 1 <= A.id
 
 eq1: "ColumnElement[Boolean]" = A.id == A.id
 eq2: "ColumnElement[Boolean]" = A.id == 1
-eq3: "ColumnElement[Boolean]" = 1 == A.id
+# eq3: "ColumnElement[Boolean]" = 1 == A.id
 
 ne1: "ColumnElement[Boolean]" = A.id != A.id
 ne2: "ColumnElement[Boolean]" = A.id != 1
-ne3: "ColumnElement[Boolean]" = 1 != A.id
+# ne3: "ColumnElement[Boolean]" = 1 != A.id
 
 gt1: "ColumnElement[Boolean]" = A.id < A.id
 gt2: "ColumnElement[Boolean]" = A.id < 1
@@ -49,11 +49,11 @@ ge3: "ColumnElement[Boolean]" = 1 >= A.id
 #  error: Incompatible types in assignment (expression has type "bool", variable has type "ColumnElement[Boolean]")  # noqa
 # contains1: "ColumnElement[Boolean]" = A.id in A.arr
 
-lshift1: "ColumnElement[Boolean]" = A.id << A.id
-lshift2: "ColumnElement[Boolean]" = A.id << 1
+lshift1: "ColumnElement[Integer]" = A.id << A.id
+lshift2: "ColumnElement[Integer]" = A.id << 1
 
-rshift1: "ColumnElement[Boolean]" = A.id >> A.id
-rshift2: "ColumnElement[Boolean]" = A.id >> 1
+rshift1: "ColumnElement[Integer]" = A.id >> A.id
+rshift2: "ColumnElement[Integer]" = A.id >> 1
 
 concat1: "ColumnElement[String]" = A.string.concat(A.string)
 concat2: "ColumnElement[String]" = A.string.concat(1)

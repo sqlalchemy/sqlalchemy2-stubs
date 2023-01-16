@@ -34,6 +34,7 @@ from .selectable import TableClause
 from .. import util
 from ..engine import Connection
 from ..engine import Engine
+from ..orm.attributes import Mapped
 from ..util import langhelpers
 
 RETAIN_SCHEMA: langhelpers.TypingSymbol
@@ -265,7 +266,7 @@ class ForeignKey(DialectKWArgs, SchemaItem):
     match: Optional[str] = ...
     def __init__(
         self,
-        column: Union[Column[Any], str],
+        column: Union[Column[Any], Mapped[Any], str],
         _constraint: Optional[ForeignKeyConstraint] = ...,
         use_alter: bool = ...,
         name: Optional[str] = ...,
