@@ -27,11 +27,13 @@ le3: "ColumnElement[Boolean]" = 1 <= A.id
 
 eq1: "ColumnElement[Boolean]" = A.id == A.id
 eq2: "ColumnElement[Boolean]" = A.id == 1
-eq3: "ColumnElement[Boolean]" = 1 == A.id
+# this changes based on QueryableAttribute(Any) lineage
+# eq3: "bool" = 1 == A.id
 
 ne1: "ColumnElement[Boolean]" = A.id != A.id
 ne2: "ColumnElement[Boolean]" = A.id != 1
-ne3: "ColumnElement[Boolean]" = 1 != A.id
+# this changes based on QueryableAttribute(Any) lineage
+# ne3: "bool" = 1 != A.id
 
 gt1: "ColumnElement[Boolean]" = A.id < A.id
 gt2: "ColumnElement[Boolean]" = A.id < 1

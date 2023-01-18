@@ -50,8 +50,18 @@ class QueryableAttribute(
     traversals.HasCopyInternals,
     roles.JoinTargetRole,
     roles.OnClauseRole,
+    roles.OrderByRole,
+    roles.DDLConstraintColumnRole,
     sql_base.Immutable,
-    sql_base.MemoizedHasCacheKey,
+    # NOTE: this is something we would rather not have here, however, due
+    # to a long-standing error that was here, QueryableAttribute and therefore
+    # Mapped were acting like Any for quite a long time.  In SQLAlchemy 1.4,
+    # in order to remove this Any and have our current tests pass,
+    # adjustments to mypy plugin are needed which are present in
+    # SQLAlchemy 2a53f70eeed0c39ff13e0c57086443e8714c8142 as of
+    # 1.4.47 (if released).   As this is all legacy stuff, for the moment
+    # we are leaving Any here to avoid regressions.
+    Any,
 ):
     is_attribute: bool = ...
     class_: Any = ...
