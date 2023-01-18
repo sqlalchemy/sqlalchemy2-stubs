@@ -1,6 +1,6 @@
-===================
-SQLAlchemy 2 Stubs
-===================
+===========================
+SQLAlchemy 2 Stubs (Legacy)
+===========================
 
 These are interim PEP-484 typing stubs for the
 `SQLAlchemy <https://www.sqlalchemy.org>`_ **1.4 release series only**. They
