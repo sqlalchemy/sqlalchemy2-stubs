@@ -124,7 +124,6 @@ else:
     from urlparse import parse_qsl as parse_qsl  # noqa
 
     from abc import ABCMeta
-
     class ABC(object):
         __metaclass__ = ABCMeta
     import pickle as pickle  # noqa
@@ -209,7 +208,6 @@ else:
     from datetime import datetime
     from datetime import timedelta
     from datetime import tzinfo
-
     class timezone(tzinfo):
         def __init__(self, offset: timedelta) -> None: ...
         def __eq__(self, other: Any) -> Any: ...

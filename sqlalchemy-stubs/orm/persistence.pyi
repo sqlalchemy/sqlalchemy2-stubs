@@ -32,7 +32,6 @@ def delete_obj(base_mapper: Any, states: Any, uowtransaction: Any) -> None: ...
 
 class BulkUDCompileState(CompileState):
     class default_update_options(Options): ...
-
     @classmethod
     def orm_pre_session_exec(
         cls,

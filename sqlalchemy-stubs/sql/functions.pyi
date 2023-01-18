@@ -9,6 +9,7 @@ from typing import Union
 
 from typing_extensions import Protocol
 
+from . import roles
 from . import sqltypes
 from . import type_api
 from .base import ColumnCollection
@@ -36,7 +37,7 @@ _T_co = TypeVar("_T_co", covariant=True)
 _TE = TypeVar("_TE", bound=type_api.TypeEngine[Any])
 _FE = TypeVar("_FE", bound=FunctionElement[Any])
 
-_OverByType = Any
+_OverByType = Union[ClauseElement, str, roles.OrderByRole]
 
 def register_function(
     identifier: str, fn: Any, package: str = ...

@@ -11,8 +11,8 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from . import TypingBackrefResult as _BackrefResult
 from . import attributes as attributes
+from . import TypingBackrefResult as _BackrefResult
 from .base import state_str as state_str
 from .interfaces import MANYTOMANY as MANYTOMANY
 from .interfaces import MANYTOONE as MANYTOONE
@@ -47,17 +47,13 @@ _T = TypeVar("_T")
 _OrderByArgument = Union[
     Literal[False],
     str,
-    elements.ColumnElement[Any],
-    Sequence[elements.ColumnElement[Any]],
-    attributes.Mapped[Any],
-    Sequence[attributes.Mapped[Any]],
+    roles.OrderByRole,
+    Sequence[roles.OrderByRole],
     Callable[
         [],
         Union[
-            attributes.Mapped[Any],
-            Sequence[attributes.Mapped[Any]],
-            elements.ColumnElement[Any],
-            Sequence[elements.ColumnElement[Any]],
+            roles.OrderByRole,
+            Sequence[roles.OrderByRole],
         ],
     ],
 ]
@@ -137,7 +133,6 @@ class RelationshipProperty(StrategizedProperty[_T]):
         sync_backref: Optional[Any] = ...,
     ) -> None: ...
     def instrument_class(self, mapper: Any) -> None: ...
-
     class Comparator(PropComparator):
         prop: Any = ...
         def __init__(
@@ -165,7 +160,6 @@ class RelationshipProperty(StrategizedProperty[_T]):
         def __ne__(self, other: Any) -> Any: ...
         @util.memoized_property
         def property(self): ...
-
     def merge(
         self,
         session: Any,

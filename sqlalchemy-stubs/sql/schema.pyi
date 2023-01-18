@@ -265,7 +265,7 @@ class ForeignKey(DialectKWArgs, SchemaItem):
     match: Optional[str] = ...
     def __init__(
         self,
-        column: Any,
+        column: Union[roles.DDLConstraintColumnRole, str],
         _constraint: Optional[ForeignKeyConstraint] = ...,
         use_alter: bool = ...,
         name: Optional[str] = ...,
