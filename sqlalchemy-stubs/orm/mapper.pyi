@@ -25,6 +25,7 @@ from ..sql import coercions as coercions
 from ..sql import expression as expression
 from ..sql import operators as operators
 from ..sql import roles as roles
+from ..sql import traversals as traversals
 from ..sql import visitors as visitors
 from ..sql.selectable import LABEL_STYLE_TABLENAME_PLUS_COL as LABEL_STYLE_TABLENAME_PLUS_COL
 from ..util import HasMemoized as HasMemoized
@@ -35,7 +36,7 @@ NO_ATTRIBUTE: Any
 class Mapper(
     ORMFromClauseRole,
     ORMEntityColumnsClauseRole,
-    sql_base.MemoizedHasCacheKey,
+    traversals.MemoizedHasCacheKey,
     InspectionAttr,
 ):
     class_: Any = ...
