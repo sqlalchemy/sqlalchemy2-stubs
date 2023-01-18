@@ -19,7 +19,6 @@ if sys.version_info >= (3, 0):
         _require_await: bool = ...,
         **kwargs: Any,
     ) -> _T: ...
-
     class AsyncAdaptedLock:
         @util.memoized_property
         def mutex(self) -> Any: ...
