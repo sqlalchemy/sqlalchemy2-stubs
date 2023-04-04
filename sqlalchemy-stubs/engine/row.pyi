@@ -10,10 +10,12 @@ from typing import Sequence
 from typing import Tuple
 from typing import Type
 from typing import TypeVar
+from typing import Union
 from typing import ValuesView
 
 from .result import ResultMetaData
 from .result import RMKeyView
+from ..sql.schema import Column
 
 _T = TypeVar("_T")
 
@@ -80,8 +82,8 @@ class ROMappingView(  # type: ignore[misc]
     def __eq__(self, other: Any) -> bool: ...
     def __ne__(self, other: Any) -> bool: ...
 
-class RowMapping(BaseRow, Mapping[str, Any]):
-    def __getitem__(self, key: str) -> Any: ...
+class RowMapping(BaseRow, Mapping[Union[str, Column[Any]], Any]):
+    def __getitem__(self, key: Union[str, Column[Any]]) -> Any: ...
     def __iter__(self) -> Iterator[str]: ...
     def __len__(self) -> int: ...
     def __contains__(self, key: Any) -> bool: ...
