@@ -10,7 +10,17 @@ def go(argv: list[str]):
         )
         assert result.status == 200
         parsed = json.loads(result.read())
-        version = parsed["info"]["version"]
+        # `releases` is deprecated but should be good for now
+        # https://warehouse.pypa.io/api-reference/json.html
+        v14 = sorted(
+            [key for key in parsed["releases"] if key.startswith("1.4")],
+            key=lambda key: [
+                int(part) if part.isdecimal() else -1
+                for part in key.split(".")
+            ],
+        )
+        version = v14[-1]
+        # version = parsed["info"]["version"]  # this is now v2
         print(f"rel_{version}".replace(".", "_"))
     else:
         for part in argv:
