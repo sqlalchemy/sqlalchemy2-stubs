@@ -111,6 +111,10 @@ class ColumnOperators(Operators[ColumnElement[_TE]], Generic[_TE]):
     def __lt__(self, other: Any) -> ColumnElement[sqltypes.Boolean]: ...
     def __le__(self, other: Any) -> ColumnElement[sqltypes.Boolean]: ...
     def __eq__(self, other: Any) -> ColumnElement[sqltypes.Boolean]: ...  # type: ignore[override]
+    # ColumnOperators defines an __eq__ so it must explicitly declare also
+    # an hash or it's set to None by python:
+    # https://docs.python.org/3/reference/datamodel.html#object.__hash__
+    def __hash__(self) -> int: ...
     def __ne__(self, other: Any) -> ColumnElement[sqltypes.Boolean]: ...  # type: ignore[override]
     def is_distinct_from(
         self, other: Any
