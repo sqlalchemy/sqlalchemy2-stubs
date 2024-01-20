@@ -3,6 +3,7 @@ from typing import Mapping
 from typing import Optional
 from typing import Tuple
 
+from . import decl_m as m  # noqa
 from . import exc as exc
 from . import mapper as mapperlib  # noqa
 from . import strategy_options
